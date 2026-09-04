@@ -18,9 +18,14 @@ const html = plantilla
   .replace('/*__UI_JS__*/', uiJs)
   .replaceAll('__HOME__', HOME);
 
+// La demo lleva precios que no son reales: no puede entrar a Google bajo la
+// marca. Solo aplica a la compilación --ftp; se quita cuando la tienda de
+// verdad ocupe ese dominio.
+const pagina = ES_FTP ? '<meta name="robots" content="noindex, nofollow">\n' + html : html;
+
 const destino = new URL(salida('vista-catalogo.html', 'catalogo.html'), import.meta.url);
 mkdirSync(new URL('./', destino), { recursive: true });
-writeFileSync(destino, html, 'utf8');
+writeFileSync(destino, pagina, 'utf8');
 
 console.log((ES_FTP ? 'dist/catalogo.html' : 'vista-catalogo.html') + '  ' + (html.length / 1024).toFixed(0) + ' KB  ·  ' + JSON.parse(catalogo).total + ' productos incrustados');
 for (const m of ['__CATALOGO__', '__SILUETAS__', '__HOME__']) {
