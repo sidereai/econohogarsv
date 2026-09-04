@@ -9,13 +9,6 @@
   --barra-viva:rgba(15,29,38,.40);
   --barra-mano:rgba(15,29,38,.52);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --barra:rgba(255,255,255,.20);
-    --barra-viva:rgba(255,255,255,.38);
-    --barra-mano:rgba(255,255,255,.52);
-  }
-}
 :root[data-theme="dark"]{
   --barra:rgba(255,255,255,.20);
   --barra-viva:rgba(255,255,255,.38);
@@ -71,16 +64,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--barra) transparent}
   --vidrio-brillo:rgba(255,255,255,.85);
   --vidrio-linea:rgba(15,29,38,.09);
   --vidrio-sombra:0 30px 80px -28px rgba(8,24,34,.55);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --vidrio:rgba(20,33,42,.58);
-    --vidrio-panel:rgba(255,255,255,.06);
-    --vidrio-borde:rgba(255,255,255,.15);
-    --vidrio-brillo:rgba(255,255,255,.18);
-    --vidrio-linea:rgba(255,255,255,.10);
-    --vidrio-sombra:0 30px 80px -28px rgba(0,0,0,.85);
-  }
 }
 :root[data-theme="dark"]{
   --vidrio:rgba(20,33,42,.58);

@@ -379,16 +379,16 @@ function abrirCarrito(){
 
 
 // ---------- tema claro / oscuro ----------
-// Por defecto manda el sistema. En cuanto el usuario elige, esa elección
-// gana y se recuerda: cambiar de tema para volver a encontrarlo en oscuro
-// la próxima visita es de las cosas que más molestan.
+// La tienda abre en claro. Si el visitante elige oscuro, esa elección se
+// recuerda: volver y encontrarlo otra vez en claro es de las cosas que más
+// molestan de un interruptor de tema.
 const LLAVE_TEMA = 'econohogar.tema';
 const SOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>';
 const LUNA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>';
 
-const temaSistemaOscuro = () => matchMedia('(prefers-color-scheme: dark)').matches;
-const temaActual = () => document.documentElement.getAttribute('data-theme')
-  || (temaSistemaOscuro() ? 'dark' : 'light');
+// Sin atributo, la página es clara: así está definida la hoja de estilos.
+// El oscuro solo aparece si el visitante lo pide con el botón.
+const temaActual = () => document.documentElement.getAttribute('data-theme') || 'light';
 
 function pintarBotonTema(){
   const irA = temaActual() === 'dark' ? 'claro' : 'oscuro';

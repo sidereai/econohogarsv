@@ -34,19 +34,12 @@
 
   --sombra:0 1px 2px rgba(15,29,38,.06), 0 10px 26px -18px rgba(15,29,38,.30);
   --radio:3px;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --marca-verde:#5CC463; --marca-azul:#4FA8DC; --marca-rojo:#EE4A42;
-    --precio:#FF7B70; --precio-fondo:#D8342C; --ahorro:#4ADE80;
-    --azul:#6FBCE8; --azul-hover:#9AD3F2;
-    --fondo:#0A1319; --superficie:#111E26; --superficie-2:#182831;
-    --linea:#24363F; --linea-fuerte:#334A56;
-    --tinta:#E2EDF3; --tinta-2:#BCCFDA; --tenue:#8399A6;
-    --sombra:0 1px 2px rgba(0,0,0,.5), 0 10px 26px -18px rgba(0,0,0,.9);
-  }
+  /* Claro por defecto, a propósito: el modo oscuro solo llega si
+     el visitante lo elige con el botón. */
+  color-scheme:light;
 }
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --marca-verde:#5CC463; --marca-azul:#4FA8DC; --marca-rojo:#EE4A42;
   --precio:#FF7B70; --precio-fondo:#D8342C; --ahorro:#4ADE80;
   --azul:#6FBCE8; --azul-hover:#9AD3F2;
