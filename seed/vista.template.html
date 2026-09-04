@@ -1,0 +1,527 @@
+<title>Vitrina EconoHogar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,400..800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+
+<style>
+/* ============================================================
+   SISTEMA DE COLOR — derivado del logo EconoHogar
+   Marca:  verde (ECONO) · azul (HOGAR) · rojo (el techo)
+   Rol:    verde = ahorro · azul = estructura · rojo = precio
+   ============================================================ */
+:root{
+  /* --- colores de marca: logo, bloques grandes, iconos. Nunca texto pequeño. --- */
+  --marca-verde:#4CAF50;
+  --marca-azul:#1E88C7;
+  --marca-rojo:#E0312A;
+
+  /* --- versiones funcionales, oscurecidas hasta pasar contraste AA sobre blanco --- */
+  --precio:#C62828;        /* 5.6:1 */
+  --precio-fondo:#D32F2F;  /* blanco encima: 4.9:1 */
+  --ahorro:#2E7D32;        /* 5.1:1 */
+  --azul:#14618F;          /* 5.9:1 */
+  --azul-hover:#0E4D72;
+
+  /* --- neutros con sesgo azul, tomados del azul de marca desaturado --- */
+  --fondo:#F1F5F8;
+  --superficie:#FFFFFF;
+  --superficie-2:#E7EEF3;
+  --linea:#D6E1E9;
+  --linea-fuerte:#B7C8D4;
+  --tinta:#0F1D26;
+  --tinta-2:#33505F;
+  --tenue:#647F8E;
+
+  --sombra:0 1px 2px rgba(15,29,38,.06), 0 10px 26px -18px rgba(15,29,38,.30);
+  --radio:3px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --marca-verde:#5CC463; --marca-azul:#4FA8DC; --marca-rojo:#EE4A42;
+    --precio:#FF7B70; --precio-fondo:#D8342C; --ahorro:#4ADE80;
+    --azul:#6FBCE8; --azul-hover:#9AD3F2;
+    --fondo:#0A1319; --superficie:#111E26; --superficie-2:#182831;
+    --linea:#24363F; --linea-fuerte:#334A56;
+    --tinta:#E2EDF3; --tinta-2:#BCCFDA; --tenue:#8399A6;
+    --sombra:0 1px 2px rgba(0,0,0,.5), 0 10px 26px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --marca-verde:#5CC463; --marca-azul:#4FA8DC; --marca-rojo:#EE4A42;
+  --precio:#FF7B70; --precio-fondo:#D8342C; --ahorro:#4ADE80;
+  --azul:#6FBCE8; --azul-hover:#9AD3F2;
+  --fondo:#0A1319; --superficie:#111E26; --superficie-2:#182831;
+  --linea:#24363F; --linea-fuerte:#334A56;
+  --tinta:#E2EDF3; --tinta-2:#BCCFDA; --tenue:#8399A6;
+  --sombra:0 1px 2px rgba(0,0,0,.5), 0 10px 26px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--fondo);color:var(--tinta);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding-bottom:64px;
+}
+h1,h2,h3,.pr,.disp,.logo-txt{font-family:"Archivo",Impact,sans-serif}
+a{color:var(--azul);text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--azul);outline-offset:2px;border-radius:2px}
+.mono{font-family:"IBM Plex Mono",monospace}
+
+/* ---------- franja de cupones ---------- */
+.franja{
+  background:var(--precio-fondo);color:#fff;
+  display:flex;gap:22px;justify-content:center;flex-wrap:wrap;
+  padding:7px 14px;font-size:12px;font-weight:600;letter-spacing:.01em;
+}
+.franja span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+
+/* ---------- cabecera ---------- */
+header.top{background:var(--superficie);border-bottom:1px solid var(--linea);position:sticky;top:0;z-index:40}
+.top-in{max-width:1400px;margin:0 auto;padding:10px 16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.logo{
+  display:flex;align-items:center;gap:9px;flex-shrink:0;
+  color:inherit;border-radius:5px;padding:2px;margin:-2px;
+  transition:transform .16s cubic-bezier(.34,1.4,.64,1);
+}
+.logo:hover{transform:translateY(-1.5px)}
+.logo:active{transform:translateY(0)}
+.logo svg{display:block}
+.logo-txt{font-size:19px;font-weight:800;font-stretch:88%;letter-spacing:-.01em;line-height:1}
+.logo-txt .e{color:var(--marca-verde)}
+.logo-txt .h{color:var(--marca-azul)}
+.buscador{flex:1;min-width:190px;display:flex;border:2px solid var(--azul);border-radius:var(--radio);overflow:hidden;background:var(--superficie)}
+.buscador input{flex:1;border:0;padding:8px 11px;font:inherit;background:transparent;color:var(--tinta);min-width:0}
+.buscador input::placeholder{color:var(--tenue)}
+.buscador button{background:var(--azul);color:#fff;padding:0 15px;font-weight:600;font-size:13px}
+.acc{display:flex;gap:6px;align-items:center}
+.acc button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--linea);border-radius:var(--radio);padding:7px 11px;font-size:12.5px;font-weight:600;color:var(--tinta-2);white-space:nowrap}
+.acc .carrito{background:var(--precio-fondo);border-color:var(--precio-fondo);color:#fff}
+
+/* ---------- rieles de categorías ---------- */
+.cats{max-width:1400px;margin:0 auto;padding:12px 16px 0}
+.cats-riel{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}
+.chip{
+  flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 10px;border:1px solid var(--linea);border-radius:var(--radio);
+  background:var(--superficie);min-width:78px;font-size:10.5px;line-height:1.2;
+  text-align:center;color:var(--tinta-2);font-weight:500;
+}
+.chip svg{width:26px;height:26px;color:var(--azul)}
+.chip[aria-pressed="true"]{border-color:var(--azul);box-shadow:inset 0 0 0 1px var(--azul);color:var(--azul);font-weight:600}
+.chip .n{font-family:"IBM Plex Mono",monospace;font-size:9px;color:var(--tenue)}
+
+/* ---------- barra de control ---------- */
+.control{
+  max-width:1400px;margin:0 auto;padding:10px 16px;display:flex;gap:10px;
+  align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--linea);
+}
+.control select{
+  border:1px solid var(--linea);border-radius:var(--radio);padding:6px 9px;
+  font:inherit;font-size:12.5px;background:var(--superficie);color:var(--tinta);
+}
+.tog{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--tinta-2);cursor:pointer}
+.tog input{accent-color:var(--azul);width:15px;height:15px}
+.conteo{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--tenue)}
+.filtro-activo{
+  display:inline-flex;align-items:center;gap:7px;background:var(--azul);color:#fff;
+  border-radius:999px;padding:5px 9px 5px 13px;font-size:12.5px;font-weight:700;
+}
+.filtro-activo::after{
+  content:"✕";font-size:11px;line-height:1;background:rgba(255,255,255,.24);
+  width:16px;height:16px;border-radius:50%;display:grid;place-items:center;
+}
+
+/* ---------- rejilla ---------- */
+.rejilla{
+  max-width:1400px;margin:0 auto;padding:12px 16px 40px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:7px;
+}
+.rejilla.sin-resultados{display:block;padding-top:44px;padding-bottom:64px}
+.vacio{
+  max-width:420px;margin:0 auto;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.vacio b{font-size:16px;font-weight:700}
+.vacio p{margin:0;font-size:13px;color:var(--tinta-2);line-height:1.5}
+.vacio .accion{
+  margin-top:12px;background:var(--azul);color:#fff;border-radius:var(--radio);
+  padding:10px 20px;font-weight:700;font-size:13px;
+}
+@media(min-width:560px){.rejilla{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:860px){.rejilla{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1120px){.rejilla{grid-template-columns:repeat(5,1fr)}}
+
+.tarjeta{
+  background:var(--superficie);border:1px solid var(--linea);border-radius:var(--radio);
+  overflow:hidden;display:flex;flex-direction:column;position:relative;text-align:left;
+  transition:border-color .12s,box-shadow .12s;
+}
+.tarjeta:hover{border-color:var(--linea-fuerte);box-shadow:var(--sombra)}
+.foto{position:relative;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden}
+.foto svg{width:66%;height:66%;color:var(--tinta-2);opacity:.72}
+.desc{
+  position:absolute;top:0;left:0;background:var(--precio-fondo);color:#fff;
+  font-family:"Archivo",sans-serif;font-weight:800;font-stretch:78%;font-size:13px;
+  padding:2px 6px;letter-spacing:.01em;
+}
+.agot{
+  position:absolute;inset:0;background:color-mix(in srgb,var(--superficie) 74%,transparent);
+  display:grid;place-items:center;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--tenue);
+}
+.cuerpo{padding:6px 7px 8px;display:flex;flex-direction:column;gap:3px;flex:1}
+.prfila{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+.pr{font-size:22px;font-weight:800;font-stretch:78%;color:var(--precio);line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.antes{font-size:10.5px;color:var(--tenue);text-decoration:line-through;font-variant-numeric:tabular-nums}
+.cuota{font-size:11px;font-weight:600;color:var(--ahorro);font-variant-numeric:tabular-nums}
+.nom{
+  font-size:11.5px;line-height:1.28;color:var(--tinta-2);margin-top:1px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.insig{display:flex;gap:3px;flex-wrap:wrap;margin-top:2px}
+.ins{font-size:9px;padding:1px 4px;border-radius:2px;white-space:nowrap;font-weight:600;letter-spacing:.01em}
+.ins.env{background:color-mix(in srgb,var(--ahorro) 14%,transparent);color:var(--ahorro)}
+.ins.gar{background:color-mix(in srgb,var(--azul) 13%,transparent);color:var(--azul)}
+.ins.ins2{background:color-mix(in srgb,var(--marca-azul) 13%,transparent);color:var(--azul)}
+.pie{margin-top:auto;padding-top:4px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.vend{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--tenue)}
+.disp{font-size:10px;font-weight:700;letter-spacing:.02em}
+.disp.si{color:var(--ahorro)}
+.disp.poco{color:var(--precio)}
+.disp.no{color:var(--tenue)}
+
+/*__UI_CSS__*/
+
+/* ---------- pie ---------- */
+.pie{background:var(--azul-hover);color:#D6E9F4;padding:26px 0 22px}
+.pie-in{max-width:1400px;margin:0 auto;padding:0 16px}
+.pie-marca{display:flex;align-items:center;gap:10px;font-weight:600;font-size:13.5px;margin-bottom:10px}
+.pie-marca svg{display:block;flex-shrink:0}
+.pie p{margin:0;font-size:11.5px;opacity:.7;line-height:1.6;max-width:78ch}
+
+/* ---------- barra inferior móvil ---------- */
+.inferior{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:var(--superficie);border-top:1px solid var(--linea);
+  display:flex;padding:6px 10px;gap:8px;align-items:center;
+}
+.inferior .wa{
+  display:flex;align-items:center;gap:6px;padding:9px 13px;border-radius:var(--radio);
+  background:#25D366;color:#06301A;font-weight:700;font-size:12.5px;
+}
+.inferior .cr{
+  flex:1;text-align:center;padding:9px;border-radius:var(--radio);
+  background:var(--precio-fondo);color:#fff;font-weight:700;font-size:13px;
+}
+.inferior .ct{
+  padding:9px 13px;border-radius:var(--radio);box-shadow:inset 0 0 0 2px var(--azul);
+  color:var(--azul);font-weight:700;font-size:12.5px;
+}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="franja">
+  <span>▸ Envío gratis en compras mayores de $249</span>
+  <span>▸ Hasta 12 cuotas con tarjetas Banco Agrícola</span>
+  <span>▸ Retiro en sala de ventas sin costo</span>
+</div>
+
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="__HOME__" aria-label="EconoHogar, ir al inicio">
+      <svg width="34" height="30" viewBox="0 0 68 60" aria-hidden="true">
+        <path d="M4 30 L34 5 L64 30" fill="none" stroke="var(--marca-rojo)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="12" y="34" width="13" height="13" rx="2.5" fill="var(--marca-verde)"/>
+        <rect x="27.5" y="34" width="13" height="13" rx="2.5" fill="var(--marca-azul)"/>
+        <rect x="43" y="34" width="13" height="13" rx="2.5" fill="var(--marca-rojo)"/>
+      </svg>
+      <span class="logo-txt"><span class="e">ECONO</span><span class="h">HOGAR</span></span>
+    </a>
+    <form class="buscador" onsubmit="return false">
+      <input id="q" type="search" placeholder="Buscar refrigeradora, TV, aire acondicionado…" aria-label="Buscar productos">
+      <button type="button" id="buscarBtn">Buscar</button>
+    </form>
+    <div class="acc">
+      <button type="button" id="tema"><span data-tema-icono></span><span data-tema-txt>Claro</span></button>
+      <button type="button" class="carrito c-lanzador" data-abrir-carrito>Carrito<span class="c-n" data-carrito-n hidden>0</span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="cats" aria-label="Categorías">
+  <div class="cats-riel" id="riel"></div>
+</nav>
+
+<div class="control">
+  <select id="orden" aria-label="Ordenar">
+    <option value="rel">Más relevantes</option>
+    <option value="asc">Precio: menor a mayor</option>
+    <option value="desc">Precio: mayor a menor</option>
+    <option value="vend">Más vendidos</option>
+    <option value="desc-pct">Mayor descuento</option>
+  </select>
+  <label class="tog"><input type="checkbox" id="soloDesc"> Solo con descuento</label>
+  <label class="tog"><input type="checkbox" id="soloStock"> Solo disponibles</label>
+  <label class="tog"><input type="checkbox" id="soloCuota"> Aptos para cuotas</label>
+  <button class="filtro-activo" type="button" id="filtroActivo" hidden></button>
+  <span class="conteo" id="conteo"></span>
+</div>
+
+<main class="rejilla" id="rejilla"></main>
+
+<footer class="pie">
+  <div class="pie-in">
+    <div class="pie-marca">
+      <svg width="30" height="26" viewBox="0 0 68 60" aria-hidden="true">
+        <path d="M4 30 L34 5 L64 30" fill="none" stroke="var(--marca-rojo)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="12" y="34" width="13" height="13" rx="2.5" fill="var(--marca-verde)"/>
+        <rect x="27.5" y="34" width="13" height="13" rx="2.5" fill="var(--marca-azul)"/>
+        <rect x="43" y="34" width="13" height="13" rx="2.5" fill="var(--marca-rojo)"/>
+      </svg>
+      <span>EconoHogar · San Salvador, El Salvador</span>
+    </div>
+    <p>Precios en dólares con IVA del 13 % incluido. Las imágenes son referenciales y las existencias pueden variar entre la bodega y la sala de ventas. Catálogo de demostración: los productos y precios de esta versión son datos de prueba.</p>
+  </div>
+</footer>
+
+<div class="inferior">
+  <span class="wa">WhatsApp</span>
+  <button class="ct c-lanzador" type="button" data-abrir-carrito>Carrito<span class="c-n" data-carrito-n hidden>0</span></button>
+  <button class="cr" type="button" data-abrir-carrito>Ver mi carrito</button>
+</div>
+
+<script>
+const DATOS = /*__CATALOGO__*/ null;
+
+const SILUETAS = /*__SILUETAS__*/ {};
+const DEPARTAMENTOS = /*__DEPARTAMENTOS__*/ [];
+
+const TINTES = ['--marca-verde','--marca-azul','--tenue'];  // el rojo queda reservado al precio
+const fmt = (c) => '$' + (c/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const stockTotal = (p) => p.stock.reduce((s,x)=>s+x.cantidad,0);
+const esc = (s) => String(s).replace(/[&<>"]/g, (m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+// ---------- estado ----------
+let categoria = null;      // una categoría puntual  (#cat=televisores)
+let departamento = null;   // agrupación de categorías (#dep=linea-blanca)
+let soloInstalacion = false;
+const $ = (id) => document.getElementById(id);
+
+// ---------- el filtro vive en el hash de la URL ----------
+// Así el menú de la home enlaza directo, el enlace queda compartible y los
+// botones atrás/adelante del navegador funcionan. Se usa el hash y no el query
+// string porque el hash nunca viaja al servidor: funciona igual en un archivo
+// local, en el artifact publicado y en econohogarsv.com.
+function leerHash(hash){
+  const p = new URLSearchParams((hash !== undefined ? hash : location.hash).replace(/^#/, ''));
+
+  const c = p.get('cat');
+  categoria = DATOS.categorias.some((x) => x.slug === c) ? c : null;
+
+  const d = p.get('dep');
+  departamento = DEPARTAMENTOS.some((x) => x.slug === d) ? d : null;
+
+  soloInstalacion = p.get('f') === 'instalacion';
+
+  // Los interruptores también salen del hash, siempre. Si no se reponen a su
+  // valor por defecto, un filtro puesto por un enlace anterior queda pegado
+  // al navegar al siguiente — que era exactamente el error.
+  $('soloDesc').checked  = p.get('f') === 'ofertas' || p.get('d') === '1';
+  $('soloStock').checked = p.get('s') === '1';
+  $('soloCuota').checked = p.get('c') === '1';
+
+  $('q').value = p.get('q') || '';
+}
+
+function escribirHash(){
+  // replaceState en vez de asignar location.hash: no ensucia el historial
+  // con una entrada por cada tecla escrita en el buscador.
+  const p = new URLSearchParams();
+  if (categoria) p.set('cat', categoria);
+  if (departamento) p.set('dep', departamento);
+  if (soloInstalacion) p.set('f', 'instalacion');
+  if ($('soloDesc').checked)  p.set('d', '1');
+  if ($('soloStock').checked) p.set('s', '1');
+  if ($('soloCuota').checked) p.set('c', '1');
+  const q = $('q').value.trim();
+  if (q) p.set('q', q);
+  const s = p.toString();
+  try {
+    history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
+  } catch (e) {
+    // replaceState no está permitido en algunos orígenes (data:, sandbox).
+    // La URL deja de reflejar el filtro, pero filtrar tiene que seguir andando.
+  }
+}
+
+function pintarFiltroActivo(){
+  const b = $('filtroActivo');
+  const dep = departamento && DEPARTAMENTOS.find((d) => d.slug === departamento);
+  const etiqueta = dep ? dep.nombre : (soloInstalacion ? 'Con instalación' : null);
+  b.hidden = !etiqueta;
+  if (etiqueta) b.textContent = etiqueta;
+}
+
+// ---------- riel de categorías ----------
+function pintarRiel(){
+  const riel = $('riel');
+  const items = [{slug:null,nombre:'Todo',icono:'todo',n:DATOS.productos.length}]
+    .concat(DATOS.categorias.map(c=>({...c,n:DATOS.productos.filter(p=>p.categoria===c.slug).length})));
+  riel.innerHTML = items.map(c => (
+    '<button class="chip" type="button" aria-pressed="'+(categoria===c.slug)+'" data-cat="'+(c.slug||'')+'">' +
+      (SILUETAS[c.icono]||SILUETAS.todo||'') +
+      '<span>'+esc(c.nombre)+'</span><span class="n">'+c.n+'</span>' +
+    '</button>'
+  )).join('');
+  riel.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+    categoria = b.dataset.cat || null;
+    // Elegir una categoría puntual reemplaza al departamento, no se suma.
+    departamento = null;
+    soloInstalacion = false;
+    escribirHash(); pintarRiel(); pintar();
+  }));
+}
+
+// ---------- rejilla ----------
+// Quita tildes y baja a minúsculas para que "Refrigeradora" y "refrigeradora"
+// sean lo mismo. No corrige faltas de ortografía: eso lo resolverá pg_trgm
+// del lado de Postgres cuando la búsqueda deje de vivir en el navegador.
+const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+// La gente no busca con el nombre que usa el catálogo: escribe "tv", "refri",
+// "abanico". Sin esto, "television" devuelve cero y parece que no hay producto.
+const SINONIMOS = {
+  tv:'televisor', television:'televisor', televisor:'televisor', pantalla:'televisor',
+  refri:'refrigeradora', refrigerador:'refrigeradora', nevera:'refrigeradora', frigorifico:'refrigeradora',
+  ac:'aire', aa:'aire', clima:'aire', minisplit:'split',
+  lavarropas:'lavadora', lavarropa:'lavadora',
+  cocina:'estufa', hornillas:'estufa',
+  airfryer:'freidora', microonda:'microondas',
+  abanico:'ventilador', ventiladores:'ventilador',
+  freezer:'congelador', congeladora:'congelador',
+  aspirador:'aspiradora', purificador:'filtro', licuadoras:'licuadora',
+};
+
+// Se compara contra el inicio de cada palabra, no contra la cadena entera.
+// Buscar "aire" con includes() devolvía refrigeradoras Frigidaire; por prefijo
+// de palabra "refri" sigue encontrando "refrigeradora" y "aire" ya no entra
+// en "frigidaire".
+const tokens = new Map();
+function coincide(p, palabras){
+  let t = tokens.get(p.sku);
+  if (!t) {
+    t = norm([p.nombre, p.marca, p.modelo, p.sku, Object.values(p.specs).join(' ')].join(' '))
+      .split(/[^a-z0-9]+/).filter(Boolean);
+    tokens.set(p.sku, t);
+  }
+  return palabras.every((w) => t.some((x) => x.startsWith(w)));
+}
+
+function filtrados(){
+  const q = norm($('q').value.trim());
+  const palabras = q ? q.split(/\s+/).map((w) => SINONIMOS[w] || w) : [];
+  const dep = departamento && DEPARTAMENTOS.find((d) => d.slug === departamento);
+
+  let out = DATOS.productos.filter(p => {
+    if (dep && !dep.cats.includes(p.categoria)) return false;
+    if (soloInstalacion && !p.instalacion_disponible) return false;
+    if (categoria && p.categoria !== categoria) return false;
+    if ($('soloDesc').checked && p.descuento_pct === 0) return false;
+    if ($('soloStock').checked && stockTotal(p) === 0) return false;
+    if ($('soloCuota').checked && p.precio_centavos < 15000) return false;
+    if (palabras.length && !coincide(p, palabras)) return false;
+    return true;
+  });
+  const o = $('orden').value;
+  if (o==='asc')  out.sort((a,b)=>a.precio_centavos-b.precio_centavos);
+  if (o==='desc') out.sort((a,b)=>b.precio_centavos-a.precio_centavos);
+  if (o==='vend') out.sort((a,b)=>b.vendidos-a.vendidos);
+  if (o==='desc-pct') out.sort((a,b)=>b.descuento_pct-a.descuento_pct);
+  return out;
+}
+
+function tarjeta(p, i){
+  const st = stockTotal(p);
+  const tinte = TINTES[i % TINTES.length];
+  const dispCls = st === 0 ? 'no' : st <= 2 ? 'poco' : 'si';
+  const dispTxt = st === 0 ? 'Agotado' : st <= 2 ? 'Últimas '+st : 'Disponible';
+  return '<button class="tarjeta" type="button" data-sku="'+p.sku+'">' +
+    '<div class="foto" style="background:color-mix(in srgb, var('+tinte+') 9%, var(--superficie))">' +
+      (SILUETAS[p.icono]||'') +
+      (p.descuento_pct ? '<span class="desc">&minus;'+p.descuento_pct+'%</span>' : '') +
+      (st === 0 ? '<span class="agot">Agotado</span>' : '') +
+    '</div>' +
+    '<div class="cuerpo">' +
+      '<div class="prfila"><span class="pr">'+fmt(p.precio_centavos)+'</span>' +
+        (p.precio_lista_centavos ? '<span class="antes">'+fmt(p.precio_lista_centavos)+'</span>' : '') +
+      '</div>' +
+      (p.precio_centavos >= 15000 ? '<span class="cuota">'+fmt(p.cuota_12_centavos)+' &times; 12 cuotas</span>' : '<span class="cuota">&nbsp;</span>') +
+      '<span class="nom">'+esc(p.nombre)+'</span>' +
+      '<div class="insig">' +
+        (p.envio_gratis ? '<span class="ins env">Envío gratis</span>' : '') +
+        '<span class="ins gar">'+p.garantia_meses+' meses</span>' +
+        (p.instalacion_disponible ? '<span class="ins ins2">Instalación</span>' : '') +
+      '</div>' +
+      '<div class="pie"><span class="vend">'+p.vendidos+' vendidas</span>' +
+      '<span class="disp '+dispCls+'">'+dispTxt+'</span></div>' +
+    '</div></button>';
+}
+
+function pintar(){
+  const lista = filtrados();
+  const rej = $('rejilla');
+
+  if (!lista.length) {
+    rej.classList.add('sin-resultados');
+    rej.innerHTML =
+      '<div class="vacio">' +
+        '<b>No encontramos nada con esos filtros</b>' +
+        '<p>Probá con menos palabras, revisá la ortografía, o escribinos y lo buscamos en bodega por vos.</p>' +
+        '<button class="accion" type="button" id="limpiarTodo">Quitar filtros</button>' +
+      '</div>';
+    $('limpiarTodo').addEventListener('click', () => {
+      categoria = null; departamento = null; soloInstalacion = false;
+      $('q').value = '';
+      ['soloDesc','soloStock','soloCuota'].forEach((id) => { $(id).checked = false; });
+      escribirHash(); pintarRiel(); pintar();
+    });
+  } else {
+    rej.classList.remove('sin-resultados');
+    rej.innerHTML = lista.map(tarjeta).join('');
+    rej.querySelectorAll('.tarjeta').forEach(b =>
+      b.addEventListener('click', () => abrir(b.dataset.sku)));
+  }
+
+  $('conteo').textContent = lista.length + ' de ' + DATOS.productos.length + ' productos';
+  pintarFiltroActivo();
+}
+
+/*__UI_JS__*/
+
+// ---------- arranque ----------
+['q','orden','soloDesc','soloStock','soloCuota'].forEach(id =>
+  $(id).addEventListener('input', () => { escribirHash(); pintar(); }));
+
+$('buscarBtn').addEventListener('click', () => { escribirHash(); pintar(); $('q').focus(); });
+
+$('filtroActivo').addEventListener('click', () => {
+  departamento = null; soloInstalacion = false;
+  escribirHash(); pintarRiel(); pintar();
+});
+
+// Alguien llega desde la home con un filtro en el enlace, o usa atrás/adelante.
+window.addEventListener('hashchange', () => { leerHash(); pintarRiel(); pintar(); });
+
+// Punto de entrada único para aplicar un filtro desde fuera (enlaces, pruebas).
+window.aplicarFiltro = (hash) => { leerHash(hash); pintarRiel(); pintar(); };
+
+
+
+iniciarUI();
+leerHash();
+pintarRiel();
+pintar();
+</script>

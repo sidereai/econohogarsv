@@ -1,0 +1,18 @@
+# Salidas generadas: se reconstruyen con los constructores de seed/
+/home.html
+/vista-catalogo.html
+
+# Dependencias y secretos
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Respaldos y basura del sistema
+*.rar
+*.zip
+*.7z
+.DS_Store
+Thumbs.db
+seed/.*.bak
+/dist/

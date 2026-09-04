@@ -1,0 +1,1050 @@
+<title>Stack EconoHogar SV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+
+<style>
+:root{
+  --paper:#F1F4F5;
+  --surface:#FFFFFF;
+  --surface-2:#E6ECEF;
+  --ink:#101A21;
+  --ink-2:#2C3A44;
+  --steel:#5A6A75;
+  --line:#D2DBE0;
+  --line-strong:#B4C2CA;
+  --accent:#12506E;
+  --accent-2:#1B7AA8;
+  --accent-soft:#E0EDF4;
+  --e-a:#00934C;
+  --e-e:#C97A00;
+  --e-g:#C4141D;
+  --e-a-bg:#E2F4EA;
+  --e-e-bg:#FBEEDA;
+  --e-g-bg:#FAE4E5;
+  --code-bg:#0E1A21;
+  --code-ink:#D4E3EB;
+  --code-dim:#7592A3;
+  --code-key:#8FD0F0;
+  --code-str:#B9DFA8;
+  --price:#D62828;
+  --price-solid:#D62828;
+  --shadow:0 1px 2px rgba(16,26,33,.06), 0 8px 24px -16px rgba(16,26,33,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0B1317;
+    --surface:#131F26;
+    --surface-2:#1A2A33;
+    --ink:#E3EDF2;
+    --ink-2:#C2D3DC;
+    --steel:#8FA2AE;
+    --line:#24343D;
+    --line-strong:#33474F;
+    --accent:#62B4DC;
+    --accent-2:#96CFEC;
+    --accent-soft:#14313E;
+    --e-a:#3BC97F;
+    --e-e:#E9A63A;
+    --e-g:#F4676E;
+    --e-a-bg:#102E22;
+    --e-e-bg:#33260F;
+    --e-g-bg:#361A1D;
+    --code-bg:#081217;
+    --price:#FF6B62;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0B1317;
+  --surface:#131F26;
+  --surface-2:#1A2A33;
+  --ink:#E3EDF2;
+  --ink-2:#C2D3DC;
+  --steel:#8FA2AE;
+  --line:#24343D;
+  --line-strong:#33474F;
+  --accent:#62B4DC;
+  --accent-2:#96CFEC;
+  --accent-soft:#14313E;
+  --e-a:#3BC97F;
+  --e-e:#E9A63A;
+  --e-g:#F4676E;
+  --e-a-bg:#102E22;
+  --e-e-bg:#33260F;
+  --e-g-bg:#361A1D;
+  --code-bg:#081217;
+  --price:#FF6B62;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px 96px}
+
+/* ---------- tipografía ---------- */
+h1,h2,h3,.plate-title,.eyebrow,.tag,.bignum{font-family:"Archivo",Impact,sans-serif}
+h1{
+  font-size:clamp(2.1rem,5.4vw,3.5rem);
+  font-weight:800;
+  font-stretch:84%;
+  line-height:1.02;
+  letter-spacing:-.018em;
+  margin:0 0 .35em;
+  text-wrap:balance;
+}
+h2{
+  font-size:clamp(1.45rem,2.9vw,2.05rem);
+  font-weight:700;
+  font-stretch:86%;
+  line-height:1.1;
+  letter-spacing:-.012em;
+  margin:0 0 .45em;
+  text-wrap:balance;
+}
+h3{
+  font-size:1.06rem;
+  font-weight:700;
+  font-stretch:92%;
+  letter-spacing:-.004em;
+  margin:2em 0 .5em;
+}
+p{margin:0 0 1.05em;max-width:68ch}
+ul,ol{margin:0 0 1.15em;padding-left:1.15em;max-width:68ch}
+li{margin-bottom:.44em}
+li::marker{color:var(--steel)}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:italic}
+a{color:var(--accent-2);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent-2) 35%,transparent)}
+a:hover{border-bottom-color:var(--accent-2)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;border-radius:2px}
+code{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:.855em;
+  background:var(--surface-2);
+  padding:.1em .34em;
+  border-radius:3px;
+  word-break:break-word;
+}
+.eyebrow{
+  font-size:.7rem;
+  font-weight:700;
+  font-stretch:100%;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--steel);
+  display:flex;
+  align-items:center;
+  gap:.7em;
+  margin:0 0 .7em;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+.lede{font-size:1.12rem;color:var(--ink-2);max-width:64ch}
+
+/* ---------- encabezado ---------- */
+header.masthead{
+  border-bottom:2px solid var(--ink);
+  padding:56px 0 26px;
+  margin-bottom:44px;
+}
+.brandline{
+  display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.735rem;letter-spacing:.09em;text-transform:uppercase;color:var(--steel);
+  margin-bottom:26px;
+}
+.brandline .dom{color:var(--ink);font-weight:600}
+.masthead .meta{
+  display:flex;gap:26px;flex-wrap:wrap;margin-top:22px;
+  font-family:"IBM Plex Mono",monospace;font-size:.74rem;color:var(--steel);
+}
+.masthead .meta b{color:var(--ink-2);font-weight:600}
+
+/* ---------- secciones ---------- */
+section{margin:0 0 62px;scroll-margin-top:24px}
+
+/* ---------- ficha técnica ---------- */
+.plate{
+  background:var(--surface);
+  border:1px solid var(--line-strong);
+  border-radius:3px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.plate-head{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  background:var(--ink);
+  color:var(--paper);
+  padding:13px 20px;
+}
+:root[data-theme="dark"] .plate-head,
+:root:not([data-theme="light"]) .plate-head{color:var(--paper)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .plate-head{background:#050C10;color:#E3EDF2}}
+:root[data-theme="dark"] .plate-head{background:#050C10;color:#E3EDF2}
+.plate-title{font-size:.85rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
+.plate-head .sub{font-family:"IBM Plex Mono",monospace;font-size:.7rem;opacity:.72;letter-spacing:.06em}
+.plate-scroll{overflow-x:auto}
+table.spec{width:100%;border-collapse:collapse;min-width:640px}
+table.spec th,table.spec td{text-align:left;padding:11px 20px;border-bottom:1px solid var(--line);vertical-align:top}
+table.spec tr:last-child td{border-bottom:0}
+table.spec th{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--steel);width:170px;white-space:nowrap;
+}
+table.spec td:nth-child(2){font-weight:600;width:auto;white-space:nowrap}
+table.spec td:nth-child(3){color:var(--steel);font-size:.9rem;line-height:1.5}
+table.spec tbody tr:nth-child(odd){background:color-mix(in srgb,var(--surface-2) 42%,transparent)}
+
+/* ---------- bandas de energía ---------- */
+.band{
+  display:inline-flex;align-items:center;gap:.42em;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:.24em .62em .24em .5em;
+  border-radius:2px;
+  white-space:nowrap;
+}
+.band::before{content:"";width:6px;height:6px;border-radius:1px}
+.band.a{background:var(--e-a-bg);color:var(--e-a)}
+.band.a::before{background:var(--e-a)}
+.band.e{background:var(--e-e-bg);color:var(--e-e)}
+.band.e::before{background:var(--e-e)}
+.band.g{background:var(--e-g-bg);color:var(--e-g)}
+.band.g::before{background:var(--e-g)}
+
+/* ---------- callouts ---------- */
+.call{
+  border-left:3px solid var(--accent);
+  background:var(--surface);
+  padding:18px 22px;
+  margin:0 0 1.3em;
+  border-radius:0 3px 3px 0;
+}
+.call.risk{border-left-color:var(--e-g)}
+.call.warn{border-left-color:var(--e-e)}
+.call p:last-child{margin-bottom:0}
+.call .k{
+  font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--steel);display:block;margin-bottom:.45em;
+}
+
+/* ---------- comparativa a/b ---------- */
+.duo{display:grid;grid-template-columns:1fr;gap:16px;margin:0 0 1.4em}
+@media(min-width:760px){.duo{grid-template-columns:1fr 1fr}}
+.opt{
+  background:var(--surface);border:1px solid var(--line);border-radius:3px;
+  padding:18px 20px;display:flex;flex-direction:column;gap:.55em;
+}
+.opt.win{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.opt h4{
+  font-family:"Archivo",sans-serif;font-stretch:90%;font-weight:700;
+  font-size:1rem;margin:0;display:flex;align-items:center;gap:.6em;flex-wrap:wrap;
+}
+.opt .path{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--accent-2);word-break:break-all}
+.opt ul{margin:0;padding-left:1.1em;font-size:.92rem}
+.opt li{margin-bottom:.3em}
+.opt .verdict{
+  margin-top:auto;padding-top:.7em;border-top:1px dashed var(--line);
+  font-size:.88rem;color:var(--steel);
+}
+
+/* ---------- código ---------- */
+pre{
+  background:var(--code-bg);color:var(--code-ink);
+  font-family:"IBM Plex Mono",monospace;font-size:.79rem;line-height:1.62;
+  padding:18px 20px;border-radius:3px;overflow-x:auto;margin:0 0 1.3em;
+  border:1px solid color-mix(in srgb,var(--code-ink) 12%,transparent);
+}
+pre code{background:none;padding:0;font-size:inherit}
+pre .c{color:var(--code-dim);font-style:italic}
+pre .k{color:var(--code-key)}
+pre .s{color:var(--code-str)}
+.filename{
+  font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.08em;
+  color:var(--steel);text-transform:uppercase;margin-bottom:.5em;display:block;
+}
+
+/* ---------- maqueta de card ---------- */
+.mock-row{display:grid;grid-template-columns:1fr;gap:20px;margin:0 0 1em}
+@media(min-width:720px){.mock-row{grid-template-columns:1fr 1fr}}
+.mock-col > .cap{
+  font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--steel);margin-bottom:.6em;display:block;
+}
+.card{background:var(--surface);border:1px solid var(--line);font-size:13px;overflow:hidden}
+.card.md{border-radius:12px;padding:20px;text-align:center}
+.card.md .ph{background:var(--surface-2);border-radius:8px;height:120px;margin-bottom:16px}
+.card.md .nm{font-weight:500;margin-bottom:10px;color:var(--ink-2)}
+.card.md .pr{font-size:20px;font-weight:500;letter-spacing:.01em}
+.card.md .bt{margin-top:16px;border:1px solid var(--line-strong);border-radius:20px;padding:8px;color:var(--steel);font-size:12px}
+.card.dense{border-radius:2px;position:relative}
+.card.dense .ph{background:var(--surface-2);height:96px;position:relative}
+.card.dense .disc{
+  position:absolute;top:0;left:0;background:var(--price-solid);color:#fff;
+  font-family:"Archivo",sans-serif;font-weight:800;font-stretch:80%;
+  font-size:13px;padding:2px 6px;letter-spacing:.02em;
+}
+.card.dense .body{padding:6px 7px 7px;display:flex;flex-direction:column;gap:3px}
+.card.dense .nm{font-size:12px;line-height:1.28;color:var(--ink-2);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card.dense .prrow{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+.card.dense .pr{font-family:"Archivo",sans-serif;font-stretch:80%;font-weight:800;
+  font-size:23px;color:var(--price);line-height:1;letter-spacing:-.01em}
+.card.dense .old{font-size:11px;color:var(--steel);text-decoration:line-through}
+.card.dense .cuota{font-size:11px;font-weight:600;color:var(--e-a)}
+.card.dense .badges{display:flex;gap:3px;flex-wrap:wrap;margin-top:2px}
+.card.dense .bg{font-size:9px;letter-spacing:.02em;padding:1px 4px;border-radius:2px;
+  background:var(--accent-soft);color:var(--accent-2);white-space:nowrap}
+.card.dense .sold{font-size:10px;color:var(--steel);font-family:"IBM Plex Mono",monospace}
+.mockgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.note-mock{font-size:.82rem;color:var(--steel);margin-top:.7em;font-style:italic}
+
+/* ---------- listas de decisión ---------- */
+.stack-list{list-style:none;padding:0;margin:0;max-width:none}
+.stack-list > li{
+  display:grid;grid-template-columns:1fr;gap:4px;
+  padding:14px 0;border-bottom:1px solid var(--line);margin:0;
+}
+@media(min-width:760px){.stack-list > li{grid-template-columns:190px 1fr;gap:24px}}
+.stack-list .lbl{font-weight:600;display:flex;align-items:flex-start;gap:.6em;flex-wrap:wrap}
+.stack-list .txt{color:var(--ink-2);font-size:.95rem}
+.stack-list .txt p{margin:0 0 .5em}
+.stack-list .txt p:last-child{margin:0}
+
+/* ---------- fases ---------- */
+.phases{display:grid;grid-template-columns:1fr;gap:0;margin:0}
+.phase{
+  display:grid;grid-template-columns:auto 1fr;gap:0 20px;
+  padding:18px 0;border-bottom:1px solid var(--line);
+}
+.phase .num{
+  font-family:"Archivo",sans-serif;font-stretch:74%;font-weight:800;font-size:2.2rem;
+  color:var(--line-strong);line-height:.85;width:56px;
+  font-variant-numeric:tabular-nums;
+}
+.phase .ct h4{margin:0 0 .2em;font-family:"Archivo",sans-serif;font-stretch:90%;font-size:1rem;font-weight:700}
+.phase .ct .dur{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--steel);letter-spacing:.06em;margin-bottom:.5em}
+.phase .ct p{margin:0;font-size:.94rem;color:var(--ink-2)}
+
+/* ---------- costos ---------- */
+.cost-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+table.cost{width:100%;border-collapse:collapse;min-width:560px;font-size:.92rem}
+table.cost th,table.cost td{padding:10px 16px;text-align:left;border-bottom:1px solid var(--line)}
+table.cost thead th{
+  font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--steel);font-weight:500;
+  border-bottom:1px solid var(--line-strong);
+}
+table.cost td:last-child,table.cost th:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.cost tbody tr:last-child td{border-bottom:0}
+.pend{color:var(--e-e);font-family:"IBM Plex Mono",monospace;font-size:.8rem}
+
+/* ---------- footer ---------- */
+footer{border-top:2px solid var(--ink);padding-top:26px;margin-top:20px}
+footer p{font-size:.88rem;color:var(--steel);max-width:70ch}
+.src{font-family:"IBM Plex Mono",monospace;font-size:.74rem;line-height:1.9}
+.src a{border-bottom:none;color:var(--steel)}
+.src a:hover{color:var(--accent-2)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="brandline">
+    <span class="dom">econohogarsv.com</span>
+    <span>Documento de decisión de arquitectura</span>
+    <span>v2 · 3 sep 2026 · decisiones de alcance incorporadas</span>
+  </div>
+  <h1>Stack para vender electrodomésticos en El&nbsp;Salvador</h1>
+  <p class="lede">Un solo repositorio TypeScript, PostgreSQL, pagos con Wompi por enlace hospedado, tienda en Tailwind, back-office en MUI y un worker aparte para inventario y facturación. Abajo está el porqué de cada pieza — y el riesgo que abre facturar el DTE a mano.</p>
+  <div class="meta">
+    <span><b>Catálogo</b> · ~250 SKU</span>
+    <span><b>Pasarela</b> · Wompi SV (Banco Agrícola)</span>
+    <span><b>Facturación</b> · DTE manual en v1</span>
+    <span><b>Cobertura</b> · nacional, 3 métodos de entrega</span>
+    <span><b>A MVP vendiendo</b> · 8–10 semanas est.</span>
+  </div>
+</header>
+
+<!-- ======================= VEREDICTO ======================= -->
+<section id="veredicto">
+  <div class="eyebrow">Veredicto</div>
+  <h2>La ficha técnica</h2>
+  <p>Cada fila de abajo se argumenta más adelante. Si solo leés esta tabla, ya tenés la decisión completa.</p>
+
+  <div class="plate">
+    <div class="plate-head">
+      <span class="plate-title">Stack recomendado</span>
+      <span class="sub">monorepo · 3 servicios desplegables</span>
+    </div>
+    <div class="plate-scroll">
+      <table class="spec">
+        <tbody>
+          <tr><th>Lenguaje</th><td>TypeScript</td><td>Un solo lenguaje de la tienda al worker. Tipos compartidos entre el esquema de la base y la UI.</td></tr>
+          <tr><th>Framework</th><td>Next.js — App Router</td><td>Server Components para el catálogo (el SEO es el canal de adquisición barato), Route Handlers para el webhook de Wompi. Fijar la última estable al hacer el scaffold.</td></tr>
+          <tr><th>Base de datos</th><td>PostgreSQL 16+</td><td>Sobre MySQL, por cuatro razones concretas que se explican abajo. No es empate.</td></tr>
+          <tr><th>Acceso a datos</th><td>Drizzle ORM</td><td>SQL-first. En inventario vas a escribir <code>FOR UPDATE</code> y CTEs a mano; Drizzle no se interpone.</td></tr>
+          <tr><th>Tienda (UI)</th><td>Tailwind v4 + shadcn/ui</td><td>Todo MIT, sin licencia. Tailwind no trae lenguaje visual que desactivar; Radix aporta el comportamiento accesible. Las piezas densas se escriben a mano.</td></tr>
+          <tr><th>Back-office (UI)</th><td>MUI + MUI X DataGrid</td><td>Aquí sí: es la mejor grilla de datos del ecosistema React. App separada, <code>admin.econohogarsv.com</code>.</td></tr>
+          <tr><th>Pagos</th><td>Wompi SV — Enlace de Pago</td><td><code>POST /EnlacePago</code> + webhook con HMAC-SHA256. Te deja fuera del alcance PCI pesado y habilita cuotas Agrícola.</td></tr>
+          <tr><th>Facturación</th><td>Orden de facturación + DTE manual</td><td>v1 sin proveedor: el sistema arma la orden con los datos fiscales y un operador captura el número. Detrás de <code>DteProvider</code> para automatizar después sin rehacer el modelo.</td></tr>
+          <tr><th>Envíos</th><td>Tarifa por clase × departamento</td><td>Retiro en tienda, entrega propia y courier. Tarifa plana no funciona con línea blanca.</td></tr>
+          <tr><th>Trabajos en fondo</th><td>BullMQ + Redis, worker aparte</td><td>Reservas de stock, emisión de DTE, notificaciones, sincronización de bodega.</td></tr>
+          <tr><th>Notificaciones</th><td>WhatsApp Cloud API + Resend</td><td>WhatsApp primero: en El Salvador el correo transaccional se lee poco.</td></tr>
+          <tr><th>Imágenes</th><td>Cloudflare R2 + <code>next/image</code></td><td>Sin costo de egreso. Las fotos de producto son el activo más pesado de una tienda de línea blanca.</td></tr>
+          <tr><th>Búsqueda</th><td>Postgres FTS español + <code>pg_trgm</code></td><td>Cero infraestructura extra hasta pasar los ~5k SKUs. Meilisearch después, si hace falta.</td></tr>
+          <tr><th>Autenticación</th><td>Auth.js v5</td><td>Correo + Google, con teléfono obligatorio: el teléfono es el identificador real del cliente aquí.</td></tr>
+          <tr><th>Hosting</th><td>Railway</td><td>Ya lo conocés de PulsoSV. Web + admin + worker + Postgres + Redis en un proyecto. Migrable a VPS cuando el costo lo pida.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PCI ======================= -->
+<section id="pagos">
+  <div class="eyebrow">Riesgo 01 · Pagos</div>
+  <h2>La decisión de checkout que te ahorra una auditoría PCI</h2>
+
+  <p>Wompi SV te ofrece dos caminos y no son equivalentes en riesgo. Esta es la primera decisión que hay que tomar bien, porque cambiarla después implica rehacer el checkout.</p>
+
+  <div class="duo">
+    <div class="opt">
+      <h4>Transacción directa <span class="band g">Alcance PCI SAQ D</span></h4>
+      <span class="path">POST /TransaccionCompra/3DS</span>
+      <ul>
+        <li>Mandás número de tarjeta, CVV y vencimiento <em>desde tu servidor</em>.</li>
+        <li>Checkout embebido, sin salir del sitio. Mejor conversión, sin discusión.</li>
+        <li>La tarjeta pasa por tu código, tus logs, tu proveedor de hosting y tu equipo.</li>
+        <li>Implica cuestionario SAQ D, escaneos ASV trimestrales, segmentación y políticas escritas.</li>
+      </ul>
+      <div class="verdict">Costo desproporcionado para una tienda que arranca, y responsabilidad legal real si hay una fuga.</div>
+    </div>
+    <div class="opt win">
+      <h4>Enlace de pago <span class="band a">Alcance PCI SAQ A</span></h4>
+      <span class="path">POST /EnlacePago</span>
+      <ul>
+        <li>Wompi hospeda la pantalla de tarjeta. Vos generás un enlace por pedido y redirigís.</li>
+        <li>Ningún dato de tarjeta toca tu infraestructura.</li>
+        <li>Habilita <code>permitirPagoEnCuotasAgricola</code> y <code>cantidadMaximaCuotas</code> sin trabajo extra.</li>
+        <li>También abre puntos Agrícola, Bitcoin y QuickPay con una bandera booleana.</li>
+      </ul>
+      <div class="verdict">Recomendado para la v1. La pérdida de conversión por el salto de dominio se compensa con creces por las cuotas.</div>
+    </div>
+  </div>
+
+  <div class="call">
+    <span class="k">Por qué esto importa más en línea blanca</span>
+    <p>Una refrigeradora de $700 no se compra al contado en El Salvador: se compra en cuotas. El enlace de pago expone las cuotas de Banco Agrícola como opción nativa, y eso mueve la aguja de conversión mucho más que ahorrarle al cliente un redirect. Poné la cuota mensual en la tarjeta de producto, no solo en el checkout.</p>
+  </div>
+
+  <h3>Tres reglas de implementación que no son negociables</h3>
+  <ul>
+    <li><strong>Idempotencia por pedido.</strong> <code>identificadorEnlaceComercio</code> lleva el ID del pedido. Si el cliente recarga, no generás un segundo enlace ni una segunda reserva de stock.</li>
+    <li><strong>Un solo pago exitoso por enlace.</strong> <code>limitesDeUso.cantidadMaximaPagosExitosos: 1</code> y una <code>vigencia</code> corta (45 minutos). El vencimiento del enlace y la liberación de la reserva de stock son el mismo reloj.</li>
+    <li><strong>El redirect no confirma nada.</strong> Los parámetros de la URL de retorno los puede escribir cualquiera en la barra de direcciones. La confirmación viene del webhook validado con HMAC, y ante cualquier duda se re-consulta <code>GET /TransaccionCompra/{id}</code>.</li>
+  </ul>
+</section>
+
+<!-- ======================= DTE ======================= -->
+<section id="dte">
+  <div class="eyebrow">Riesgo 02 · Legal</div>
+  <h2>DTE manual en la v1: qué cambia en el modelo</h2>
+
+  <p><strong>Decisión tomada:</strong> en la v1 no se integra proveedor de facturación electrónica. El sistema arma una <em>orden de facturación</em> con todos los datos fiscales, un operador emite el DTE por fuera, y al capturar el número el inventario se descarga. Es razonable para 250 SKU y volumen inicial — pero mueve el momento en que el stock sale, y eso obliga a un cambio de diseño que es fácil pasar por alto.</p>
+
+  <div class="call risk">
+    <span class="k">La ventana que abre</span>
+    <p>Entre <strong>pago aprobado</strong> y <strong>número de DTE capturado</strong> el producto está cobrado pero no descontado. Si en esa ventana la reserva vence por su temporizador, la tienda vuelve a ofrecer algo que ya vendiste. En línea blanca eso es un cliente que pagó $900 y midió el espacio de la cocina.</p>
+  </div>
+
+  <h3>Reserva en dos fases</h3>
+  <ul class="stack-list">
+    <li><div class="lbl"><code>pendiente_pago</code></div><div class="txt"><p>Se toma al iniciar el checkout. Vence a los 45 minutos, junto con el enlace de Wompi. Mismo reloj, siempre.</p></div></li>
+    <li><div class="lbl"><code>comprometida</code></div><div class="txt"><p>El webhook verificado la promueve al confirmar el pago. <strong>Sin vencimiento.</strong> Solo la cierra el DTE o una anulación explícita con motivo.</p></div></li>
+    <li><div class="lbl"><code>consumida</code></div><div class="txt"><p>Al capturar el número de DTE se inserta el movimiento de inventario (<code>delta −1</code>, motivo <code>venta</code>) y la reserva se cierra.</p></div></li>
+  </ul>
+
+  <p><strong>El disponible que ve la tienda resta las dos primeras.</strong> Si solo resta las de temporizador, sobrevendés exactamente durante la ventana manual — que es la más larga de todo el flujo.</p>
+
+  <h3>Lo que hay que construir igual, aunque el DTE sea manual</h3>
+  <ul>
+    <li><strong>Cola “Pendientes de facturar”</strong> en el admin, ordenada por antigüedad y con alerta a las N horas. Un operador atrasado equivale a inventario invisible: pagado, no despachado, no descontado.</li>
+    <li><strong>La interfaz <code>DteProvider</code> desde el día uno</strong>, con <code>ManualDteProvider</code> como única implementación. Automatizar después es escribir una clase, no rehacer el modelo de pedidos. El flujo manual aguanta cerca de 30–50 pedidos diarios; más allá de eso es el cuello de botella del negocio.</li>
+    <li><strong>Consumidor Final y Crédito Fiscal son formularios distintos.</strong> Si el comprador pide crédito fiscal, el checkout tiene que capturar NIT, NRC, giro y dirección fiscal. Esto se decide ahora: sobre pedidos ya cerrados no se puede recuperar.</li>
+    <li><strong>Precios con IVA 13% incluido en la vitrina</strong> — es lo que el comprador salvadoreño espera ver — <strong>pero la orden de facturación necesita el desglose.</strong> Guardá centavos netos e IVA por línea desde el primer pedido.</li>
+    <li><strong>Campos que devuelve el operador</strong> y que hay que persistir junto al pedido: <code>codigoGeneracion</code>, <code>numeroControl</code>, <code>selloRecepcion</code> y <code>fechaEmision</code>. Son tu respaldo legal y la llave para conciliar contra Hacienda.</li>
+  </ul>
+
+  <div class="call warn">
+    <span class="k">Deuda deliberada, con fecha</span>
+    <p>Esto es deuda técnica elegida a conciencia, no un descuido — pero conviene ponerle disparador: cuando la cola de pendientes de facturar pase de un día de trabajo, o cuando lleguen los 30 pedidos diarios, se contrata proveedor con API. Anotalo ahora que la decisión está fresca.</p>
+  </div>
+</section>
+
+<!-- ======================= LOGÍSTICA ======================= -->
+<section id="logistica">
+  <div class="eyebrow">Entrega y servicios</div>
+  <h2>Cobertura nacional sin regalar el margen</h2>
+
+  <h3>Zonas</h3>
+  <p>Ojo con la reforma territorial de 2023: El Salvador pasó de 262 municipios a 44, y los antiguos quedaron convertidos en <strong>distritos</strong>. La gente sigue escribiendo el nombre del distrito en su dirección. Guardá los dos niveles: <code>departamento</code> (14) y <code>distrito</code> (los 262 nombres históricos). Si solo guardás el municipio nuevo, las direcciones que escriben tus clientes no van a calzar con tu catálogo de zonas.</p>
+
+  <div class="call risk">
+    <span class="k">Tarifa plana no funciona en línea blanca</span>
+    <p>Una refrigeradora enviada a Morazán por courier puede costar más que el margen del producto. El costo de envío depende del volumen, no solo del destino.</p>
+  </div>
+
+  <ul>
+    <li><strong><code>clase_envio</code> por producto</strong>: <code>pequeño</code> · <code>mediano</code> · <code>voluminoso</code>. Un microondas y una refrigeradora no comparten tarifa.</li>
+    <li><strong>Tarifa = f(clase, departamento, método).</strong> Tres métodos: <code>retiro_tienda</code> ($0), <code>entrega_propia</code> (zona metropolitana, flota propia) y <code>courier</code> (resto del país, tercerizado).</li>
+    <li><strong>Regla de exclusión por SKU × departamento.</strong> Tenés que poder marcar un producto como no despachable a una zona, o con recargo. Sin esa válvula, la tienda acepta pedidos que pierden plata.</li>
+    <li><strong>El costo de envío es una línea del pedido</strong>, con su propio IVA, y entra en la orden de facturación como tal.</li>
+  </ul>
+
+  <h3>Instalación</h3>
+  <p>Se factura aparte, así que es un tipo de línea distinto: <code>servicio</code>. No toca inventario, tiene su propio precio e IVA, y <strong>genera su propia orden de facturación</strong> — un pedido puede producir dos DTE. Además necesita técnico asignado y agenda, porque la instalación de un aire acondicionado se coordina, no se despacha.</p>
+</section>
+
+<!-- ======================= MUI ======================= -->
+<section id="mui">
+  <div class="eyebrow">Tu pregunta directa</div>
+  <h2>MUI Store: sí, pero para el admin — no para la tienda</h2>
+
+  <p>Revisé el catálogo. En la categoría de e-commerce, <strong>Bazaar Pro ($49) es la única plantilla que trae un storefront real</strong> con vitrina, página de producto, carrito y checkout. El resto — Minimal, Berry, Materio, Mantis, Modernize, Zone — son dashboards de administración o landings.</p>
+
+  <h3>Por qué no construiría la tienda sobre MUI</h3>
+  <ul>
+    <li><strong>Material Design pelea contra el maximalismo.</strong> Sus valores por defecto son espaciado generoso, ritmo de 8px, elevaciones suaves y tipografía holgada. El look que querés es lo contrario: ritmo de 4px, precio gigante, insignias apiladas. Vas a pasar más tiempo sobreescribiendo <code>sx</code> que construyendo pantallas.</li>
+    <li><strong>Heredás una arquitectura de carrito y checkout que vas a arrancar igual.</strong> Wompi, cuotas, DTE, zonas de entrega e instalación no encajan en el flujo genérico que trae cualquier plantilla. Lo que te ahorra no es lo que necesitás.</li>
+    <li><strong>El costo no son los $49.</strong> Son los dos meses peleando con las abstracciones de otro dentro del código que más va a cambiar.</li>
+  </ul>
+
+  <h3>Por qué sí compraría MUI para el back-office</h3>
+  <p>El admin es lo opuesto: veinte pantallas de CRUD que se parecen entre sí, donde nadie premia la originalidad y donde <strong>MUI X DataGrid</strong> — virtualización, paginación del lado del servidor, edición en línea, columnas fijas, exportación — es genuinamente lo mejor disponible en React. Una plantilla como Minimal o Materio ($69) te ahorra unas tres semanas de layout, navegación, formularios y tablas.</p>
+
+  <div class="call">
+    <span class="k">Consecuencia arquitectónica</span>
+    <p>Tailwind y MUI en la misma app de Next.js chocan (el <em>preflight</em> de Tailwind pisa los estilos base de MUI, y el orden de inyección de CSS es frágil). La salida limpia es un monorepo con dos apps: <code>apps/web</code> con Tailwind y <code>apps/admin</code> con MUI, compartiendo <code>packages/db</code>. Bonus de seguridad: el admin queda en su propio dominio y nunca se sirve desde la app pública.</p>
+  </div>
+
+  <h3>Entonces la tienda con qué — y sin pagar licencia</h3>
+  <p><strong>Tailwind CSS v4 + shadcn/ui.</strong> Todo MIT, cero costo, sin licencia por sitio ni por desarrollador. El reparto de responsabilidades es lo que hace que funcione:</p>
+  <ul>
+    <li><strong>Tailwind es el motor de estilos</strong> y no trae lenguaje visual propio. No hay nada que desactivar para lograr densidad — a diferencia de Bootstrap o Material.</li>
+    <li><strong>shadcn/ui (sobre Radix) aporta el comportamiento</strong>: diálogo con trampa de foco, combobox navegable con teclado, hoja lateral, popover. Copiás el componente a tu repositorio y <em>el código pasa a ser tuyo</em>; no es una dependencia que después te bloquee un rediseño.</li>
+    <li><strong>Las piezas que definen el look las escribís vos</strong>: tarjeta de producto, rejilla, bloque de precio, barra inferior fija. Son el diferenciador — ninguna librería te las va a entregar con la densidad correcta.</li>
+  </ul>
+
+  <h3>Bootstrap, en concreto</h3>
+  <div class="cost-scroll">
+    <table class="cost">
+      <thead><tr><th>Criterio</th><th>Bootstrap 5</th><th style="text-align:left">Tailwind + shadcn</th></tr></thead>
+      <tbody>
+        <tr><td>Lenguaje visual propio</td><td>Trae uno completo, hay que desactivarlo</td><td style="text-align:left">Ninguno</td></tr>
+        <tr><td>CSS entregado</td><td>~30 KB gzip global aunque uses 10 clases</td><td style="text-align:left">Solo lo que usás</td></tr>
+        <tr><td>Componentes React</td><td><code>react-bootstrap</code>, wrapper de terceros, siempre atrás</td><td style="text-align:left">Nativo</td></tr>
+        <tr><td>Accesibilidad de diálogo y combobox</td><td>No la resuelve</td><td style="text-align:left">Radix la resuelve</td></tr>
+        <tr><td>Ritmo de 4px</td><td>Peleás contra su escala</td><td style="text-align:left">Trivial</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:1em">Hay un costo adicional que no aparece en la tabla: el aspecto de Bootstrap se reconoce a simple vista, y en retail eso se lee como plantilla. Baja la confianza justo donde estás pidiendo una tarjeta de crédito.</p>
+
+  <h3>Piezas gratis para el look denso</h3>
+  <ul>
+    <li><strong>HyperUI</strong> — bloques de e-commerce en Tailwind, MIT. Buena base de partida para densificar.</li>
+    <li><strong>Embla Carousel</strong> — los rieles horizontales de ofertas del día.</li>
+    <li><strong>Vaul</strong> — el carrito como cajón deslizante en móvil, que es el patrón correcto aquí, no una página aparte.</li>
+    <li><strong>Sonner</strong> — el aviso de “agregado al carrito”.</li>
+    <li><strong>Lucide</strong> — iconografía.</li>
+    <li><strong>Archivo o Barlow Condensed</strong> en Google Fonts. La condensada es la que da el aire de rótulo de sala de ventas.</li>
+  </ul>
+
+  <div class="call">
+    <span class="k">Sobre ui-ux-pro-max</span>
+    <p>No es una librería de interfaz: es un <em>skill</em> de Claude Code — un paquete de conocimiento de diseño con estilos, paletas y combinaciones tipográficas. No compite con Bootstrap ni con Tailwind; se pondría encima de lo que elijas. Instalarlo no estorba, pero resuelve el problema de “no sé cómo quiero que se vea”, y ese no es tu problema: ya sabés que querés la densidad de Shopee y La Curacao.</p>
+  </div>
+</section>
+
+<!-- ======================= UI MAXIMALISTA ======================= -->
+<section id="ui">
+  <div class="eyebrow">Dirección de interfaz</div>
+  <h2>Qué significa “maximalista” en concreto</h2>
+
+  <p>“Estilo asiático” aplicado a línea blanca no es una decisión exótica: es exactamente lo que ya hacen La Curacao, Almacenes Tropigas y Omnisport en El Salvador. Es el lenguaje que tu cliente reconoce como “tienda”. La diferencia práctica se ve en la tarjeta de producto.</p>
+
+  <div class="mock-row">
+    <div class="mock-col">
+      <span class="cap">Material Design por defecto</span>
+      <div class="card md">
+        <div class="ph"></div>
+        <div class="nm">Refrigeradora No Frost 14 pies³</div>
+        <div class="pr">$649.00</div>
+        <div class="bt">Agregar al carrito</div>
+      </div>
+    </div>
+    <div class="mock-col">
+      <span class="cap">Denso · precio al frente</span>
+      <div class="mockgrid">
+        <div class="card dense">
+          <div class="ph"><span class="disc">−28%</span></div>
+          <div class="body">
+            <div class="prrow"><span class="pr">$649</span><span class="old">$899.00</span></div>
+            <div class="cuota">$54.08 × 12 cuotas</div>
+            <div class="nm">Refrigeradora No Frost 14 pies³ · dispensador</div>
+            <div class="badges"><span class="bg">Envío gratis</span><span class="bg">Garantía 2 años</span></div>
+            <div class="sold">37 vendidas</div>
+          </div>
+        </div>
+        <div class="card dense">
+          <div class="ph"><span class="disc">−15%</span></div>
+          <div class="body">
+            <div class="prrow"><span class="pr">$379</span><span class="old">$445.00</span></div>
+            <div class="cuota">$31.58 × 12 cuotas</div>
+            <div class="nm">Aire acondicionado 12,000 BTU inverter</div>
+            <div class="badges"><span class="bg">Instalación</span><span class="bg">A++</span></div>
+            <div class="sold">12 vendidas</div>
+          </div>
+        </div>
+      </div>
+      <p class="note-mock">Maqueta ilustrativa. Precios y unidades son de ejemplo, no de catálogo real.</p>
+    </div>
+  </div>
+
+  <h3>Las decisiones que hacen ese look</h3>
+  <ul>
+    <li><strong>El precio es el elemento más grande de la tarjeta</strong>, en rojo, con precio tachado y porcentaje de descuento en una esquina sólida.</li>
+    <li><strong>La cuota mensual va en la vitrina</strong>, no escondida en el checkout. Es el número que decide la compra en este rubro.</li>
+    <li><strong>Rejilla de 2 columnas en móvil, 5 en escritorio.</strong> El nombre se recorta a dos líneas; nadie lee nombres de producto completos.</li>
+    <li><strong>Barra inferior fija en móvil</strong>: WhatsApp, carrito, comprar. WhatsApp primero — muchas ventas de línea blanca se cierran ahí, no en el checkout.</li>
+    <li><strong>Franja superior de cupones y envío gratis</strong>, mega-menú de categorías siempre visible, y un riel horizontal de “ofertas del día” con contador.</li>
+    <li><strong>Prueba social barata pero real</strong>: unidades vendidas, disponibilidad por tienda. Solo mostrala si el dato es cierto — números inventados destruyen confianza cuando el cliente llega a la sala de ventas.</li>
+  </ul>
+
+  <div class="call warn">
+    <span class="k">Advertencia honesta</span>
+    <p>Esto se va a ver recargado para un ojo entrenado en diseño occidental minimalista. Esa es la intención y hay que sostenerla. El error clásico es “suavizarlo” a mitad de camino y terminar con una tienda que no es ni densa ni elegante — pierde en ambas.</p>
+  </div>
+</section>
+
+<!-- ======================= POSTGRES ======================= -->
+<section id="datos">
+  <div class="eyebrow">Datos</div>
+  <h2>PostgreSQL sobre MySQL: cuatro razones que sí aplican aquí</h2>
+
+  <ul class="stack-list">
+    <li>
+      <div class="lbl"><code>jsonb</code> + GIN</div>
+      <div class="txt"><p>Las especificaciones no son uniformes: una refrigeradora tiene pies cúbicos y No Frost; un aire acondicionado tiene BTU y SEER; una lavadora tiene libras y RPM. Sin <code>jsonb</code> indexable terminás con sesenta columnas nulas o con una tabla EAV, que es peor.</p></div>
+    </li>
+    <li>
+      <div class="lbl">Búsqueda en español</div>
+      <div class="txt"><p><code>to_tsvector('spanish', …)</code> con <code>unaccent</code> resuelve acentos y plurales, y <code>pg_trgm</code> resuelve que la gente escribe “refrijeradora”. Cero servicios adicionales hasta que el catálogo lo justifique.</p></div>
+    </li>
+    <li>
+      <div class="lbl"><code>SKIP LOCKED</code></div>
+      <div class="txt"><p>Colas de reserva de stock y de emisión de DTE consumidas por varios workers sin bloqueo mutuo, con una sola sentencia y sin infraestructura extra.</p></div>
+    </li>
+    <li>
+      <div class="lbl">Restricciones reales</div>
+      <div class="txt"><p>Índices parciales, <code>EXCLUDE</code> y <code>CHECK</code> permiten que la base sea el último guardián contra existencias negativas. En inventario, la última línea de defensa no puede ser el código de aplicación.</p></div>
+    </li>
+  </ul>
+
+  <p style="margin-top:1.3em">MySQL no es incapaz de nada de esto —  <code>SKIP LOCKED</code> existe desde la 8.0— pero no te ofrece nada que Postgres no te dé, y sí te quita comodidad en las cuatro. Si hubiera una razón de peso para MySQL sería una integración obligada con un ERP existente; si ese ERP existe, decímelo y revisamos.</p>
+</section>
+
+<!-- ======================= INVENTARIO ======================= -->
+<section id="inventario">
+  <div class="eyebrow">Riesgo 03 · Inventario</div>
+  <h2>Nunca una columna <code>stock</code> mutable</h2>
+
+  <div class="call risk">
+    <span class="k">El error que cuesta clientes</span>
+    <p><code>UPDATE productos SET stock = stock - 1</code> bajo concurrencia vende dos veces la última refrigeradora. En una tienda de $20 el resultado es un reembolso incómodo; en una de $900 es un cliente que ya organizó la entrega, midió el espacio y contó el dinero.</p>
+  </div>
+
+  <p>El modelo correcto es de tres piezas: movimientos que solo se agregan, reservas con vencimiento, y una vista derivada. La existencia disponible <em>se calcula</em>, nunca se guarda como verdad mutable.</p>
+
+  <span class="filename">packages/db/schema/inventario.sql — esquema conceptual</span>
+<pre><code><span class="c">-- Verdad histórica: solo se inserta, jamás se actualiza ni se borra.</span>
+<span class="k">CREATE TABLE</span> movimientos_inventario (
+  id           bigserial <span class="k">PRIMARY KEY</span>,
+  sku          text      <span class="k">NOT NULL REFERENCES</span> variantes(sku),
+  ubicacion_id int       <span class="k">NOT NULL REFERENCES</span> ubicaciones(id),
+  delta        int       <span class="k">NOT NULL CHECK</span> (delta &lt;&gt; 0),
+  motivo       text      <span class="k">NOT NULL</span>,  <span class="c">-- compra | venta | devolucion | ajuste | traslado</span>
+  referencia   text,                <span class="c">-- id de pedido, de orden de compra, de acta de ajuste</span>
+  creado_en    timestamptz <span class="k">NOT NULL DEFAULT</span> now(),
+  creado_por   uuid <span class="k">REFERENCES</span> usuarios(id)
+);
+<span class="k">CREATE INDEX</span> <span class="k">ON</span> movimientos_inventario (sku, ubicacion_id);
+
+<span class="c">-- Reservas en dos fases. Solo la primera tiene reloj.</span>
+<span class="k">CREATE TYPE</span> estado_reserva <span class="k">AS ENUM</span> (<span class="s">'pendiente_pago'</span>, <span class="s">'comprometida'</span>, <span class="s">'consumida'</span>, <span class="s">'anulada'</span>);
+
+<span class="k">CREATE TABLE</span> reservas_stock (
+  id           uuid <span class="k">PRIMARY KEY DEFAULT</span> gen_random_uuid(),
+  sku          text <span class="k">NOT NULL</span>,
+  ubicacion_id int  <span class="k">NOT NULL</span>,
+  cantidad     int  <span class="k">NOT NULL CHECK</span> (cantidad &gt; 0),
+  pedido_id    uuid <span class="k">NOT NULL</span>,
+  estado       estado_reserva <span class="k">NOT NULL DEFAULT</span> <span class="s">'pendiente_pago'</span>,
+  expira_en    timestamptz,      <span class="c">-- = vigencia del enlace Wompi</span>
+  cerrada_en   timestamptz,
+  <span class="c">-- Pagado ⇒ sin reloj. Esta restricción es la que evita la sobreventa
+  -- durante la ventana de facturación manual.</span>
+  <span class="k">CONSTRAINT</span> comprometida_no_vence <span class="k">CHECK</span> (
+    estado &lt;&gt; <span class="s">'comprometida'</span> <span class="k">OR</span> expira_en <span class="k">IS NULL</span>
+  )
+);
+<span class="k">CREATE INDEX</span> <span class="k">ON</span> reservas_stock (expira_en) <span class="k">WHERE</span> estado = <span class="s">'pendiente_pago'</span>;
+
+<span class="c">-- Disponible = movimientos − reservas vivas (las DOS fases activas).</span>
+<span class="k">CREATE VIEW</span> stock_disponible <span class="k">AS</span>
+<span class="k">SELECT</span> m.sku, m.ubicacion_id,
+       <span class="k">SUM</span>(m.delta) - <span class="k">COALESCE</span>(r.reservado, 0) <span class="k">AS</span> disponible
+<span class="k">FROM</span> movimientos_inventario m
+<span class="k">LEFT JOIN LATERAL</span> (
+  <span class="k">SELECT SUM</span>(cantidad) <span class="k">AS</span> reservado <span class="k">FROM</span> reservas_stock
+  <span class="k">WHERE</span> sku = m.sku <span class="k">AND</span> ubicacion_id = m.ubicacion_id
+    <span class="k">AND</span> (
+      (estado = <span class="s">'pendiente_pago'</span> <span class="k">AND</span> expira_en &gt; now())
+      <span class="k">OR</span> estado = <span class="s">'comprometida'</span>          <span class="c">-- ← pagado, aún sin DTE</span>
+    )
+) r <span class="k">ON true</span>
+<span class="k">GROUP BY</span> m.sku, m.ubicacion_id, r.reservado;</code></pre>
+
+  <p>La reserva se toma dentro de una transacción que bloquea las filas del SKU con <code>SELECT … FOR UPDATE</code> y aborta si el disponible resultante quedaría negativo. Cuando el catálogo crezca, la vista pasa a materializada con refresco incremental — el modelo no cambia.</p>
+
+  <p>Fijate en lo que hace la restricción <code>comprometida_no_vence</code>: convierte en imposible, a nivel de base de datos, que una reserva ya pagada caduque sola. Con facturación manual esa es exactamente la falla que hay que hacer inexpresable, porque la ventana entre el pago y el DTE la controla una persona, no un temporizador.</p>
+
+  <h3>Lo que este modelo te regala gratis</h3>
+  <ul>
+    <li><strong>Auditoría completa.</strong> “¿Por qué hay 3 y el sistema dice 5?” se responde leyendo movimientos, no adivinando.</li>
+    <li><strong>Multi-bodega desde el diseño.</strong> Sala de ventas, bodega central y tránsito son solo <code>ubicacion_id</code> distintos.</li>
+    <li><strong>Kardex y valuación de inventario</strong> salen del mismo historial, sin una segunda fuente de verdad que se desincronice.</li>
+  </ul>
+</section>
+
+<!-- ======================= WORKER ======================= -->
+<section id="worker">
+  <div class="eyebrow">Trabajo en segundo plano</div>
+  <h2>Un worker aparte, con colas nombradas</h2>
+
+  <p>BullMQ sobre Redis, en su propio servicio (<code>apps/worker</code>). No uses tareas dentro del proceso web: cuando lo que falla es la emisión de una factura legal, necesitás reintentos, backoff, cola de fallidos y un panel donde mirar.</p>
+
+  <ul class="stack-list">
+    <li><div class="lbl"><code>pagos</code></div><div class="txt"><p>Verifica cada webhook contra <code>GET /TransaccionCompra/{id}</code>, confirma el pedido, promueve la reserva a <code>comprometida</code> y abre las órdenes de facturación (producto y servicio por separado).</p></div></li>
+    <li><div class="lbl"><code>dte</code></div><div class="txt"><p>En la v1 no emite: vigila la cola de pendientes de facturar y avisa cuando una orden pasa el umbral de antigüedad. Al capturarse el número de DTE, inserta el movimiento de inventario y dispara el correo con el documento. Cuando entre un proveedor con API, esta cola pasa a emitir y reintentar sin tocar el resto.</p></div></li>
+    <li><div class="lbl"><code>notificaciones</code></div><div class="txt"><p>Plantillas de WhatsApp y correos transaccionales. Idempotentes por <code>(pedido, evento)</code> para no enviar dos veces.</p></div></li>
+    <li><div class="lbl"><code>stock</code></div><div class="txt"><p>Trabajo repetible cada minuto: libera reservas vencidas y detecta desviaciones entre la vista y los movimientos.</p></div></li>
+    <li><div class="lbl"><code>catalogo</code></div><div class="txt"><p>Importación desde el Excel o el ERP de bodega, normalización de especificaciones, reindexado de búsqueda, optimización de imágenes.</p></div></li>
+    <li><div class="lbl"><code>reportes</code></div><div class="txt"><p>Cierre diario de ventas, alertas de stock mínimo, conciliación contra el reporte de transacciones de Wompi.</p></div></li>
+  </ul>
+</section>
+
+<!-- ======================= CÓDIGO ======================= -->
+<section id="codigo">
+  <div class="eyebrow">Prueba de que es implementable</div>
+  <h2>La integración con Wompi, completa</h2>
+
+  <p>Estas son las tres piezas de riesgo: obtener token, crear el enlace y validar el webhook. Los nombres de campo salen de la documentación oficial de Wompi SV.</p>
+
+  <span class="filename">packages/wompi/cliente.ts</span>
+<pre><code><span class="k">const</span> AUTH_URL = <span class="s">"https://id.wompi.sv/connect/token"</span>;
+<span class="k">const</span> API_URL  = <span class="s">"https://api.wompi.sv"</span>;
+
+<span class="k">let</span> cache: { token: <span class="k">string</span>; expiraEn: <span class="k">number</span> } | <span class="k">null</span> = <span class="k">null</span>;
+
+<span class="c">/** El token dura 3600 s; lo renovamos un minuto antes. */</span>
+<span class="k">export async function</span> obtenerToken(): <span class="k">Promise</span>&lt;<span class="k">string</span>&gt; {
+  <span class="k">if</span> (cache &amp;&amp; <span class="k">Date</span>.now() &lt; cache.expiraEn - 60_000) <span class="k">return</span> cache.token;
+
+  <span class="k">const</span> res = <span class="k">await</span> fetch(AUTH_URL, {
+    method: <span class="s">"POST"</span>,
+    headers: { <span class="s">"content-type"</span>: <span class="s">"application/x-www-form-urlencoded"</span> },
+    body: <span class="k">new</span> URLSearchParams({
+      grant_type:    <span class="s">"client_credentials"</span>,
+      audience:      <span class="s">"wompi_api"</span>,
+      client_id:     process.env.WOMPI_CLIENT_ID!,
+      client_secret: process.env.WOMPI_CLIENT_SECRET!,
+    }),
+    cache: <span class="s">"no-store"</span>,
+  });
+  <span class="k">if</span> (!res.ok) <span class="k">throw new Error</span>(<span class="s">`Wompi auth ${res.status}`</span>);
+
+  <span class="k">const</span> { access_token, expires_in } = <span class="k">await</span> res.json();
+  cache = { token: access_token, expiraEn: <span class="k">Date</span>.now() + expires_in * 1000 };
+  <span class="k">return</span> access_token;
+}</code></pre>
+
+  <span class="filename">packages/wompi/enlace.ts</span>
+<pre><code><span class="k">export async function</span> crearEnlacePago(pedido: Pedido) {
+  <span class="k">const</span> token = <span class="k">await</span> obtenerToken();
+  <span class="k">const</span> vence = <span class="k">new Date</span>(<span class="k">Date</span>.now() + 45 * 60_000);
+
+  <span class="k">const</span> res = <span class="k">await</span> fetch(<span class="s">`${API_URL}/EnlacePago`</span>, {
+    method: <span class="s">"POST"</span>,
+    headers: {
+      authorization: <span class="s">`Bearer ${token}`</span>,
+      <span class="s">"content-type"</span>: <span class="s">"application/json"</span>,
+    },
+    body: <span class="k">JSON</span>.stringify({
+      <span class="c">// Idempotencia: mismo pedido ⇒ mismo identificador.</span>
+      identificadorEnlaceComercio: pedido.id,
+      monto: pedido.totalConIva,
+      nombreProducto: <span class="s">`Pedido ${pedido.numero} · EconoHogar`</span>,
+
+      formaPago: {
+        permitirTarjetaCreditoDebido:  <span class="k">true</span>,
+        permitirPagoEnCuotasAgricola:  <span class="k">true</span>,   <span class="c">// ← la palanca de conversión</span>
+        permitirPagoConPuntoAgricola:  <span class="k">true</span>,
+        permitirPagoEnBitcoin:         <span class="k">false</span>,
+        permitePagoQuickPay:           <span class="k">true</span>,
+      },
+      cantidadMaximaCuotas: <span class="s">"Doce"</span>,
+
+      configuracion: {
+        urlRedirect: <span class="s">`https://econohogarsv.com/pedido/${pedido.id}/gracias`</span>,
+        urlWebhook:  <span class="s">"https://econohogarsv.com/api/wompi/webhook"</span>,
+        esMontoEditable:    <span class="k">false</span>,
+        esCantidadEditable: <span class="k">false</span>,
+        notificarTransaccionCliente: <span class="k">true</span>,
+        emailsNotificacion: <span class="s">"pedidos@econohogarsv.com"</span>,
+        duracionInterfazIntentoMinutos: 15,
+      },
+
+      <span class="c">// El enlace vence junto con la reserva de stock. Mismo reloj.</span>
+      vigencia:    { fechaInicio: <span class="k">new Date</span>().toISOString(), fechaFin: vence.toISOString() },
+      limitesDeUso:{ cantidadMaximaPagosExitosos: 1, cantidadMaximaPagosFallidos: 5 },
+    }),
+  });
+
+  <span class="k">if</span> (!res.ok) <span class="k">throw new Error</span>(<span class="s">`Wompi /EnlacePago ${res.status}: ${<span class="k">await</span> res.text()}`</span>);
+
+  <span class="c">// { idEnlace, urlEnlace, urlQrCodeEnlace, estaProductivo }</span>
+  <span class="k">return</span> res.json();
+}</code></pre>
+
+  <span class="filename">apps/web/app/api/wompi/webhook/route.ts</span>
+<pre><code><span class="k">import</span> { createHmac, timingSafeEqual } <span class="k">from</span> <span class="s">"node:crypto"</span>;
+
+<span class="k">export async function</span> POST(req: <span class="k">Request</span>) {
+  <span class="c">// El cuerpo se lee crudo: cualquier reserialización rompe el hash.</span>
+  <span class="k">const</span> crudo   = <span class="k">await</span> req.text();
+  <span class="k">const</span> recibido = req.headers.get(<span class="s">"wompi_hash"</span>) ?? <span class="s">""</span>;
+
+  <span class="k">const</span> esperado = createHmac(<span class="s">"sha256"</span>, process.env.WOMPI_API_SECRET!)
+    .update(crudo, <span class="s">"utf8"</span>)
+    .digest(<span class="s">"hex"</span>);
+
+  <span class="k">const</span> a = <span class="k">Buffer</span>.from(esperado), b = <span class="k">Buffer</span>.from(recibido);
+  <span class="k">if</span> (a.length !== b.length || !timingSafeEqual(a, b)) {
+    <span class="k">return new Response</span>(<span class="s">"firma inválida"</span>, { status: 401 });
+  }
+
+  <span class="k">const</span> evento = <span class="k">JSON</span>.parse(crudo);
+  <span class="k">const</span> pedidoId = evento.EnlacePago?.IdentificadorEnlaceComercio;
+
+  <span class="c">// Nunca confiamos en el cuerpo para marcar pagado: encolamos y verificamos
+  // contra GET /TransaccionCompra/{id}. El job promueve la reserva a
+  // "comprometida" y abre la orden de facturación — el stock NO se descuenta
+  // aquí, sino cuando el operador captura el número de DTE.</span>
+  <span class="k">await</span> colaPagos.add(<span class="s">"verificar"</span>, {
+    pedidoId,
+    idTransaccion: evento.IdTransaccion,
+    resultado:     evento.ResultadoTransaccion,  <span class="c">// "ExitosaAprobada" | …</span>
+    esProductiva:  evento.EsProductiva,
+  }, { jobId: <span class="s">`pago:${evento.IdTransaccion}`</span> });   <span class="c">// idempotente</span>
+
+  <span class="k">return new Response</span>(<span class="k">null</span>, { status: 200 });   <span class="c">// responder rápido, siempre</span>
+}</code></pre>
+
+  <div class="call">
+    <span class="k">Ambiente de pruebas</span>
+    <p>Wompi SV no tiene URL de sandbox separada: el negocio se pone en modo desarrollo desde el panel y las mismas rutas responden en pruebas. Los webhooks de prueba llegan con <code>EsProductiva: false</code>, y enviando <code>111</code> en el CVV se simula un rechazo. Ojo con el despliegue: <em>la misma URL sirve pruebas y producción</em>, así que la bandera <code>EsProductiva</code> tiene que ser una verificación dura en el worker, no un comentario.</p>
+  </div>
+</section>
+
+<!-- ======================= NOTIFICACIONES ======================= -->
+<section id="notificaciones">
+  <div class="eyebrow">Comunicación</div>
+  <h2>WhatsApp primero, correo segundo</h2>
+
+  <p>En El Salvador el correo transaccional se lee poco y WhatsApp es el canal por defecto para todo. Invertí el orden habitual: WhatsApp Cloud API para el flujo del pedido, correo para lo que necesita quedar archivado.</p>
+
+  <ul>
+    <li><strong>Plantillas HSM a aprobar con Meta:</strong> pedido recibido, pago aprobado, pago rechazado, pedido despachado, entregado, y recordatorio de carrito abandonado. <span class="band e">Riesgo de cronograma</span> La aprobación tarda días y a veces rebota. Metelas en la fase 1, no en la semana previa al lanzamiento.</li>
+    <li><strong>Correo con Resend + React Email</strong> para el comprobante de compra y el PDF del DTE. Aquí sí importa el archivo adjunto.</li>
+    <li><strong>Un número de WhatsApp Business atendido por humanos</strong> además del automatizado. En línea blanca la mitad de las ventas se cierran conversando sobre medidas, voltaje e instalación.</li>
+    <li><strong>SMS solo como respaldo</strong> cuando el número no está en WhatsApp. Web push no vale la pena en la v1.</li>
+  </ul>
+</section>
+
+<!-- ======================= ROADMAP ======================= -->
+<section id="roadmap">
+  <div class="eyebrow">Ejecución</div>
+  <h2>Cinco fases hasta vender legalmente</h2>
+
+  <div class="phases">
+    <div class="phase">
+      <div class="num">00</div>
+      <div class="ct">
+        <h4>Fundaciones</h4>
+        <div class="dur">1 semana</div>
+        <p>Monorepo, esquema de base con movimientos y reservas, migraciones, semilla de catálogo real, despliegue de los tres servicios en Railway con dominio y certificados. Al final de esta fase hay una URL que responde.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="num">01</div>
+      <div class="ct">
+        <h4>Catálogo y venta</h4>
+        <div class="dur">3 semanas</div>
+        <p>Vitrina densa, categorías, ficha de producto con especificaciones en <code>jsonb</code>, búsqueda, carrito persistente, checkout con reserva de stock y enlace de Wompi, webhook verificado. Solicitud de plantillas de WhatsApp en paralelo.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="num">02</div>
+      <div class="ct">
+        <h4>Back-office e inventario</h4>
+        <div class="dur">2–3 semanas</div>
+        <p>Admin con MUI: productos, variantes, pedidos, movimientos de inventario, ajustes con motivo y responsable. Worker con las seis colas y panel de monitoreo. Notificaciones vivas.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="num">03</div>
+      <div class="ct">
+        <h4>Facturación y logística</h4>
+        <div class="dur">2 semanas</div>
+        <p>Órdenes de facturación con desglose de IVA, cola de pendientes con alerta, captura del número de DTE y descarga de inventario. Zonas por departamento y distrito con tarifa por clase de envío, retiro en tienda, instalación como servicio con técnico y agenda, registro de garantías.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="num">04</div>
+      <div class="ct">
+        <h4>Crecimiento</h4>
+        <div class="dur">continuo</div>
+        <p>Multi-bodega real, promociones y cupones, comparador de productos, reseñas, búsqueda dedicada si el catálogo lo pide, integración con el ERP si existe.</p>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top:1.4em"><strong>Nueve a once semanas hasta un MVP que vende y factura legalmente.</strong> Supuesto explícito: una persona desarrollando a tiempo completo con asistencia de IA, catálogo y fotografías provistas por el negocio. Si las fotos y fichas técnicas hay que producirlas, esa es la ruta crítica real — no el código.</p>
+</section>
+
+<!-- ======================= COSTOS ======================= -->
+<section id="costos">
+  <div class="eyebrow">Operación</div>
+  <h2>Costo mensual estimado</h2>
+
+  <div class="cost-scroll">
+    <table class="cost">
+      <thead>
+        <tr><th>Concepto</th><th>Nota</th><th>Mensual</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Wompi SV</td><td>Comisión por transacción; hay tarifa especial para cuotas Agrícola</td><td>3.5 % por venta</td></tr>
+        <tr><td>Railway</td><td>Web + admin + worker + Postgres + Redis · estimación</td><td>$25 – $50</td></tr>
+        <tr><td>Cloudflare R2</td><td>Imágenes de producto, sin costo de egreso · estimación</td><td>&lt; $5</td></tr>
+        <tr><td>Resend</td><td>Gratis hasta 3k correos, luego plan pago</td><td>$0 – $20</td></tr>
+        <tr><td>WhatsApp Cloud API</td><td>Tarifa por mensaje de plantilla en SV</td><td class="pend">cotizar</td></tr>
+        <tr><td>Proveedor DTE</td><td>No aplica en la v1 — facturación manual. Cotizar antes de los 30 pedidos diarios</td><td>$0</td></tr>
+        <tr><td>Tailwind + shadcn/ui</td><td>MIT, sin licencia por sitio ni por desarrollador</td><td>$0</td></tr>
+        <tr><td>Plantilla admin MUI</td><td>Minimal o Materio · pago único</td><td>$69 una vez</td></tr>
+        <tr><td>Dominio</td><td>econohogarsv.com</td><td>~$12 / año</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:1em;font-size:.9rem;color:var(--steel)">Las filas marcadas como <span class="pend">cotizar</span> son datos pendientes, no estimaciones. No los rellené con números plausibles porque ambos dependen de tarifas vigentes y de tu volumen.</p>
+</section>
+
+<!-- ======================= DESCARTADOS ======================= -->
+<section id="descartados">
+  <div class="eyebrow">Alternativas evaluadas</div>
+  <h2>Lo que no haría, y en qué caso me contradigo</h2>
+
+  <ul class="stack-list">
+    <li>
+      <div class="lbl">Shopify <span class="band g">Descartado</span></div>
+      <div class="txt">
+        <p>Wompi publica un plugin de Shopify, pero Shopify restringe las pasarelas fuera de su programa y cobra comisión adicional por no usar Shopify Payments. El DTE queda como app de terceros o proceso manual, y el sistema de inventarios que querés no se puede construir dentro de su modelo. Te ata en las dos cosas que más te importan.</p>
+      </div>
+    </li>
+    <li>
+      <div class="lbl">Medusa v2 <span class="band e">Reconsiderar después</span></div>
+      <div class="txt">
+        <p>Es un buen motor: TypeScript, Postgres, con módulos de inventario y ubicaciones de stock listos, y te ahorraría unas tres semanas de carrito y ciclo de pedido. Pero Wompi no es proveedor soportado (igual escribís el plugin), el DTE no existe en su modelo de datos, y cuotas, instalación y garantía no calzan limpio en sus abstracciones. Ganás tres semanas y las devolvés peleando con reglas salvadoreñas dentro del framework de otro. <strong>Lo reevaluaría si algún día son varias bodegas y más de diez mil SKUs.</strong></p>
+      </div>
+    </li>
+    <li>
+      <div class="lbl">WooCommerce <span class="band e">Depende del objetivo</span></div>
+      <div class="txt">
+        <p>Aquí soy honesto: Wompi SV tiene plugin oficial de WooCommerce, y hay proveedores de DTE con integración para WordPress. <strong>Si el objetivo real es “vender lo antes posible y lo más barato posible”, Woo es la ruta de dos o tres semanas y deberíamos hablarlo antes de escribir una línea de TypeScript.</strong> Lo descarto porque pediste un sistema completo de administración de inventarios: eso en Woo termina siendo una pila de plugins de terceros sobre PHP, donde cada actualización es un riesgo y el modelo de stock es exactamente el mutable que hay que evitar.</p>
+      </div>
+    </li>
+    <li>
+      <div class="lbl">MUI para la tienda <span class="band g">Descartado</span></div>
+      <div class="txt"><p>Ver la sección de interfaz. Sí para el admin, no para el storefront.</p></div>
+    </li>
+  </ul>
+</section>
+
+<!-- ======================= RIESGOS ======================= -->
+<section id="riesgos">
+  <div class="eyebrow">Cierre</div>
+  <h2>Riesgos ordenados por lo que cuestan</h2>
+
+  <ul class="stack-list">
+    <li><div class="lbl"><span class="band g">Crítico</span></div><div class="txt"><p><strong>Sobreventa durante la ventana de facturación manual.</strong> Es el riesgo número uno del diseño actual. Se previene con la reserva en dos fases y restando las reservas comprometidas del disponible — en el esquema, no en validaciones del código de aplicación.</p></div></li>
+    <li><div class="lbl"><span class="band g">Crítico</span></div><div class="txt"><p><strong>Un operador atrasado en la cola de facturación.</strong> Con el DTE manual, la velocidad de una persona es la velocidad del negocio. La cola con alerta por antigüedad no es una comodidad del admin: es el instrumento que hace visible ese cuello de botella.</p></div></li>
+    <li><div class="lbl"><span class="band e">Alto</span></div><div class="txt"><p><strong>Fotografía y fichas técnicas de 250 SKU.</strong> Es el cuello de botella real de casi toda tienda de línea blanca y no lo resuelve el desarrollo. Empezalo la semana uno, en paralelo con la fase 0.</p></div></li>
+    <li><div class="lbl"><span class="band e">Alto</span></div><div class="txt"><p><strong>Envíos voluminosos a departamentos lejanos.</strong> Sin regla de exclusión por SKU y zona, la tienda acepta pedidos que pierden plata y no se detecta hasta el cierre del mes.</p></div></li>
+    <li><div class="lbl"><span class="band e">Alto</span></div><div class="txt"><p><strong>Plantillas de WhatsApp sin aprobar.</strong> Dependen de un tercero con tiempos que no controlás. Solicitalas en la fase 1.</p></div></li>
+    <li><div class="lbl"><span class="band a">Bajo</span></div><div class="txt"><p><strong>La integración de pagos.</strong> Wompi con enlace de pago es camino trillado y el código de arriba ya cubre lo esencial.</p></div></li>
+  </ul>
+
+  <h3>Decidido</h3>
+  <ul>
+    <li><strong>Catálogo:</strong> ~250 SKU. Postgres FTS alcanza de sobra; no hace falta motor de búsqueda dedicado, probablemente nunca.</li>
+    <li><strong>Facturación:</strong> DTE manual en la v1, con orden de facturación generada por el sistema y descarga de inventario al capturar el número.</li>
+    <li><strong>Inventario:</strong> nace en este sistema. No hay ERP que sincronizar — pero sí hace falta pantalla de recepción de mercadería y carga inicial.</li>
+    <li><strong>Entrega:</strong> cobertura nacional con tres métodos — retiro en tienda, flota propia y courier.</li>
+    <li><strong>Instalación:</strong> servicio vendible, facturado aparte.</li>
+  </ul>
+
+  <h3>Todavía abierto</h3>
+  <ol>
+    <li>¿Quién produce fotos y fichas técnicas de los 250 SKU, y para cuándo?</li>
+    <li>¿Se va a ofrecer crédito fiscal a empresas? Define si el checkout captura NIT, NRC y giro desde la v1.</li>
+    <li>¿Cuáles son las zonas de flota propia frente a courier, y quién es el courier?</li>
+    <li>¿Cuántas ubicaciones de stock hay hoy — una bodega, o bodega más sala de ventas?</li>
+  </ol>
+</section>
+
+<footer>
+  <p>Documento preparado para EconoHogar SV. Los datos de la API de Wompi provienen de su documentación oficial, verificada el 3 de septiembre de 2026. Las cifras marcadas como estimación son eso; las marcadas como <span class="pend">cotizar</span> son datos pendientes.</p>
+  <p class="src">
+    Fuentes ·
+    <a href="https://docs.wompi.sv/">docs.wompi.sv</a> ·
+    <a href="https://docs.wompi.sv/autenticacion/autenticacion">Autenticación OAuth</a> ·
+    <a href="https://docs.wompi.sv/metodos-api/enlace-de-pago">Enlace de Pago</a> ·
+    <a href="https://docs.wompi.sv/webhook/validar-webhook">Validar Webhook</a> ·
+    <a href="https://wompi.sv/">Tarifa 3.5 %</a> ·
+    <a href="https://mui.com/store/templates/use-case/e-commerce/">MUI Store — e-commerce</a> ·
+    <a href="https://sovos.com/es/iva/reglas-fiscales/factura-electrnica-en-el-salvador/">Factura electrónica SV</a> ·
+    <a href="https://medusajs.com/blog/v2-release">Medusa v2</a>
+  </p>
+</footer>
+
+</div>

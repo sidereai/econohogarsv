@@ -1,0 +1,787 @@
+<title>Home EconoHogar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..100,400..800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+
+<style>
+/* Mismo sistema de color que la vitrina: derivado del logo EconoHogar.
+   verde = ahorro · azul = estructura · rojo = precio. */
+:root{
+  --marca-verde:#4CAF50; --marca-azul:#1E88C7; --marca-rojo:#E0312A;
+  --precio:#C62828; --precio-fondo:#D32F2F; --ahorro:#2E7D32;
+  --azul:#14618F; --azul-nav:#0E4D72;
+  --fondo:#F1F5F8; --superficie:#FFFFFF; --superficie-2:#E7EEF3;
+  --linea:#D6E1E9; --linea-fuerte:#B7C8D4;
+  --tinta:#0F1D26; --tinta-2:#33505F; --tenue:#647F8E;
+  --grad-blando:linear-gradient(168deg,#D7EBF7 0%,#E4F4E8 56%,#FFFFFF 100%);
+  --sombra:0 1px 2px rgba(15,29,38,.06), 0 10px 26px -18px rgba(15,29,38,.30);
+  --radio:3px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --marca-verde:#5CC463; --marca-azul:#4FA8DC; --marca-rojo:#EE4A42;
+    --precio:#FF7B70; --precio-fondo:#D8342C; --ahorro:#4ADE80;
+    --azul:#6FBCE8; --azul-nav:#0B2C3D;
+    --fondo:#0A1319; --superficie:#111E26; --superficie-2:#182831;
+    --linea:#24363F; --linea-fuerte:#334A56;
+    --tinta:#E2EDF3; --tinta-2:#BCCFDA; --tenue:#8399A6;
+    --grad-blando:linear-gradient(168deg,#12333F 0%,#123329 56%,#111E26 100%);
+    --sombra:0 1px 2px rgba(0,0,0,.5), 0 10px 26px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --marca-verde:#5CC463; --marca-azul:#4FA8DC; --marca-rojo:#EE4A42;
+  --precio:#FF7B70; --precio-fondo:#D8342C; --ahorro:#4ADE80;
+  --azul:#6FBCE8; --azul-nav:#0B2C3D;
+  --fondo:#0A1319; --superficie:#111E26; --superficie-2:#182831;
+  --linea:#24363F; --linea-fuerte:#334A56;
+  --tinta:#E2EDF3; --tinta-2:#BCCFDA; --tenue:#8399A6;
+  --grad-blando:linear-gradient(168deg,#12333F 0%,#123329 56%,#111E26 100%);
+  --sombra:0 1px 2px rgba(0,0,0,.5), 0 10px 26px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--fondo);color:var(--tinta);padding-bottom:66px;
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.pr,.disp,.logo-txt,.hero-pr,.cta,.reloj{font-family:"Archivo",Impact,sans-serif}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--azul);outline-offset:2px;border-radius:2px}
+.env{max-width:1400px;margin:0 auto;padding:0 16px}
+
+/* ---------- suscripción por WhatsApp ---------- */
+.suscribe{
+  background:var(--superficie);border:1px solid var(--linea);border-radius:22px;
+  padding:24px 22px;display:grid;grid-template-columns:1fr;gap:18px;align-items:center;
+}
+@media(min-width:780px){.suscribe{grid-template-columns:1.2fr 1fr;padding:28px 30px}}
+.suscribe h2{font-size:clamp(1.2rem,2.6vw,1.65rem);font-weight:800;font-stretch:86%;margin:0 0 6px;letter-spacing:-.01em}
+.suscribe p{margin:0;color:var(--tinta-2);font-size:13.5px;line-height:1.5;max-width:48ch}
+.suscribe-form{display:flex;gap:8px}
+.suscribe-form input{
+  flex:1;min-width:0;border:1.5px solid var(--linea);border-radius:12px;
+  padding:12px 14px;font:inherit;font-size:14.5px;background:var(--superficie);color:var(--tinta);
+}
+.suscribe-form input::placeholder{color:var(--tenue)}
+.suscribe-form button{
+  background:#25D366;color:#06301A;border-radius:12px;padding:12px 22px;
+  font-weight:700;font-size:14px;white-space:nowrap;
+}
+
+/* ---------- 1. financiación, arriba de todo ---------- */
+.financ{
+  background:var(--precio-fondo);color:#fff;text-align:center;padding:9px 14px;
+  font-family:"Archivo",sans-serif;font-stretch:88%;font-weight:700;font-size:15px;letter-spacing:.005em;
+}
+.financ b{font-weight:800;font-size:19px;font-stretch:80%;vertical-align:-1px}
+.financ .fino{font-family:"IBM Plex Sans",sans-serif;font-weight:500;font-size:12.5px;opacity:.88;display:block}
+
+/* ---------- 2. cabecera blanca ---------- */
+header.top{background:var(--superficie);border-bottom:1px solid var(--linea)}
+.top-in{padding:12px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.logo{
+  display:flex;align-items:center;gap:9px;flex-shrink:0;
+  color:inherit;border-radius:5px;padding:2px;margin:-2px;
+  transition:transform .16s cubic-bezier(.34,1.4,.64,1);
+}
+.logo:hover{transform:translateY(-1.5px)}
+.logo:active{transform:translateY(0)}
+.logo-txt{font-size:21px;font-weight:800;font-stretch:88%;letter-spacing:-.01em;line-height:1}
+.logo-txt .e{color:var(--marca-verde)}
+.logo-txt .h{color:var(--marca-azul)}
+.buscador{flex:1;min-width:200px;max-width:640px;display:flex;border:2px solid var(--azul);border-radius:var(--radio);overflow:hidden;background:var(--superficie)}
+.buscador input{flex:1;border:0;padding:10px 13px;font:inherit;font-size:14.5px;background:transparent;color:var(--tinta);min-width:0}
+.buscador input::placeholder{color:var(--tenue)}
+.buscador button{background:var(--azul);color:#fff;padding:0 20px;font-weight:600}
+.acc{display:flex;gap:14px;align-items:center;margin-left:auto}
+.acc .it{display:flex;flex-direction:column;line-height:1.15;font-size:11px;color:var(--tenue);white-space:nowrap}
+.acc .it b{font-size:12.5px;color:var(--tinta-2);font-weight:600}
+.acc .carrito{background:var(--precio-fondo);color:#fff;padding:8px 14px;border-radius:var(--radio);font-weight:700;font-size:13px}
+.acc .carrito small{display:block;font-weight:500;opacity:.85;font-size:10.5px}
+
+/* ---------- 3. nav azul ---------- */
+nav.dep{background:var(--azul-nav)}
+.dep-in{display:flex;gap:2px;align-items:stretch;overflow-x:auto;padding:0 16px;scrollbar-width:none}
+.dep-in::-webkit-scrollbar{display:none}
+.dep-in a,.dep-in button{
+  color:#EAF4FA;padding:11px 14px;font-size:13px;font-weight:600;white-space:nowrap;
+  display:flex;align-items:center;gap:7px;
+}
+.dep-in a:hover{background:rgba(255,255,255,.09)}
+.dep-in .todos{background:rgba(255,255,255,.13);font-weight:700}
+.dep-in .of{color:#0F1D26;background:var(--marca-verde);font-weight:700}
+
+/* ---------- 4. cobertura ---------- */
+.cobertura{
+  background:var(--superficie);border-bottom:1px solid var(--linea);
+  display:flex;gap:26px;justify-content:center;flex-wrap:wrap;padding:8px 16px;
+  font-size:12.5px;color:var(--tinta-2);font-weight:500;
+}
+.cobertura span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.cobertura b{color:var(--ahorro);font-weight:700}
+
+/* ---------- 5. hero ---------- */
+.hero{display:grid;grid-template-columns:1fr;gap:10px;padding-top:14px}
+@media(min-width:900px){.hero{grid-template-columns:2.05fr 1fr}}
+.hero-main{
+  background:linear-gradient(135deg,var(--azul-nav) 0%,var(--azul) 62%,var(--marca-azul) 100%);
+  border-radius:var(--radio);padding:26px 26px 22px;color:#fff;position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1fr;gap:16px;align-items:center;min-height:290px;
+}
+@media(min-width:620px){.hero-main{grid-template-columns:1.15fr .85fr}}
+.hero-txt{position:relative;z-index:2}
+.hero-kicker{
+  display:inline-block;background:var(--precio-fondo);color:#fff;font-weight:800;
+  font-family:"Archivo",sans-serif;font-stretch:80%;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;padding:4px 9px;border-radius:2px;margin-bottom:12px;
+}
+.hero-main h1{
+  font-size:clamp(1.5rem,3.4vw,2.15rem);font-weight:800;font-stretch:84%;line-height:1.05;
+  margin:0 0 14px;letter-spacing:-.015em;text-wrap:balance;
+}
+.hero-precios{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;margin-bottom:8px}
+.hero-pr{font-size:clamp(2.4rem,6vw,3.4rem);font-weight:800;font-stretch:76%;line-height:.92;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.hero-antes{font-size:16px;opacity:.72;text-decoration:line-through;font-variant-numeric:tabular-nums}
+.hero-cuota{
+  display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+  padding:6px 11px;border-radius:2px;font-size:14px;font-weight:600;margin-bottom:16px;
+  font-variant-numeric:tabular-nums;
+}
+.cta{
+  display:inline-block;background:var(--precio-fondo);color:#fff;padding:12px 26px;
+  border-radius:2px;font-weight:800;font-stretch:86%;font-size:15px;letter-spacing:.01em;
+}
+.hero-fig{display:grid;place-items:center;position:relative;z-index:1}
+.hero-fig svg{width:100%;max-width:230px;height:auto;color:rgba(255,255,255,.9);stroke-width:3}
+.hero-badge{
+  position:absolute;top:14px;right:14px;background:#fff;color:var(--precio);
+  font-family:"Archivo",sans-serif;font-weight:800;font-stretch:78%;font-size:26px;
+  width:66px;height:66px;border-radius:50%;display:grid;place-items:center;z-index:3;
+  box-shadow:0 6px 18px -6px rgba(0,0,0,.45);
+}
+.hero-lado{display:grid;grid-template-rows:1fr 1fr;gap:10px}
+.lado{
+  border-radius:var(--radio);padding:18px;display:flex;flex-direction:column;justify-content:center;
+  min-height:138px;position:relative;overflow:hidden;
+}
+.lado.a{background:var(--marca-verde);color:#062B10}
+.lado.b{background:var(--superficie);border:1px solid var(--linea);color:var(--tinta)}
+.lado h3{font-size:17px;font-weight:800;font-stretch:86%;margin:0 0 5px;line-height:1.14}
+.lado p{margin:0;font-size:13px;line-height:1.4;opacity:.9}
+.lado .mas{margin-top:9px;font-weight:700;font-size:12.5px}
+.lado.b .mas{color:var(--azul)}
+
+/* ---------- riel de categorías ---------- */
+section.bloque{padding-top:30px}
+.cab{display:flex;align-items:baseline;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+.cab h2{font-size:clamp(1.15rem,2.4vw,1.5rem);font-weight:800;font-stretch:86%;margin:0;letter-spacing:-.01em}
+.cab .sub{font-size:13px;color:var(--tenue)}
+.cab .vertodo{margin-left:auto;font-size:13px;font-weight:700;color:var(--azul);white-space:nowrap}
+.cat-riel{display:flex;gap:14px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:thin}
+.cat-it{flex-shrink:0;width:96px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:7px}
+.cat-disco{
+  width:82px;height:82px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--linea);background:var(--superficie);
+}
+.cat-disco svg{width:48px;height:48px;color:var(--tinta-2);opacity:.8}
+.cat-it span{font-size:11.5px;line-height:1.25;color:var(--tinta-2);font-weight:500}
+
+/* ---------- ofertas con reloj ---------- */
+.ofertas-cab{
+  background:var(--precio-fondo);color:#fff;border-radius:var(--radio) var(--radio) 0 0;
+  padding:11px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.ofertas-cab h2{font-size:19px;font-weight:800;font-stretch:84%;margin:0;letter-spacing:.005em}
+.reloj{display:flex;gap:5px;align-items:center;font-variant-numeric:tabular-nums}
+.reloj i{
+  background:rgba(0,0,0,.28);border-radius:2px;padding:3px 7px;font-style:normal;
+  font-weight:800;font-size:16px;font-stretch:80%;min-width:32px;text-align:center;
+}
+.reloj em{font-style:normal;font-size:12px;opacity:.8;font-family:"IBM Plex Sans",sans-serif}
+.ofertas-cab .vertodo{margin-left:auto;color:#fff;font-size:13px;font-weight:700}
+.ofertas-caja{background:var(--superficie);border:1px solid var(--linea);border-top:0;border-radius:0 0 var(--radio) var(--radio);padding:10px}
+
+/* ---------- rejilla y tarjetas ---------- */
+.rej{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+@media(min-width:560px){.rej{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:860px){.rej{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1120px){.rej{grid-template-columns:repeat(6,1fr)}}
+.rej.c5{grid-template-columns:repeat(2,1fr)}
+@media(min-width:560px){.rej.c5{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1120px){.rej.c5{grid-template-columns:repeat(5,1fr)}}
+
+.tarjeta{
+  background:var(--superficie);border:1px solid var(--linea);border-radius:var(--radio);
+  overflow:hidden;display:flex;flex-direction:column;position:relative;text-align:left;
+  transition:border-color .12s,box-shadow .12s;
+}
+.tarjeta:hover{border-color:var(--linea-fuerte);box-shadow:var(--sombra)}
+.foto{position:relative;aspect-ratio:1/1;display:grid;place-items:center;overflow:hidden}
+.foto svg{width:64%;height:64%;color:var(--tinta-2);opacity:.72}
+.desc{
+  position:absolute;top:0;left:0;background:var(--precio-fondo);color:#fff;
+  font-family:"Archivo",sans-serif;font-weight:800;font-stretch:78%;font-size:13px;
+  padding:2px 6px;
+}
+.agot{
+  position:absolute;inset:0;background:color-mix(in srgb,var(--superficie) 74%,transparent);
+  display:grid;place-items:center;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--tenue);
+}
+.cuerpo{padding:6px 7px 8px;display:flex;flex-direction:column;gap:3px;flex:1}
+.prfila{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+.pr{font-size:21px;font-weight:800;font-stretch:78%;color:var(--precio);line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.antes{font-size:10.5px;color:var(--tenue);text-decoration:line-through;font-variant-numeric:tabular-nums}
+.cuota{font-size:11px;font-weight:600;color:var(--ahorro);font-variant-numeric:tabular-nums;min-height:16px}
+.nom{font-size:11.5px;line-height:1.28;color:var(--tinta-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.insig{display:flex;gap:3px;flex-wrap:wrap;margin-top:2px}
+.ins{font-size:9px;padding:1px 4px;border-radius:2px;white-space:nowrap;font-weight:600}
+.ins.e{background:color-mix(in srgb,var(--ahorro) 14%,transparent);color:var(--ahorro)}
+.ins.g{background:color-mix(in srgb,var(--azul) 13%,transparent);color:var(--azul)}
+.pie{margin-top:auto;padding-top:4px;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.vend{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--tenue)}
+.disp{font-size:10px;font-weight:700}
+.disp.si{color:var(--ahorro)} .disp.poco{color:var(--precio)} .disp.no{color:var(--tenue)}
+
+/* ============================================================
+   ZONA BLANDA — el único lugar donde el lenguaje visual cambia.
+   El catálogo es denso y urgente porque ahí se compara.
+   Aquí el cliente se compromete, y lo que necesita es calma:
+   esquinas grandes, degradado suave, personajes, aire.
+   ============================================================ */
+.blando{
+  position:relative;overflow:hidden;border-radius:26px;padding:30px 22px 24px;
+  background:var(--grad-blando);
+}
+@media(min-width:720px){.blando{padding:38px 34px 30px}}
+.chispa{position:absolute;color:var(--marca-verde);opacity:.55;pointer-events:none}
+.chispa svg{width:100%;height:100%;display:block}
+.chispa.c1{width:26px;height:26px;top:26px;left:5%;color:var(--marca-rojo);opacity:.4}
+.chispa.c2{width:17px;height:17px;top:78px;left:16%;color:var(--marca-azul);opacity:.45}
+.chispa.c3{width:30px;height:30px;top:20px;right:9%;color:var(--marca-verde);opacity:.5}
+.chispa.c4{width:15px;height:15px;top:96px;right:4%;color:var(--marca-azul);opacity:.4}
+
+.blando-top{display:grid;grid-template-columns:1fr;gap:16px;align-items:center;position:relative;z-index:2}
+@media(min-width:820px){.blando-top{grid-template-columns:1.05fr .95fr;gap:28px}}
+.pildora{
+  display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.72);
+  border:1px solid rgba(20,97,143,.16);color:var(--azul);border-radius:999px;
+  padding:6px 14px;font-size:12.5px;font-weight:700;margin-bottom:14px;
+}
+:root[data-theme="dark"] .pildora{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.16)}
+.blando h2{
+  font-size:clamp(1.75rem,4.4vw,2.7rem);font-weight:800;font-stretch:84%;line-height:1.04;
+  margin:0 0 12px;letter-spacing:-.018em;text-wrap:balance;
+}
+/* Énfasis por color y peso dentro del titular, como en la referencia. */
+.blando h2 em{font-style:normal;color:var(--azul);display:block}
+.blando h2 .lig{font-weight:500;font-stretch:96%;font-size:.62em;display:block;color:var(--tinta-2);letter-spacing:0}
+.blando-top p{margin:0;color:var(--tinta-2);font-size:14px;max-width:44ch;line-height:1.55}
+
+.personajes{display:flex;justify-content:center;align-items:flex-end;gap:2px}
+.personajes > div{flex:1;max-width:150px}
+.personajes svg{width:100%;height:auto;display:block}
+.personajes .p-med{transform:translateY(-14px);max-width:172px;z-index:2}
+
+/* --- tres tarjetas de valor, el patrón de la referencia --- */
+.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:22px 0 20px;position:relative;z-index:2}
+.fcard{
+  background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.9);
+  border-radius:18px;padding:14px 10px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  box-shadow:0 6px 18px -12px rgba(15,29,38,.4);
+}
+:root[data-theme="dark"] .fcard{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.1)}
+.fcard .fi{
+  width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+  color:#fff;margin-bottom:2px;
+}
+.fcard .fi svg{width:23px;height:23px}
+.fcard .fi.v{background:linear-gradient(150deg,#6CC870,#2E7D32)}
+.fcard .fi.a{background:linear-gradient(150deg,#4FA8DC,#14618F)}
+.fcard .fi.r{background:linear-gradient(150deg,#F0736C,#C62828)}
+.fcard b{font-size:13.5px;font-weight:700;line-height:1.2}
+.fcard span:last-child{font-size:11px;color:var(--tinta-2);line-height:1.3}
+
+/* --- panel de planes --- */
+.panel{
+  background:var(--superficie);border-radius:22px;padding:20px 18px;position:relative;z-index:2;
+  box-shadow:0 10px 34px -20px rgba(15,29,38,.5);
+}
+.panel-sel{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.panel-sel label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--tenue)}
+.panel-sel select{
+  width:100%;border:1.5px solid var(--linea);border-radius:12px;padding:11px 12px;
+  font:inherit;font-size:13.5px;background:var(--superficie);color:var(--tinta);
+}
+.planes{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px}
+@media(min-width:640px){.planes{grid-template-columns:repeat(4,1fr)}}
+.plan{
+  position:relative;border:2px solid var(--linea);border-radius:16px;padding:16px 10px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;
+  background:var(--superficie);transition:border-color .12s,background .12s;
+}
+.plan:hover{border-color:var(--linea-fuerte)}
+.plan[aria-pressed=true]{border-color:var(--azul);background:color-mix(in srgb,var(--azul) 6%,var(--superficie))}
+.plan-badge{
+  position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  background:var(--ahorro);color:#fff;font-size:10px;font-weight:700;letter-spacing:.02em;
+  padding:2px 9px;border-radius:999px;white-space:nowrap;display:flex;align-items:center;gap:4px;
+}
+.plan-badge svg{width:10px;height:10px}
+.plan-n{font-size:11.5px;color:var(--tenue);font-weight:600}
+.plan-m{
+  font-family:"Archivo",sans-serif;font-weight:800;font-stretch:78%;font-size:23px;
+  color:var(--tinta);line-height:1.05;font-variant-numeric:tabular-nums;
+}
+.plan[aria-pressed=true] .plan-m{color:var(--azul)}
+.plan-x{font-size:10.5px;color:var(--tenue)}
+.plan-check{
+  position:absolute;top:8px;right:8px;width:19px;height:19px;border-radius:50%;
+  border:2px solid var(--linea);display:grid;place-items:center;
+}
+.plan[aria-pressed=true] .plan-check{background:var(--azul);border-color:var(--azul)}
+.plan-check svg{width:10px;height:10px;color:#fff;opacity:0}
+.plan[aria-pressed=true] .plan-check svg{opacity:1}
+
+.panel-tot{display:grid;grid-template-columns:1fr;gap:16px;align-items:center;margin-bottom:18px}
+@media(min-width:640px){.panel-tot{grid-template-columns:auto 1fr;gap:26px}}
+.monto-caja{position:relative;padding-right:34px}
+.monto-caja .et{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tenue);display:block;margin-bottom:2px}
+.monto{
+  font-family:"Archivo",sans-serif;font-weight:800;font-stretch:74%;
+  font-size:clamp(2.6rem,8vw,3.6rem);line-height:.92;letter-spacing:-.025em;
+  color:var(--precio);font-variant-numeric:tabular-nums;display:block;
+}
+.monto-caja .por{font-size:12.5px;color:var(--tinta-2)}
+.trazo-sub{display:block;width:118px;height:13px;color:var(--precio);opacity:.5;margin-top:1px}
+.trazo-rayas{position:absolute;top:14px;right:0;width:30px;height:34px;color:var(--precio);opacity:.42}
+.panel-tot table{width:100%;border-collapse:collapse;font-size:12.5px}
+.panel-tot td{padding:5px 0;border-bottom:1px solid var(--linea);color:var(--tinta-2)}
+.panel-tot td:last-child{text-align:right;font-weight:600;color:var(--tinta);font-variant-numeric:tabular-nums}
+.panel-tot tr:last-child td{border-bottom:0}
+.cta-grande{
+  width:100%;background:var(--azul-nav);color:#fff;border-radius:16px;padding:15px;
+  font-family:"Archivo",sans-serif;font-weight:800;font-stretch:88%;font-size:16px;letter-spacing:.005em;
+}
+:root[data-theme="dark"] .cta-grande{background:var(--azul);color:#06222F}
+.panel .letra{font-size:11.5px;color:var(--tenue);margin:10px 0 0;line-height:1.45;text-align:center}
+
+/*__UI_CSS__*/
+
+/* ---------- confianza ---------- */
+.conf{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:780px){.conf{grid-template-columns:repeat(4,1fr)}}
+.conf-it{background:var(--superficie);border:1px solid var(--linea);border-radius:var(--radio);padding:16px}
+.conf-it b{display:block;font-size:13.5px;margin-bottom:3px}
+.conf-it span{font-size:12.5px;color:var(--tinta-2);line-height:1.4}
+/* Sin medida explícita, un <svg> sin width/height se expande al ancho del
+   contenedor: por eso los iconos salían gigantes. */
+.conf-it .ic{width:26px;height:26px;display:block;color:var(--azul);margin-bottom:8px;flex-shrink:0}
+
+/* ---------- pie ---------- */
+footer{background:var(--azul-nav);color:#D6E9F4;margin-top:38px;padding:30px 0 22px}
+.foot-grid{display:grid;grid-template-columns:1fr;gap:22px}
+@media(min-width:760px){.foot-grid{grid-template-columns:1.3fr 1fr 1fr}}
+footer h4{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;opacity:.7;margin:0 0 9px;font-weight:500}
+footer ul{list-style:none;padding:0;margin:0;font-size:13px;line-height:1.85}
+footer .deps{font-size:12.5px;line-height:1.7;opacity:.85}
+.foot-legal{border-top:1px solid rgba(255,255,255,.15);margin-top:22px;padding-top:14px;font-size:11.5px;opacity:.68;line-height:1.6}
+
+/* ---------- barra inferior + WhatsApp ---------- */
+.inferior{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--superficie);
+  border-top:1px solid var(--linea);display:flex;padding:7px 10px;gap:8px;align-items:center;
+}
+.inferior .wa{display:flex;align-items:center;gap:7px;padding:10px 15px;border-radius:var(--radio);background:#25D366;color:#06301A;font-weight:700;font-size:13px}
+.inferior .cr{flex:1;text-align:center;padding:10px;border-radius:var(--radio);background:var(--precio-fondo);color:#fff;font-weight:700;font-size:13.5px}
+.inferior .ct{padding:10px 15px;border-radius:var(--radio);box-shadow:inset 0 0 0 2px var(--azul);color:var(--azul);font-weight:700;font-size:13px}
+.flota{
+  position:fixed;right:16px;bottom:76px;z-index:49;background:#25D366;color:#06301A;
+  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+  box-shadow:0 8px 22px -8px rgba(0,0,0,.5);font-weight:800;font-size:11px;
+}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="financ">
+  Hasta <b>12 CUOTAS</b> con tarjetas de crédito Banco Agrícola
+  <span class="fino">Se elige al pagar. Sin trámite previo, sin papeleo.</span>
+</div>
+
+<header class="top">
+  <div class="env top-in">
+    <a class="logo" href="__HOME__" aria-label="EconoHogar, ir al inicio">
+      <svg width="38" height="33" viewBox="0 0 68 60" aria-hidden="true">
+        <path d="M4 30 L34 5 L64 30" fill="none" stroke="var(--marca-rojo)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="12" y="34" width="13" height="13" rx="2.5" fill="var(--marca-verde)"/>
+        <rect x="27.5" y="34" width="13" height="13" rx="2.5" fill="var(--marca-azul)"/>
+        <rect x="43" y="34" width="13" height="13" rx="2.5" fill="var(--marca-rojo)"/>
+      </svg>
+      <span class="logo-txt"><span class="e">ECONO</span><span class="h">HOGAR</span></span>
+    </a>
+    <form class="buscador" id="formBuscar">
+      <input type="search" id="q" name="q" placeholder="Refrigeradora, TV 55&quot;, aire 12,000 BTU…" aria-label="Buscar">
+      <button type="submit">Buscar</button>
+    </form>
+    <div class="acc">
+      <button type="button" class="it" id="tema"><span>Cambiar a</span><b data-tema-txt>Claro</b></button>
+      <span class="it"><span>Hola,</span><b>Inicia sesión</b></span>
+      <button type="button" class="carrito c-lanzador" data-abrir-carrito>Mi carrito<small data-carrito-total>$0.00</small><span class="c-n" data-carrito-n hidden>0</span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="dep" aria-label="Departamentos">
+  <div class="env dep-in">
+    <a href="__VITRINA__" class="todos">☰ Todos los departamentos</a>
+    <a href="__VITRINA__#dep=linea-blanca">Línea blanca</a>
+    <a href="__VITRINA__#dep=pantallas">Pantallas</a>
+    <a href="__VITRINA__#dep=aires">Aires acondicionados</a>
+    <a href="__VITRINA__#dep=cocina">Cocina</a>
+    <a href="__VITRINA__#dep=hogar">Cuidado del hogar</a>
+    <a href="__VITRINA__#f=ofertas" class="of">Ofertas</a>
+    <a href="__VITRINA__#f=instalacion">Instalación</a>
+  </div>
+</nav>
+
+<div class="cobertura">
+  <span><b>Envíos a todo El Salvador</b> · 14 departamentos</span>
+  <span>Retiro <b>gratis</b> en sala de ventas</span>
+  <span>Instalación de aires y lavadoras</span>
+  <span>Garantía directa de fábrica</span>
+</div>
+
+<div class="env">
+
+  <section class="hero" id="hero"></section>
+
+  <section class="bloque">
+    <div class="cab"><h2>Comprá por categoría</h2><a class="vertodo" href="__VITRINA__">Ver las 15 →</a></div>
+    <div class="cat-riel" id="catRiel"></div>
+  </section>
+
+  <section class="bloque">
+    <div class="ofertas-cab">
+      <h2>Ofertas del día</h2>
+      <div class="reloj" id="reloj"><em>Terminan en</em><i>00</i><i>00</i><i>00</i></div>
+      <a class="vertodo" href="__VITRINA__#f=ofertas">Ver todas →</a>
+    </div>
+    <div class="ofertas-caja"><div class="rej" id="ofertas"></div></div>
+  </section>
+
+  <section class="bloque" id="servicio">
+    <div class="blando">
+      <span class="chispa c1">__CHISPA_ESTRELLA__</span>
+      <span class="chispa c2">__CHISPA_DESTELLO__</span>
+      <span class="chispa c3">__CHISPA_DESTELLO__</span>
+      <span class="chispa c4">__CHISPA_ESTRELLA__</span>
+
+      <div class="blando-top">
+        <div>
+          <span class="pildora">Se aprueba al momento de pagar</span>
+          <h2>Llevátelo hoy<em>y pagalo en cuotas</em><span class="lig">sin trámite previo ni papeleo</span></h2>
+          <p>Con tarjeta de crédito Banco Agrícola elegís el plazo en el momento de pagar. El cálculo de abajo usa precios reales del catálogo, con el IVA ya desglosado como lo pide la factura.</p>
+        </div>
+        <div class="personajes">
+          <div>__PERSONAJE_LAVA__</div>
+          <div class="p-med">__PERSONAJE_REFRI__</div>
+          <div>__PERSONAJE_TELE__</div>
+        </div>
+      </div>
+
+      <div class="tres">
+        <div class="fcard">
+          <span class="fi v"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 6.5c0-2-2.2-3-5-3s-5 .9-5 2.8c0 4.4 10 2.3 10 6.7 0 2-2.2 3-5 3s-5-1-5-3"/></svg></span>
+          <b>Desde $25 al mes</b><span>Cuotas fijas, sin intereses ocultos</span>
+        </div>
+        <div class="fcard">
+          <span class="fi a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h11v9H2z"/><path d="M13 11h4l4 4v2h-8z"/><circle cx="6.5" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/></svg></span>
+          <b>14 departamentos</b><span>Flota propia y courier</span>
+        </div>
+        <div class="fcard">
+          <span class="fi r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <b>Hasta 24 meses</b><span>Garantía directa de fábrica</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-sel">
+          <label for="calcProd">Elegí el producto</label>
+          <select id="calcProd"></select>
+        </div>
+
+        <div class="planes" id="planes"></div>
+
+        <div class="panel-tot">
+          <div class="monto-caja">
+            <span class="et">Tu cuota mensual</span>
+            <span class="monto" id="calcMonto">$0</span>
+            <span class="trazo-sub">__TRAZO_SUB__</span>
+            <span class="por" id="calcPor">—</span>
+            <span class="trazo-rayas">__TRAZO_RAYAS__</span>
+          </div>
+          <table>
+            <tr><td>Precio con IVA</td><td id="calcTotal">$0</td></tr>
+            <tr><td>Precio neto</td><td id="calcNeto">$0</td></tr>
+            <tr><td>IVA 13 %</td><td id="calcIva">$0</td></tr>
+            <tr><td>Envío al área metropolitana</td><td id="calcEnvio">$0</td></tr>
+          </table>
+        </div>
+
+        <button class="cta-grande" type="button" id="ctaCuotas">Comprar en 12 cuotas</button>
+        <p class="letra">Sujeto a aprobación de tu banco emisor. Los planes de cuotas y sus intereses los define Banco Agrícola según la tarjeta.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <div class="cab"><h2>Refrigeradoras</h2><span class="sub">No Frost, Side by Side y French Door</span><a class="vertodo" href="__VITRINA__#cat=refrigeradoras">Ver todas →</a></div>
+    <div class="rej c5" id="rielRef"></div>
+  </section>
+
+  <section class="bloque">
+    <div class="cab"><h2>Pantallas</h2><span class="sub">De 32" a 85", 4K y 8K</span><a class="vertodo" href="__VITRINA__#cat=televisores">Ver todas →</a></div>
+    <div class="rej c5" id="rielTv"></div>
+  </section>
+
+  <section class="bloque">
+    <div class="cab"><h2>Aires acondicionados</h2><span class="sub">Split e inverter, con instalación</span><a class="vertodo" href="__VITRINA__#cat=aires-acondicionados">Ver todos →</a></div>
+    <div class="rej c5" id="rielAire"></div>
+  </section>
+
+  <section class="bloque">
+    <div class="cab"><h2>Los más vendidos</h2><a class="vertodo" href="__VITRINA__">Ver la vitrina →</a></div>
+    <div class="rej c5" id="rielVend"></div>
+  </section>
+
+  <section class="bloque">
+    <div class="conf">
+      <div class="conf-it">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <b>Garantía de fábrica</b><span>12 o 24 meses según el producto, con respaldo del distribuidor local.</span>
+      </div>
+      <div class="conf-it">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h11v9H2z"/><path d="M13 11h4l4 4v2h-8z"/><circle cx="6.5" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/></svg>
+        <b>Envío a los 14 departamentos</b><span>Flota propia en el área metropolitana, courier al resto del país.</span>
+      </div>
+      <div class="conf-it">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3 6 14h5l-1 7 8-11h-5Z"/></svg>
+        <b>Instalación disponible</b><span>Aires, lavadoras, secadoras y estufas de gas. Se cotiza y factura aparte.</span>
+      </div>
+      <div class="conf-it">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+        <b>Factura electrónica</b><span>Documento Tributario Electrónico por cada compra. Consumidor final o crédito fiscal.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <div class="suscribe">
+      <div>
+        <h2>Enterate antes que nadie</h2>
+        <p>Te avisamos por WhatsApp cuando baje de precio lo que estás buscando, y cuando entre producto nuevo a bodega. Sin cadenas ni spam.</p>
+      </div>
+      <form class="suscribe-form" onsubmit="return false">
+        <input type="tel" inputmode="tel" placeholder="7000-0000" aria-label="Tu número de WhatsApp">
+        <button type="button">Avisarme</button>
+      </form>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="env">
+    <div class="foot-grid">
+      <div>
+        <h4>Cobertura</h4>
+        <p class="deps">Ahuachapán · Santa Ana · Sonsonate · Chalatenango · La Libertad · San Salvador · Cuscatlán · La Paz · Cabañas · San Vicente · Usulután · San Miguel · Morazán · La Unión</p>
+      </div>
+      <div>
+        <h4>Comprar</h4>
+        <ul><li>Formas de pago</li><li>Cuotas con Banco Agrícola</li><li>Costos de envío</li><li>Retiro en sala de ventas</li><li>Rastrear pedido</li></ul>
+      </div>
+      <div>
+        <h4>Ayuda</h4>
+        <ul><li>Garantías y devoluciones</li><li>Instalación</li><li>Facturación electrónica</li><li>WhatsApp de atención</li><li>Términos y condiciones</li></ul>
+      </div>
+    </div>
+    <p class="foot-legal">EconoHogar · San Salvador, El Salvador. Precios en dólares con IVA del 13 % incluido. Las imágenes son referenciales y las existencias pueden variar entre la bodega y la sala de ventas. Catálogo de demostración: los productos y precios de esta versión son datos de prueba.</p>
+  </div>
+</footer>
+
+<span class="flota" title="WhatsApp">WA</span>
+<div class="inferior">
+  <span class="wa">WhatsApp</span>
+  <button class="ct c-lanzador" type="button" data-abrir-carrito>Carrito<span class="c-n" data-carrito-n hidden>0</span></button>
+  <a class="cr" href="__VITRINA__">Ver todo el catálogo</a>
+</div>
+
+<script>
+const DATOS = /*__CATALOGO__*/ null;
+const SILUETAS = /*__SILUETAS__*/ {};
+const CHISPA_ESTRELLA = /*__CHISPA_JS__*/ '';
+const PERSONAJE_VACIO = /*__PERSONAJE_VACIO__*/ '';
+const VITRINA = '__VITRINA__';
+
+const TINTES = ['--marca-verde','--marca-azul','--tenue'];   // el rojo queda reservado al precio
+const $ = (id) => document.getElementById(id);
+const fmt = (c) => '$' + (c/100).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmt0 = (c) => '$' + Math.round(c/100).toLocaleString('en-US');
+const stockTotal = (p) => p.stock.reduce((s,x) => s + x.cantidad, 0);
+const esc = (s) => String(s).replace(/[&<>"]/g,(m)=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+// ---------- tarjeta ----------
+function tarjeta(p, i){
+  const st = stockTotal(p);
+  const cls = st === 0 ? 'no' : st <= 2 ? 'poco' : 'si';
+  const txt = st === 0 ? 'Agotado' : st <= 2 ? 'Últimas ' + st : 'Disponible';
+  return '<button class="tarjeta" type="button" data-sku="' + p.sku + '">' +
+    '<div class="foto" style="background:color-mix(in srgb, var(' + TINTES[i % 3] + ') 9%, var(--superficie))">' +
+      (SILUETAS[p.icono] || '') +
+      (p.descuento_pct ? '<span class="desc">&minus;' + p.descuento_pct + '%</span>' : '') +
+      (st === 0 ? '<span class="agot">Agotado</span>' : '') +
+    '</div><div class="cuerpo">' +
+      '<div class="prfila"><span class="pr">' + fmt(p.precio_centavos) + '</span>' +
+        (p.precio_lista_centavos ? '<span class="antes">' + fmt(p.precio_lista_centavos) + '</span>' : '') + '</div>' +
+      '<span class="cuota">' + (p.precio_centavos >= 15000 ? fmt(p.cuota_12_centavos) + ' &times; 12 cuotas' : '&nbsp;') + '</span>' +
+      '<span class="nom">' + esc(p.nombre) + '</span>' +
+      '<div class="insig">' + (p.envio_gratis ? '<span class="ins e">Envío gratis</span>' : '') +
+        '<span class="ins g">' + p.garantia_meses + ' meses</span></div>' +
+      '<div class="pie"><span class="vend">' + p.vendidos + ' vendidas</span>' +
+      '<span class="disp ' + cls + '">' + txt + '</span></div>' +
+    '</div></button>';
+}
+function pintar(id, lista){
+  $(id).innerHTML = lista.map(tarjeta).join('');
+  $(id).querySelectorAll('.tarjeta').forEach((b) =>
+    b.addEventListener('click', () => abrir(b.dataset.sku)));
+}
+
+/*__UI_JS__*/
+
+// ---------- hero: el mayor ahorro en dólares del catálogo ----------
+function pintarHero(){
+  const conDesc = DATOS.productos.filter((p) => p.precio_lista_centavos && stockTotal(p) > 0);
+  const p = conDesc.sort((a,b) =>
+    (b.precio_lista_centavos - b.precio_centavos) - (a.precio_lista_centavos - a.precio_centavos))[0];
+  const ahorro = p.precio_lista_centavos - p.precio_centavos;
+
+  $('hero').innerHTML =
+    '<button class="hero-main" type="button" data-sku="' + p.sku + '">' +
+      '<span class="hero-badge">&minus;' + p.descuento_pct + '%</span>' +
+      '<div class="hero-txt">' +
+        '<span class="hero-kicker">Ahorrás ' + fmt0(ahorro) + '</span>' +
+        '<h1>' + esc(p.nombre) + '</h1>' +
+        '<div class="hero-precios"><span class="hero-pr">' + fmt(p.precio_centavos) + '</span>' +
+          '<span class="hero-antes">Antes ' + fmt(p.precio_lista_centavos) + '</span></div>' +
+        '<div class="hero-cuota">o ' + fmt(p.cuota_12_centavos) + ' al mes &times; 12 cuotas</div><br>' +
+        '<span class="cta">Comprar ahora</span>' +
+      '</div>' +
+      '<div class="hero-fig">' + (SILUETAS[p.icono] || '') + '</div>' +
+    '</button>' +
+    '<div class="hero-lado">' +
+      '<a class="lado a" href="#servicio"><h3>Hasta 12 cuotas</h3>' +
+        '<p>Con tarjeta de crédito Banco Agrícola. Se elige al pagar, sin trámite previo.</p>' +
+        '<span class="mas">Calcular mi cuota →</span></a>' +
+      '<a class="lado b" href="#servicio"><h3>Instalación a domicilio</h3>' +
+        '<p>Aires acondicionados, lavadoras, secadoras y estufas de gas. Se cotiza y factura aparte.</p>' +
+        '<span class="mas">Ver cobertura →</span></a>' +
+    '</div>';
+  $('hero').querySelector('.hero-main').addEventListener('click', () => abrir(p.sku));
+}
+
+// ---------- riel de categorías ----------
+function pintarCategorias(){
+  $('catRiel').innerHTML = DATOS.categorias.map((c) =>
+    '<a class="cat-it" href="' + VITRINA + '#cat=' + c.slug + '"><span class="cat-disco">' +
+    (SILUETAS[c.icono] || '') + '</span><span>' + esc(c.nombre) + '</span></a>').join('');
+}
+
+// ---------- reloj de ofertas ----------
+function tic(){
+  const ahora = new Date();
+  const fin = new Date(ahora); fin.setHours(23,59,59,999);
+  const s = Math.max(0, Math.floor((fin - ahora) / 1000));
+  const h = String(Math.floor(s/3600)).padStart(2,'0');
+  const m = String(Math.floor((s%3600)/60)).padStart(2,'0');
+  const g = String(s%60).padStart(2,'0');
+  $('reloj').innerHTML = '<em>Terminan en</em><i>'+h+'</i><i>'+m+'</i><i>'+g+'</i>';
+}
+
+// ---------- planes de cuotas ----------
+// El patrón viene de la referencia: tarjetas de plan seleccionables, con
+// insignia en la más elegida y el monto mensual como el número más grande.
+const PLAZOS = [3, 6, 9, 12];
+let plazo = 12;
+
+function pintarCalc(){
+  const p = DATOS.productos.find((x) => x.sku === $('calcProd').value);
+  const zona = DATOS.zonas_envio.find((z) => z.departamento === 'San Salvador');
+
+  $('planes').querySelectorAll('.plan').forEach((b) => {
+    const n = Number(b.dataset.p);
+    b.setAttribute('aria-pressed', String(n === plazo));
+    b.querySelector('.plan-m').textContent = fmt(Math.round(p.precio_centavos / n));
+  });
+
+  $('calcMonto').textContent = fmt(Math.round(p.precio_centavos / plazo));
+  $('calcPor').textContent = 'al mes durante ' + plazo + ' meses';
+  $('calcTotal').textContent = fmt(p.precio_centavos);
+  $('calcNeto').textContent = fmt(p.precio_neto_centavos);
+  $('calcIva').textContent = fmt(p.iva_centavos);
+  $('calcEnvio').textContent = p.envio_gratis ? 'Gratis' : fmt(zona.tarifas_centavos[p.clase_envio]);
+  $('ctaCuotas').textContent = 'Comprar en ' + plazo + ' cuotas';
+}
+
+function montarCalc(){
+  const caros = DATOS.productos.filter((p) => p.precio_centavos >= 30000 && stockTotal(p) > 0)
+    .sort((a,b) => b.precio_centavos - a.precio_centavos).slice(0, 40);
+  $('calcProd').innerHTML = caros.map((p) =>
+    '<option value="' + p.sku + '">' + esc(p.nombre) + ' — ' + fmt(p.precio_centavos) + '</option>').join('');
+
+  $('planes').innerHTML = PLAZOS.map((n) =>
+    '<button class="plan" type="button" data-p="' + n + '" aria-pressed="' + (n === plazo) + '">' +
+      (n === 12 ? '<span class="plan-badge">' + CHISPA_ESTRELLA + 'Más elegido</span>' : '') +
+      '<span class="plan-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 6 6L20 6"/></svg></span>' +
+      '<span class="plan-n">' + n + ' cuotas</span>' +
+      '<span class="plan-m">$0</span>' +
+      '<span class="plan-x">al mes</span>' +
+    '</button>').join('');
+
+  $('planes').querySelectorAll('.plan').forEach((b) =>
+    b.addEventListener('click', () => { plazo = Number(b.dataset.p); pintarCalc(); }));
+  $('calcProd').addEventListener('change', pintarCalc);
+  pintarCalc();
+}
+
+// ---------- arranque ----------
+const deCat = (slug, n) => DATOS.productos.filter((p) => p.categoria === slug)
+  .sort((a,b) => b.vendidos - a.vendidos).slice(0, n);
+
+iniciarUI();
+pintarHero();
+pintarCategorias();
+pintar('ofertas', DATOS.productos.filter((p) => stockTotal(p) > 0)
+  .sort((a,b) => b.descuento_pct - a.descuento_pct).slice(0, 12));
+pintar('rielRef', deCat('refrigeradoras', 5));
+pintar('rielTv', deCat('televisores', 5));
+pintar('rielAire', deCat('aires-acondicionados', 5));
+pintar('rielVend', DATOS.productos.slice().sort((a,b) => b.vendidos - a.vendidos).slice(0, 5));
+montarCalc();
+tic(); setInterval(tic, 1000);
+
+// El buscador de la home no filtra aquí: manda al catálogo con la consulta puesta.
+$('formBuscar').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const q = $('q').value.trim();
+  location.href = VITRINA + (q ? '#q=' + encodeURIComponent(q) : '');
+});
+
+
+</script>

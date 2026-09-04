@@ -1,0 +1,330 @@
+/* ============================================================
+   BARRAS DE DESPLAZAMIENTO — estilo iOS
+   Finas, en píldora, sin riel y translúcidas. Se avivan mientras
+   se desplaza y se apagan solas. Reemplazan la barra gruesa de
+   Windows, que en una tienda compite con el producto.
+   ============================================================ */
+:root{
+  --barra:rgba(15,29,38,.20);
+  --barra-viva:rgba(15,29,38,.40);
+  --barra-mano:rgba(15,29,38,.52);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --barra:rgba(255,255,255,.20);
+    --barra-viva:rgba(255,255,255,.38);
+    --barra-mano:rgba(255,255,255,.52);
+  }
+}
+:root[data-theme="dark"]{
+  --barra:rgba(255,255,255,.20);
+  --barra-viva:rgba(255,255,255,.38);
+  --barra-mano:rgba(255,255,255,.52);
+}
+
+/* Firefox y el estándar */
+html{scrollbar-width:thin;scrollbar-color:var(--barra) transparent}
+*{scrollbar-width:thin;scrollbar-color:var(--barra) transparent}
+
+/* WebKit / Chromium */
+::-webkit-scrollbar{width:10px;height:10px;background:transparent}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner{background:transparent;border:0}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+::-webkit-scrollbar-thumb{
+  background:var(--barra);
+  border-radius:99px;
+  /* El borde transparente con background-clip deja la píldora de 6 px
+     centrada en un canal de 10 px, como el desplazador de iOS. */
+  border:2px solid transparent;
+  background-clip:content-box;
+  transition:background-color .25s ease;
+}
+::-webkit-scrollbar-thumb:hover{background:var(--barra-mano);background-clip:content-box}
+::-webkit-scrollbar-thumb:active{background:var(--barra-mano);background-clip:content-box}
+
+/* Mientras se desplaza, la píldora se aviva; al parar vuelve sola. */
+.desplazando::-webkit-scrollbar-thumb{background:var(--barra-viva);background-clip:content-box}
+.desplazando{scrollbar-color:var(--barra-viva) transparent}
+
+/* Rieles horizontales: la barra no debe pegarse a las etiquetas. */
+.cats-riel,.cat-riel{padding-bottom:10px}
+
+/* Nada de encadenar el desplazamiento hacia la página de atrás. */
+.f-cuerpo,.f-envio,.c-lista,.envio-scroll{overscroll-behavior:contain}
+
+@media (prefers-reduced-motion: no-preference){
+  html{scroll-behavior:smooth}
+}
+
+/* ============================================================
+   VIDRIO LÍQUIDO — ficha de producto y carrito
+   El resto de la tienda es opaca y densa. Estas dos superficies
+   flotan sobre el catálogo, así que se comportan como vidrio:
+   dejan ver el color de lo que hay detrás, difuminado.
+   ============================================================ */
+:root{
+  --vidrio:rgba(255,255,255,.60);
+  --vidrio-panel:rgba(255,255,255,.42);
+  --vidrio-borde:rgba(255,255,255,.62);
+  --vidrio-brillo:rgba(255,255,255,.85);
+  --vidrio-linea:rgba(15,29,38,.09);
+  --vidrio-sombra:0 30px 80px -28px rgba(8,24,34,.55);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --vidrio:rgba(20,33,42,.58);
+    --vidrio-panel:rgba(255,255,255,.06);
+    --vidrio-borde:rgba(255,255,255,.15);
+    --vidrio-brillo:rgba(255,255,255,.18);
+    --vidrio-linea:rgba(255,255,255,.10);
+    --vidrio-sombra:0 30px 80px -28px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --vidrio:rgba(20,33,42,.58);
+  --vidrio-panel:rgba(255,255,255,.06);
+  --vidrio-borde:rgba(255,255,255,.15);
+  --vidrio-brillo:rgba(255,255,255,.18);
+  --vidrio-linea:rgba(255,255,255,.10);
+  --vidrio-sombra:0 30px 80px -28px rgba(0,0,0,.85);
+}
+
+/* ---------- diálogo ---------- */
+dialog.vidrio{
+  border:0;padding:0;background:transparent;color:var(--tinta);
+  max-width:660px;width:calc(100% - 26px);overflow:visible;
+}
+dialog.vidrio::backdrop{
+  background:rgba(8,20,28,.42);
+  backdrop-filter:blur(16px) saturate(135%);
+  -webkit-backdrop-filter:blur(16px) saturate(135%);
+}
+/* La cáscara lleva el color; el interior lo esmerila. */
+.vaso{
+  position:relative;border-radius:30px;overflow:hidden;
+  box-shadow:var(--vidrio-sombra);
+  background:
+    radial-gradient(46% 44% at 18% 6%, var(--aura-a, #4CAF50) 0%, transparent 68%),
+    radial-gradient(52% 50% at 88% 92%, var(--aura-b, #1E88C7) 0%, transparent 70%),
+    linear-gradient(150deg, #8FB9D8 0%, #B8CFDD 55%, #9CC4A6 100%);
+}
+.vaso-in{
+  background:var(--vidrio);
+  backdrop-filter:blur(34px) saturate(185%);
+  -webkit-backdrop-filter:blur(34px) saturate(185%);
+  border:1px solid var(--vidrio-borde);
+  border-radius:30px;
+  box-shadow:inset 0 1px 0 var(--vidrio-brillo);
+  display:flex;flex-direction:column;max-height:88vh;
+}
+@supports not ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){
+  .vaso{background:none}
+  .vaso-in{background:var(--superficie)}
+}
+
+/* ---------- cabecera de la ficha ---------- */
+.f-cab{display:flex;gap:16px;padding:22px 22px 16px;align-items:flex-start}
+.f-foto{
+  width:104px;height:104px;flex-shrink:0;border-radius:22px;display:grid;place-items:center;
+  background:var(--vidrio-panel);border:1px solid var(--vidrio-borde);
+  box-shadow:inset 0 1px 0 var(--vidrio-brillo);
+}
+.f-foto svg{width:68%;height:68%;color:var(--tinta);opacity:.62}
+.f-marca{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tinta-2);opacity:.85;margin-bottom:5px;
+}
+.f-cab h2{
+  font-family:"Archivo",sans-serif;font-stretch:88%;font-weight:800;
+  font-size:clamp(1.15rem,3.2vw,1.5rem);line-height:1.12;margin:0 0 4px;letter-spacing:-.015em;
+}
+.f-sub{font-size:12.5px;color:var(--tinta-2)}
+.f-cerrar{
+  margin-left:auto;flex-shrink:0;width:34px;height:34px;border-radius:50%;
+  background:var(--vidrio-panel);border:1px solid var(--vidrio-borde);
+  display:grid;place-items:center;font-size:15px;line-height:1;color:var(--tinta-2);
+}
+
+/* ---------- pastillas de atributo ---------- */
+.f-pastillas{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 22px 16px}
+.past{
+  display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:18px;
+  background:var(--vidrio-panel);border:1px solid var(--vidrio-borde);
+  box-shadow:inset 0 1px 0 var(--vidrio-brillo);
+}
+.past .ico{
+  width:34px;height:34px;border-radius:11px;flex-shrink:0;display:grid;place-items:center;color:#fff;
+}
+.past .ico svg{width:17px;height:17px}
+.past .ico.v{background:linear-gradient(148deg,#6CC870,#2E7D32)}
+.past .ico.a{background:linear-gradient(148deg,#4FA8DC,#14618F)}
+.past .ico.r{background:linear-gradient(148deg,#F0736C,#C62828)}
+.past b{display:block;font-size:13px;font-weight:700;line-height:1.2}
+.past span{font-size:11px;color:var(--tinta-2);line-height:1.25}
+
+/* ---------- bloque de precio ---------- */
+.f-precio{
+  margin:0 22px 16px;padding:15px 16px;border-radius:22px;
+  background:var(--vidrio-panel);border:1px solid var(--vidrio-borde);
+  box-shadow:inset 0 1px 0 var(--vidrio-brillo);
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+}
+.f-precio .et{
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--tinta-2);display:block;margin-bottom:2px;
+}
+.f-precio .val{
+  font-family:"Archivo",sans-serif;font-stretch:76%;font-weight:800;
+  font-size:clamp(1.9rem,6vw,2.5rem);line-height:1;letter-spacing:-.02em;
+  color:var(--precio);font-variant-numeric:tabular-nums;
+}
+.f-precio .antes{font-size:12.5px;color:var(--tinta-2);text-decoration:line-through;margin-left:8px}
+.f-precio .cuota{font-size:12.5px;color:var(--ahorro);font-weight:600;margin-top:3px}
+.f-precio .pct{
+  margin-left:auto;background:var(--precio-fondo);color:#fff;border-radius:999px;
+  padding:5px 12px;font-family:"Archivo",sans-serif;font-stretch:80%;font-weight:800;font-size:14px;
+}
+
+/* ---------- cuerpo desplazable ---------- */
+.f-cuerpo{padding:0 22px;overflow-y:auto;flex:1;min-height:0}
+.f-cuerpo h3{
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--tinta-2);font-weight:500;margin:18px 0 8px;
+}
+.f-tabla{
+  border-radius:18px;background:var(--vidrio-panel);border:1px solid var(--vidrio-borde);
+  overflow:hidden;box-shadow:inset 0 1px 0 var(--vidrio-brillo);
+}
+.f-tabla table{width:100%;border-collapse:collapse;font-size:12.5px}
+.f-tabla td{padding:8px 14px;border-bottom:1px solid var(--vidrio-linea)}
+.f-tabla tr:last-child td{border-bottom:0}
+.f-tabla td:first-child{color:var(--tinta-2)}
+.f-tabla td:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.f-envio{max-height:190px;overflow-y:auto}
+.no-disp{color:var(--precio);font-weight:700}
+
+/* ---------- pie con acciones ---------- */
+.f-pie{display:flex;gap:9px;padding:16px 22px 20px;flex-wrap:wrap}
+.f-btn{
+  flex:1;min-width:145px;padding:14px 18px;border-radius:18px;
+  font-family:"Archivo",sans-serif;font-stretch:88%;font-weight:800;font-size:14.5px;text-align:center;
+}
+/* El único elemento opaco de la ficha: lo que la gente tiene que tocar. */
+.f-btn.comprar{
+  background:linear-gradient(140deg,#E8443C,#B71C1C);color:#fff;
+  box-shadow:0 12px 26px -12px rgba(183,28,28,.75);
+}
+.f-btn.carro{
+  background:var(--vidrio-panel);color:var(--tinta);
+  border:1px solid var(--vidrio-borde);box-shadow:inset 0 1px 0 var(--vidrio-brillo);
+}
+.f-btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* ============================================================
+   CARRITO
+   ============================================================ */
+.c-lanzador{position:relative}
+.c-n{
+  position:absolute;top:-6px;right:-6px;min-width:19px;height:19px;padding:0 5px;
+  border-radius:999px;background:var(--ahorro);color:#fff;font-size:11px;font-weight:800;
+  display:grid;place-items:center;line-height:1;box-shadow:0 0 0 2px var(--superficie);
+}
+.c-n[hidden]{display:none}
+
+dialog.carrito{
+  border:0;padding:0;background:transparent;color:var(--tinta);
+  max-width:460px;width:calc(100% - 22px);margin:0 0 0 auto;height:100%;max-height:100%;
+  overflow:visible;
+}
+dialog.carrito::backdrop{
+  background:rgba(8,20,28,.42);
+  backdrop-filter:blur(16px) saturate(135%);
+  -webkit-backdrop-filter:blur(16px) saturate(135%);
+}
+dialog.carrito .vaso{border-radius:30px 0 0 30px;height:100%}
+dialog.carrito .vaso-in{border-radius:30px 0 0 30px;max-height:100%;height:100%}
+@media(max-width:560px){
+  dialog.carrito{max-width:100%;width:100%}
+  dialog.carrito .vaso,dialog.carrito .vaso-in{border-radius:26px 26px 0 0}
+}
+
+.c-cab{display:flex;align-items:center;gap:12px;padding:20px 20px 14px}
+.c-cab h2{font-family:"Archivo",sans-serif;font-stretch:88%;font-weight:800;font-size:1.25rem;margin:0}
+.c-lista{flex:1;min-height:0;overflow-y:auto;padding:0 20px;display:flex;flex-direction:column;gap:9px}
+.c-item{
+  display:grid;grid-template-columns:60px 1fr auto;gap:11px;align-items:center;
+  padding:10px;border-radius:20px;
+  background:var(--vidrio-panel);border:1px solid var(--vidrio-borde);
+  box-shadow:inset 0 1px 0 var(--vidrio-brillo);
+}
+.c-foto{width:60px;height:60px;border-radius:15px;display:grid;place-items:center;background:rgba(255,255,255,.28)}
+.c-foto svg{width:66%;height:66%;color:var(--tinta);opacity:.6}
+.c-nom{font-size:12px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.c-pr{font-family:"Archivo",sans-serif;font-stretch:80%;font-weight:800;font-size:16px;color:var(--precio);margin-top:3px;font-variant-numeric:tabular-nums}
+.c-der{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.c-cant{display:flex;align-items:center;gap:2px;border-radius:999px;background:rgba(255,255,255,.34);border:1px solid var(--vidrio-borde)}
+.c-cant button{width:26px;height:26px;border-radius:50%;font-size:15px;line-height:1;color:var(--tinta);font-weight:700}
+.c-cant button[disabled]{opacity:.35;cursor:not-allowed}
+.c-cant span{min-width:20px;text-align:center;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+.c-quitar{font-size:11px;color:var(--tinta-2);text-decoration:underline}
+.c-tope{font-size:10.5px;color:var(--precio);font-weight:600}
+
+.c-vacio{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:30px 20px}
+.c-vacio .fig{width:120px}
+.c-vacio .fig svg{width:100%;height:auto;display:block}
+.c-vacio b{font-size:15px}
+.c-vacio p{margin:0;font-size:12.5px;color:var(--tinta-2);max-width:30ch;line-height:1.45}
+
+.c-entrega{padding:14px 20px 0;display:grid;gap:8px}
+.c-metodos{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.c-metodo{
+  padding:9px 10px;border-radius:15px;font-size:12.5px;font-weight:700;text-align:center;
+  background:var(--vidrio-panel);border:1px solid var(--vidrio-borde);color:var(--tinta-2);
+}
+.c-metodo[aria-pressed=true]{border-color:var(--azul);color:var(--azul);background:rgba(20,97,143,.12)}
+.c-entrega select{
+  width:100%;border:1px solid var(--vidrio-borde);border-radius:15px;padding:10px 12px;
+  font:inherit;font-size:13px;background:var(--vidrio-panel);color:var(--tinta);
+}
+.c-aviso{
+  font-size:12px;color:var(--precio);font-weight:600;line-height:1.4;
+  background:rgba(198,40,40,.10);border-radius:14px;padding:9px 12px;
+}
+
+.c-totales{padding:14px 20px 0}
+.c-totales table{width:100%;border-collapse:collapse;font-size:12.5px}
+.c-totales td{padding:5px 0;color:var(--tinta-2)}
+.c-totales td:last-child{text-align:right;font-weight:600;color:var(--tinta);font-variant-numeric:tabular-nums}
+.c-totales tr.total td{
+  padding-top:10px;border-top:1px solid var(--vidrio-linea);
+  font-family:"Archivo",sans-serif;font-stretch:86%;font-weight:800;font-size:19px;color:var(--tinta);
+}
+.c-totales tr.total td:first-child{font-size:14px}
+.c-cuota{font-size:12.5px;color:var(--ahorro);font-weight:600;text-align:right;margin-top:4px}
+.c-pie{padding:14px 20px 20px}
+.c-pagar{
+  width:100%;padding:15px;border-radius:18px;
+  background:linear-gradient(140deg,#E8443C,#B71C1C);color:#fff;
+  font-family:"Archivo",sans-serif;font-stretch:88%;font-weight:800;font-size:15.5px;
+  box-shadow:0 12px 26px -12px rgba(183,28,28,.75);
+}
+.c-pagar[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.c-letra{font-size:11px;color:var(--tinta-2);text-align:center;margin:9px 0 0;line-height:1.45}
+
+/* ---------- aviso flotante ---------- */
+.tostada{
+  position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(10px);
+  z-index:90;padding:11px 18px;border-radius:999px;font-size:13px;font-weight:700;
+  background:var(--vidrio);backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--vidrio-borde);box-shadow:var(--vidrio-sombra);
+  opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;
+}
+.tostada.ver{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion: reduce){.tostada{transition:none}}
+
+/* ---------- interruptor de tema ---------- */
+#tema [data-tema-icono]{display:inline-flex;align-items:center}
+#tema [data-tema-icono] svg{width:15px;height:15px;display:block}
