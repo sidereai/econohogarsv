@@ -1,0 +1,49 @@
+name: Publicar sitio
+
+# El sitio se compila acá, no en la máquina de nadie. Así docs/ deja de estar
+# versionado y desaparece el riesgo de que lo publicado quede desfasado del
+# código porque alguien olvidó recompilar.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si llegan dos push seguidos, gana el último: no tiene sentido publicar una
+# versión vieja encima de una nueva.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # publicar.mjs compila, escribe .nojekyll y robots.txt, y revisa la
+      # salida. Sale con código 1 si algo está mal, y entonces no se publica.
+      - name: Compilar y revisar
+        run: node seed/publicar.mjs
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v4

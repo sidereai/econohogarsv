@@ -16,4 +16,5 @@ node_modules/
 Thumbs.db
 seed/.*.bak
 /dist/
-# docs/ NO se ignora: es lo que publica GitHub Pages
+# docs/ lo compila y publica GitHub Actions; no se versiona
+/docs/

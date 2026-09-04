@@ -13,27 +13,29 @@ node seed/construir-vista.mjs      # → vista-catalogo.html
 node seed/construir-home.mjs       # → home.html
 ```
 
-Para el sitio publicado:
+## Publicar
+
+El sitio vive en <https://sidereai.github.io/econohogarsv/> y lo compila
+**GitHub Actions en cada push a `main`** (`.github/workflows/publicar.yml`).
+No hay que compilar ni commitear nada a mano: `docs/` está en `.gitignore`
+justamente para que lo publicado nunca quede desfasado del código.
+
+Para ver localmente lo mismo que se va a publicar:
 
 ```bash
-node seed/construir-vista.mjs --sitio
-node seed/construir-home.mjs --sitio
+node seed/publicar.mjs
 ```
 
-Con `--sitio` los enlaces internos pasan a rutas relativas y la salida va a
-`docs/` como `index.html` y `catalogo.html`. **Sin esa bandera los enlaces
-apuntan a los artifacts de claude.ai**, que no sirve para un sitio propio.
-
-`docs/` sí se versiona: es lo que GitHub Pages publica en
-<https://sidereai.github.io/econohogarsv/>. Después de tocar cualquier
-plantilla hay que recompilar con `--sitio` y commitear `docs/`, o el sitio
-queda desfasado del código.
+Compila con `--sitio`, escribe `.nojekyll` y `robots.txt`, y revisa la salida:
+tamaño razonable, sin enlaces a claude.ai, con `noindex`, sin marcadores sin
+sustituir y sin rutas absolutas. Sale con código 1 si algo falla, y entonces
+Actions no publica.
 
 Las rutas son relativas porque el sitio vive en una subruta (`/econohogarsv/`),
-no en la raíz de un dominio. Un `href="/catalogo.html"` rompería.
+no en la raíz de un dominio: un `href="/catalogo.html"` rompería. Esa es una de
+las revisiones.
 
-**Publicar en GitHub Pages:** Settings → Pages → Source: `Deploy from a branch`,
-rama `main`, carpeta `/docs`.
+**Configuración en GitHub:** Settings → Pages → Source: `GitHub Actions`.
 
 ## Estructura
 
@@ -48,10 +50,10 @@ rama `main`, carpeta `/docs`.
 | `seed/personajes.mjs` | Los tres personajes derivados del logo, chispas y trazos |
 | `seed/departamentos.mjs` | Agrupación comercial de categorías para el menú |
 | `seed/enlaces.mjs` | Destino de la compilación (artifacts o sitio publicado) |
+| `seed/publicar.mjs` | Compila el sitio y lo revisa antes de dejarlo publicar |
 | `decision-stack.html` | Documento de decisión de arquitectura para la tienda real |
 
-Los `.html` de la raíz son salidas generadas y están en `.gitignore`.
-`docs/` también es generado, pero se versiona porque es lo que se publica.
+Los `.html` de la raíz y `docs/` son salidas generadas y están en `.gitignore`.
 
 ## Qué es real y qué no
 
