@@ -51,6 +51,7 @@ las revisiones.
 | `seed/departamentos.mjs` | Agrupación comercial de categorías para el menú |
 | `seed/enlaces.mjs` | Destino de la compilación (artifacts o sitio publicado) |
 | `seed/publicar.mjs` | Compila el sitio y lo revisa antes de dejarlo publicar |
+| `seed/favicon.mjs` | Marca reducida del logo; genera SVG, ICO y PNG sin dependencias |
 | `decision-stack.html` | Documento de decisión de arquitectura para la tienda real |
 
 Los `.html` de la raíz y `docs/` son salidas generadas y están en `.gitignore`.

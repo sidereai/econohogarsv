@@ -8,6 +8,7 @@
 import { execFileSync } from 'node:child_process';
 import { writeFileSync, readFileSync, mkdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { png, ico, svg } from './favicon.mjs';
 
 const docs = new URL('../docs/', import.meta.url);
 const aqui = new URL('./', import.meta.url);
@@ -30,7 +31,20 @@ writeFileSync(new URL('./.nojekyll', docs), '');
 writeFileSync(new URL('./robots.txt', docs), 'User-agent: *\nDisallow: /\n');
 paso('.nojekyll y robots.txt escritos');
 
-// ---------- 3. revisiones ----------
+// ---------- 3. favicon ----------
+// SVG para navegadores modernos, PNG de 32 px y ICO para los viejos,
+// y 180 px para el ícono de pantalla de inicio en iOS.
+writeFileSync(new URL('./favicon.svg', docs), svg());
+writeFileSync(new URL('./favicon.ico', docs), ico(32));
+writeFileSync(new URL('./favicon-32.png', docs), png(32));
+writeFileSync(new URL('./favicon-180.png', docs), png(180));
+paso('favicon: svg, ico, 32 y 180 px');
+
+// ---------- 4. revisiones ----------
+for (const f of ['favicon.svg', 'favicon.ico', 'favicon-32.png', 'favicon-180.png']) {
+  if (!existsSync(new URL('./' + f, docs))) fallas.push(f + ': no se generó');
+}
+
 const paginas = ['index.html', 'catalogo.html'];
 for (const nombre of paginas) {
   const ruta = new URL('./' + nombre, docs);
@@ -42,6 +56,7 @@ for (const nombre of paginas) {
   if (html.includes('claude.ai')) fallas.push(nombre + ': enlaza a claude.ai, faltó compilar con --sitio');
   if (!html.includes('noindex')) fallas.push(nombre + ': sin la etiqueta noindex');
   if (/__[A-Z_]+__/.test(html)) fallas.push(nombre + ': quedó un marcador sin sustituir');
+  if (!html.includes('favicon.svg')) fallas.push(nombre + ': sin las etiquetas de favicon');
   // Una ruta absoluta rompe el sitio, que vive en la subruta /econohogarsv/.
   const absolutas = [...html.matchAll(/href="(\/[^/][^"]*)"/g)].map((m) => m[1]);
   if (absolutas.length) fallas.push(nombre + ': rutas absolutas que romperían en la subruta → ' + absolutas.slice(0, 3).join(', '));
