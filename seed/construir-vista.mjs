@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { SILUETAS } from './siluetas.mjs';
 import { DEPARTAMENTOS } from './departamentos.mjs';
-import { HOME, ES_FTP, salida } from './enlaces.mjs';
+import { HOME, ES_SITIO, salida } from './enlaces.mjs';
 
 const uiCss = readFileSync(new URL('./parciales/ui.css', import.meta.url), 'utf8');
 const uiJs  = readFileSync(new URL('./parciales/ui.js', import.meta.url), 'utf8');
@@ -19,15 +19,15 @@ const html = plantilla
   .replaceAll('__HOME__', HOME);
 
 // La demo lleva precios que no son reales: no puede entrar a Google bajo la
-// marca. Solo aplica a la compilación --ftp; se quita cuando la tienda de
-// verdad ocupe ese dominio.
-const pagina = ES_FTP ? '<meta name="robots" content="noindex, nofollow">\n' + html : html;
+// marca. Solo aplica a la compilación --sitio; se quita cuando la tienda de
+// verdad ocupe el dominio.
+const pagina = ES_SITIO ? '<meta name="robots" content="noindex, nofollow">\n' + html : html;
 
 const destino = new URL(salida('vista-catalogo.html', 'catalogo.html'), import.meta.url);
 mkdirSync(new URL('./', destino), { recursive: true });
 writeFileSync(destino, pagina, 'utf8');
 
-console.log((ES_FTP ? 'dist/catalogo.html' : 'vista-catalogo.html') + '  ' + (html.length / 1024).toFixed(0) + ' KB  ·  ' + JSON.parse(catalogo).total + ' productos incrustados');
+console.log((ES_SITIO ? 'docs/catalogo.html' : 'vista-catalogo.html') + '  ' + (html.length / 1024).toFixed(0) + ' KB  ·  ' + JSON.parse(catalogo).total + ' productos incrustados');
 for (const m of ['__CATALOGO__', '__SILUETAS__', '__HOME__']) {
   if (html.includes(m)) { console.error('AVISO: quedó sin sustituir ' + m); process.exit(1); }
 }

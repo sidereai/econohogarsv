@@ -13,19 +13,27 @@ node seed/construir-vista.mjs      # → vista-catalogo.html
 node seed/construir-home.mjs       # → home.html
 ```
 
-Para subir a un hosting estático por FTP:
+Para el sitio publicado:
 
 ```bash
-node seed/construir-vista.mjs --ftp
-node seed/construir-home.mjs --ftp
+node seed/construir-vista.mjs --sitio
+node seed/construir-home.mjs --sitio
 ```
 
-Con `--ftp` los enlaces internos pasan a rutas relativas y la salida va a
-`dist/` como `index.html` y `catalogo.html`. **Sin esa bandera los enlaces
-apuntan a los artifacts publicados en claude.ai**, que no sirve para un sitio propio.
+Con `--sitio` los enlaces internos pasan a rutas relativas y la salida va a
+`docs/` como `index.html` y `catalogo.html`. **Sin esa bandera los enlaces
+apuntan a los artifacts de claude.ai**, que no sirve para un sitio propio.
 
-Subir por FTP el contenido de `dist/`. No hace falta nada más: las fuentes
-vienen de Google Fonts y todo lo demás va incrustado en los dos archivos.
+`docs/` sí se versiona: es lo que GitHub Pages publica en
+<https://sidereai.github.io/econohogarsv/>. Después de tocar cualquier
+plantilla hay que recompilar con `--sitio` y commitear `docs/`, o el sitio
+queda desfasado del código.
+
+Las rutas son relativas porque el sitio vive en una subruta (`/econohogarsv/`),
+no en la raíz de un dominio. Un `href="/catalogo.html"` rompería.
+
+**Publicar en GitHub Pages:** Settings → Pages → Source: `Deploy from a branch`,
+rama `main`, carpeta `/docs`.
 
 ## Estructura
 
@@ -39,10 +47,11 @@ vienen de Google Fonts y todo lo demás va incrustado en los dos archivos.
 | `seed/siluetas.mjs` | 15 siluetas SVG, una por familia de producto |
 | `seed/personajes.mjs` | Los tres personajes derivados del logo, chispas y trazos |
 | `seed/departamentos.mjs` | Agrupación comercial de categorías para el menú |
-| `seed/enlaces.mjs` | Destino de la compilación (artifacts o FTP) |
+| `seed/enlaces.mjs` | Destino de la compilación (artifacts o sitio publicado) |
 | `decision-stack.html` | Documento de decisión de arquitectura para la tienda real |
 
-Los `.html` de la raíz y `dist/` son salidas generadas y están en `.gitignore`.
+Los `.html` de la raíz son salidas generadas y están en `.gitignore`.
+`docs/` también es generado, pero se versiona porque es lo que se publica.
 
 ## Qué es real y qué no
 
@@ -64,4 +73,6 @@ inventario. Todo eso está especificado en `decision-stack.html`.
 
 Este prototipo muestra precios que no son reales. Publicarlo en
 `econohogarsv.com` invita a alguien a intentar comprar algo que no existe.
-Va en un subdominio de demostración hasta que la tienda real esté en pie.
+Mientras tanto vive en GitHub Pages, con `noindex, nofollow` y `robots.txt`
+para que no entre a Google bajo la marca. Ese bloqueo se quita el día que
+la tienda de verdad ocupe el dominio.

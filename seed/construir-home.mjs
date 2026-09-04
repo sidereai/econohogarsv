@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { SILUETAS } from './siluetas.mjs';
 import { DEPARTAMENTOS } from './departamentos.mjs';
 import { PERSONAJES, CHISPAS, TRAZOS } from './personajes.mjs';
-import { HOME, VITRINA, ES_FTP, salida } from './enlaces.mjs';
+import { HOME, VITRINA, ES_SITIO, salida } from './enlaces.mjs';
 
 const uiCss = readFileSync(new URL('./parciales/ui.css', import.meta.url), 'utf8');
 const uiJs  = readFileSync(new URL('./parciales/ui.js', import.meta.url), 'utf8');
@@ -30,15 +30,15 @@ const html = plantilla
   .replaceAll('__HOME__', HOME);
 
 // La demo lleva precios que no son reales: no puede entrar a Google bajo la
-// marca. Solo aplica a la compilación --ftp; se quita cuando la tienda de
-// verdad ocupe ese dominio.
-const pagina = ES_FTP ? '<meta name="robots" content="noindex, nofollow">\n' + html : html;
+// marca. Solo aplica a la compilación --sitio; se quita cuando la tienda de
+// verdad ocupe el dominio.
+const pagina = ES_SITIO ? '<meta name="robots" content="noindex, nofollow">\n' + html : html;
 
 const destino = new URL(salida('home.html', 'index.html'), import.meta.url);
 mkdirSync(new URL('./', destino), { recursive: true });
 writeFileSync(destino, pagina, 'utf8');
 
-console.log((ES_FTP ? 'dist/index.html' : 'home.html') + '  ' + (html.length / 1024).toFixed(0) + ' KB  ·  ' + JSON.parse(catalogo).total + ' productos incrustados');
+console.log((ES_SITIO ? 'docs/index.html' : 'home.html') + '  ' + (html.length / 1024).toFixed(0) + ' KB  ·  ' + JSON.parse(catalogo).total + ' productos incrustados');
 const marcadores = ['__CATALOGO__', '__SILUETAS__', '__VITRINA__', '__HOME__', '__CHISPA_JS__',
   '__PERSONAJE_REFRI__', '__PERSONAJE_LAVA__', '__PERSONAJE_TELE__',
   '__CHISPA_ESTRELLA__', '__CHISPA_DESTELLO__', '__TRAZO_SUB__', '__TRAZO_RAYAS__'];
