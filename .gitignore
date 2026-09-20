@@ -18,3 +18,7 @@ seed/.*.bak
 /dist/
 # docs/ lo compila y publica GitHub Actions; no se versiona
 /docs/
+
+# Documentos comerciales: el repo es publico (GitHub Pages)
+presupuesto*.html
+propuesta*.html
