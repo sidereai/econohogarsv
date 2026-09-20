@@ -2,7 +2,7 @@
 
 Tienda en línea con pedidos por WhatsApp para **econohogarsv.com**.
 Sin pago en línea. Se monta en el **cPanel** que el cliente ya tiene, con
-**PHP + PostgreSQL**.
+**PHP 8.4 + MariaDB 10.6**.
 
 Este documento es de donde se programa. Si algo aquí contradice lo que hay en
 el repositorio, manda el repositorio y se corrige este archivo.
@@ -14,24 +14,54 @@ el repositorio, manda el repositorio y se corrige este archivo.
 
 ---
 
-## 0. Verificaciones antes de escribir una línea
+## 0. Entorno real del servidor
 
-Bloquean el arranque. Ninguna es negociable.
+Confirmado en el cPanel del cliente el 20 de septiembre de 2026.
 
-| Qué | Cómo se verifica | Si falla |
+| Qué | Valor |
+|---|---|
+| Base de datos | **MariaDB 10.6.28** (no hay PostgreSQL en este plan) |
+| PHP | **8.4.24** |
+| Extensiones vistas | `mysqli`, `curl`, `mbstring` |
+| Cotejamiento de la conexión | `utf8mb4_unicode_ci` |
+| Juego de caracteres del servidor | **latin1**, hay que forzar `utf8mb4` en todo |
+| Base creada | `econohog_master`, con usuario propio y todos los privilegios |
+
+### Falta verificar antes de programar
+
+| Qué | Dónde | Si falla |
 |---|---|---|
-| **PostgreSQL disponible** | cPanel → Bases de datos. Muchos planes compartidos solo traen MySQL | Se pasa a MySQL 8 / MariaDB 10.6. Ver §3.6 |
-| **PHP 8.1 o superior** | cPanel → Select PHP Version | Pedir actualización al proveedor |
-| **Extensión `pdo_pgsql`** | Select PHP Version → Extensions | Sin ella no hay conexión a Postgres |
-| **Extensión `gd`** | Igual que arriba | Sin ella no hay redimensionado de fotos |
-| **SSL activo** | cPanel → SSL/TLS Status, AutoSSL | El panel no puede pedir contraseña sin HTTPS |
+| **`pdo_mysql` habilitada** | cPanel → Select PHP Version → Extensions | Se usa `mysqli`, pero PDO es lo que asume este documento |
+| **`gd` habilitada** | Igual que arriba | Sin ella no hay redimensionado de fotos |
+| **SSL activo en el dominio** | cPanel → SSL/TLS Status, AutoSSL | El panel no puede pedir contraseña sin HTTPS |
 | **Cron disponible** | cPanel → Cron Jobs | Sin cron no hay respaldo automático |
-| **Política de respaldos del proveedor** | Preguntar al proveedor | Si no hay, el cron de §9.3 es el único respaldo |
+| **Respaldos del proveedor** | Preguntar | Si no hay, el cron de §9.3 es el único respaldo |
 
-**Dato que falta confirmar:** en el pedido se escribió «POSGREST». Este documento
-asume **PostgreSQL** (la base de datos). Si la intención era **PostgREST** (la
-capa que expone Postgres como API REST), no sirve: necesita un proceso corriendo
-de forma permanente, y un cPanel compartido no lo permite.
+### Lo que se pierde por no tener PostgreSQL
+
+Se decidió con PostgreSQL en mente. Lo que cambia, dicho sin adornos:
+
+- **Se pierde la tolerancia a errores de escritura.** `pg_trgm` hacía que
+  «refrijeradora» encontrara refrigeradoras. En MariaDB no hay equivalente. Se
+  compensa en parte con la lista de sinónimos que ya existe en el prototipo
+  (`tv`, `refri`, `abanico`, `freezer`), pero un error de dedo devuelve cero
+  resultados.
+- **Los acentos siguen resueltos**, no por la base de datos sino por el
+  cotejamiento: `utf8mb4_unicode_ci` ignora acentos y mayúsculas al comparar.
+- **`jsonb` pasa a `JSON`**, que en MariaDB es texto con validación. Alcanza:
+  las especificaciones solo se muestran, no se filtran.
+- **La búsqueda de texto completo ignora palabras de menos de 3 letras.**
+  `innodb_ft_min_token_size` vale 3 por defecto y no se puede cambiar en hosting
+  compartido. Por eso «tv» se traduce a «televisor» antes de consultar, y los
+  términos cortos caen a `LIKE`.
+
+### La contraseña de la base
+
+Va en `config.php`, **fuera de `public_html`** y fuera del repositorio, que es
+público. Nunca en el código, nunca en un commit.
+
+La contraseña actual se compartió por chat. Conviene rotarla al cerrar el
+proyecto y dejar una distinta para producción.
 
 ---
 
@@ -113,131 +143,182 @@ los SVG y el favicon.
 
 ---
 
-## 3. Modelo de datos (PostgreSQL)
+## 3. Modelo de datos (MariaDB 10.6)
 
-### 3.1 Tablas
+### 3.1 Antes de crear nada
+
+El servidor está en latin1. Sin esto, los acentos se guardan rotos y no hay
+vuelta atrás fácil:
 
 ```sql
-create table categorias (
-  slug        text primary key,
-  nombre      text not null,
-  orden       int  not null default 0,
-  visible     boolean not null default true
-);
+ALTER DATABASE econohog_master
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
-create table departamentos (
-  nombre      text primary key,
-  orden       int not null default 0
-);
+Y la conexión de PHP siempre con `charset=utf8mb4` en el DSN. Todas las tablas
+van con `ENGINE=InnoDB`: sin InnoDB no hay transacciones, llaves foráneas ni
+`CHECK`, y las tres se usan.
 
-create table productos (
-  sku                   text primary key,
-  nombre                text not null,
-  marca                 text,
-  modelo                text,
-  categoria             text references categorias(slug) on delete set null,
-  -- Precio con IVA incluido, en centavos. Es lo que ve el comprador y lo
-  -- que espera un comprador salvadoreño. El desglose se calcula al mostrar.
-  precio_centavos       int  not null check (precio_centavos >= 0),
-  precio_lista_centavos int check (precio_lista_centavos is null
-                                   or precio_lista_centavos >= precio_centavos),
-  existencias           int  not null default 0 check (existencias >= 0),
-  garantia_meses        int,
-  descripcion           text,
+### 3.2 Tablas
+
+```sql
+CREATE TABLE categorias (
+  slug     VARCHAR(60)  NOT NULL PRIMARY KEY,
+  nombre   VARCHAR(80)  NOT NULL,
+  orden    INT          NOT NULL DEFAULT 0,
+  visible  TINYINT(1)   NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE departamentos (
+  nombre VARCHAR(40) NOT NULL PRIMARY KEY,
+  orden  INT         NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE productos (
+  sku                   VARCHAR(40)  NOT NULL PRIMARY KEY,
+  nombre                VARCHAR(200) NOT NULL,
+  marca                 VARCHAR(80),
+  modelo                VARCHAR(80),
+  categoria             VARCHAR(60),
+  -- Precio con IVA incluido, en centavos. Es lo que ve el comprador y lo que
+  -- espera un comprador salvadoreño. El desglose se calcula al mostrar.
+  precio_centavos       INT NOT NULL,
+  precio_lista_centavos INT NULL,
+  existencias           INT NOT NULL DEFAULT 0,
+  garantia_meses        INT,
+  descripcion           TEXT,
   -- Especificaciones variables: una refrigeradora tiene pies³, un aire BTU.
-  -- Sin jsonb serían sesenta columnas nulas.
-  specs                 jsonb not null default '{}'::jsonb,
-  visible               boolean not null default true,
-  creado_en             timestamptz not null default now(),
-  actualizado_en        timestamptz not null default now()
-);
+  -- Sin esto serían sesenta columnas nulas.
+  specs                 LONGTEXT,
+  visible               TINYINT(1) NOT NULL DEFAULT 1,
+  creado_en             DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado_en        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                 ON UPDATE CURRENT_TIMESTAMP,
+  -- Una sola columna para buscar. El cotejamiento se encarga de los acentos.
+  busqueda              TEXT GENERATED ALWAYS AS (
+                          CONCAT_WS(' ', nombre, marca, modelo, descripcion)
+                        ) STORED,
+  CONSTRAINT productos_precio_ck      CHECK (precio_centavos >= 0),
+  CONSTRAINT productos_existencias_ck CHECK (existencias >= 0),
+  CONSTRAINT productos_specs_ck       CHECK (specs IS NULL OR JSON_VALID(specs)),
+  CONSTRAINT productos_lista_ck       CHECK (precio_lista_centavos IS NULL
+                                        OR precio_lista_centavos >= precio_centavos),
+  CONSTRAINT productos_categoria_fk   FOREIGN KEY (categoria)
+                                        REFERENCES categorias(slug) ON DELETE SET NULL,
+  KEY productos_categoria_idx (categoria, visible),
+  KEY productos_visible_idx (visible, nombre),
+  FULLTEXT KEY productos_busqueda_ft (busqueda)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-create index productos_categoria_idx on productos (categoria)
-  where visible;
-create index productos_specs_idx on productos using gin (specs);
+CREATE TABLE producto_fotos (
+  id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+  sku       VARCHAR(40)  NOT NULL,
+  archivo   VARCHAR(160) NOT NULL,        -- ruta relativa dentro de /uploads
+  orden     INT NOT NULL DEFAULT 0,
+  creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT producto_fotos_fk FOREIGN KEY (sku)
+    REFERENCES productos(sku) ON DELETE CASCADE,
+  KEY producto_fotos_sku_idx (sku, orden)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Búsqueda en español, con acentos normalizados y tolerancia a escritura parcial.
-create extension if not exists unaccent;
-create extension if not exists pg_trgm;
+CREATE TABLE pedidos (
+  id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+  codigo           VARCHAR(20) NULL UNIQUE,       -- EH-001042, se llena al insertar
+  creado_en        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  estado           VARCHAR(12) NOT NULL DEFAULT 'nuevo',
+  cliente_nombre   VARCHAR(80)  NOT NULL,
+  cliente_telefono VARCHAR(20)  NOT NULL,
+  departamento     VARCHAR(40),
+  metodo           VARCHAR(10)  NOT NULL,
+  direccion        VARCHAR(200),
+  nota             VARCHAR(300),
+  total_centavos   INT NOT NULL,
+  ip               VARBINARY(16),                 -- con INET6_ATON
+  actualizado_en   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                            ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT pedidos_estado_ck CHECK (estado IN ('nuevo','confirmado','entregado','cancelado')),
+  CONSTRAINT pedidos_metodo_ck CHECK (metodo IN ('retiro','envio')),
+  CONSTRAINT pedidos_depto_fk  FOREIGN KEY (departamento)
+    REFERENCES departamentos(nombre),
+  KEY pedidos_estado_idx (estado, creado_en)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-alter table productos add column busqueda tsvector
-  generated always as (
-    to_tsvector('spanish',
-      unaccent(coalesce(nombre,'') || ' ' || coalesce(marca,'') || ' ' ||
-               coalesce(modelo,'') || ' ' || coalesce(descripcion,'')))
-  ) stored;
-create index productos_busqueda_idx on productos using gin (busqueda);
-create index productos_nombre_trgm_idx on productos using gin (nombre gin_trgm_ops);
-
-create table producto_fotos (
-  id          bigserial primary key,
-  sku         text not null references productos(sku) on delete cascade,
-  archivo     text not null,          -- ruta relativa dentro de /uploads
-  orden       int  not null default 0,
-  creado_en   timestamptz not null default now()
-);
-create index producto_fotos_sku_idx on producto_fotos (sku, orden);
-
-create table pedidos (
-  id                text primary key,        -- EH-000142
-  creado_en         timestamptz not null default now(),
-  estado            text not null default 'nuevo'
-                    check (estado in ('nuevo','confirmado','entregado','cancelado')),
-  cliente_nombre    text not null,
-  cliente_telefono  text not null,
-  departamento      text references departamentos(nombre),
-  metodo            text not null check (metodo in ('retiro','envio')),
-  direccion         text,
-  nota              text,
-  total_centavos    int  not null,
-  ip                inet,
-  actualizado_en    timestamptz not null default now()
-);
-create index pedidos_estado_idx on pedidos (estado, creado_en desc);
-
-create table pedido_items (
-  id                bigserial primary key,
-  pedido_id         text not null references pedidos(id) on delete cascade,
-  sku               text not null,
-  -- Copia del nombre y del precio al momento del pedido: si mañana cambia
-  -- el precio, el pedido viejo no se reescribe solo.
-  nombre            text not null,
-  precio_centavos   int  not null,
-  cantidad          int  not null check (cantidad > 0)
-);
-create index pedido_items_pedido_idx on pedido_items (pedido_id);
+CREATE TABLE pedido_items (
+  id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+  pedido_id       BIGINT NOT NULL,
+  sku             VARCHAR(40)  NOT NULL,
+  -- Copia del nombre y del precio al momento del pedido: si mañana cambia el
+  -- precio, el pedido viejo no se reescribe solo.
+  nombre          VARCHAR(200) NOT NULL,
+  precio_centavos INT NOT NULL,
+  cantidad        INT NOT NULL,
+  CONSTRAINT pedido_items_cant_ck CHECK (cantidad > 0),
+  CONSTRAINT pedido_items_fk FOREIGN KEY (pedido_id)
+    REFERENCES pedidos(id) ON DELETE CASCADE,
+  KEY pedido_items_pedido_idx (pedido_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Historial de por qué cambió cada existencia. Solo se inserta.
-create table movimientos_inventario (
-  id          bigserial primary key,
-  sku         text not null references productos(sku) on delete cascade,
-  delta       int  not null check (delta <> 0),
-  motivo      text not null
-              check (motivo in ('carga','ajuste','venta_linea','venta_tienda',
-                                'devolucion','cancelacion')),
-  referencia  text,                     -- id del pedido, cuando aplica
-  creado_en   timestamptz not null default now()
-);
-create index movimientos_sku_idx on movimientos_inventario (sku, creado_en desc);
+CREATE TABLE movimientos_inventario (
+  id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+  sku        VARCHAR(40) NOT NULL,
+  delta      INT NOT NULL,
+  motivo     VARCHAR(16) NOT NULL,
+  referencia VARCHAR(20),                 -- código del pedido, cuando aplica
+  creado_en  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT movimientos_delta_ck  CHECK (delta <> 0),
+  CONSTRAINT movimientos_motivo_ck CHECK (motivo IN ('carga','ajuste','venta_linea',
+                                      'venta_tienda','devolucion','cancelacion')),
+  CONSTRAINT movimientos_fk FOREIGN KEY (sku)
+    REFERENCES productos(sku) ON DELETE CASCADE,
+  KEY movimientos_sku_idx (sku, creado_en)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-create table usuarios (
-  id            bigserial primary key,
-  correo        text not null unique,
-  hash          text not null,
-  nombre        text not null,
-  ultimo_acceso timestamptz,
-  creado_en     timestamptz not null default now()
-);
+CREATE TABLE usuarios (
+  id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+  correo        VARCHAR(120) NOT NULL UNIQUE,
+  hash          VARCHAR(255) NOT NULL,
+  nombre        VARCHAR(80)  NOT NULL,
+  ultimo_acceso DATETIME,
+  creado_en     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-create table ajustes (
-  clave  text primary key,
-  valor  text
-);
+CREATE TABLE intentos_ingreso (
+  id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+  correo    VARCHAR(120) NOT NULL,
+  ip        VARBINARY(16),
+  creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  KEY intentos_idx (correo, creado_en)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE ajustes (
+  clave VARCHAR(40) NOT NULL PRIMARY KEY,
+  valor TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- whatsapp_numero, whatsapp_saludo, tienda_nombre, tienda_direccion,
 -- envio_nota, productos_por_pagina
 ```
 
-### 3.2 Por qué existencias vive en dos lugares
+**Si el `FULLTEXT` sobre la columna generada da error** en esta versión, se
+cambia `busqueda` a una columna normal que PHP llena al guardar. El resto del
+diseño no cambia.
+
+### 3.3 Cómo se busca
+
+MariaDB no tiene `pg_trgm`, así que la búsqueda se arma en tres pasos:
+
+1. **Sinónimos primero**, con la lista que ya existe en el prototipo:
+   `tv` y `television` pasan a `televisor`, `refri` a `refrigeradora`,
+   `abanico` a `ventilador`, `freezer` a `congelador`.
+2. **Términos de 3 letras o más** van a texto completo, con comodín al final
+   para que «refri» encuentre «refrigeradora»:
+   `MATCH(busqueda) AGAINST('+refrigerad* +lg*' IN BOOLEAN MODE)`
+3. **Términos más cortos** caen a `LIKE '%xx%'`, porque el índice de texto
+   completo ignora palabras de menos de 3 letras.
+
+Los acentos no requieren nada: `utf8mb4_unicode_ci` los ignora al comparar.
+
+### 3.4 Por qué existencias vive en dos lugares
 
 `productos.existencias` es el número que se consulta mil veces al día.
 `movimientos_inventario` es el historial que explica cómo llegó a ese número.
@@ -245,72 +326,64 @@ create table ajustes (
 Los dos se escriben **en la misma transacción**. Sin el historial, la pregunta
 «¿por qué dice 3 si hay 5?» no tiene respuesta. Con él se lee qué pasó.
 
-### 3.3 Confirmar un pedido descuenta existencias
+### 3.5 Confirmar un pedido descuenta existencias
 
-Una función, no código PHP suelto, para que sea atómico:
+En PHP dentro de una transacción, no en un procedimiento almacenado. Razón: hay
+que decir **cuál** producto no alcanzó, y eso desde un procedimiento se vuelve
+incómodo. Además se depura en hosting compartido, donde no hay consola.
 
-```sql
-create or replace function confirmar_pedido(p_id text)
-returns void language plpgsql as $$
-declare it record;
-begin
-  perform 1 from pedidos where id = p_id and estado = 'nuevo' for update;
-  if not found then
-    raise exception 'El pedido % no existe o ya no está nuevo', p_id;
-  end if;
+```php
+$db->beginTransaction();
+// Bloquea las filas de esos productos hasta el commit: dos confirmaciones
+// simultáneas no pueden leer la misma existencia.
+$items = $db->prepare(
+  'SELECT i.sku, i.cantidad, i.nombre, p.existencias
+     FROM pedido_items i JOIN productos p ON p.sku = i.sku
+    WHERE i.pedido_id = ? FOR UPDATE');
+$items->execute([$pedidoId]);
 
-  for it in select sku, cantidad from pedido_items where pedido_id = p_id loop
-    update productos set existencias = existencias - it.cantidad,
-                         actualizado_en = now()
-     where sku = it.sku;
-    if not found then
-      raise exception 'Producto % no encontrado', it.sku;
-    end if;
-    insert into movimientos_inventario (sku, delta, motivo, referencia)
-    values (it.sku, -it.cantidad, 'venta_linea', p_id);
-  end loop;
+$faltan = [];
+foreach ($items as $it) {
+  if ($it['existencias'] < $it['cantidad']) {
+    $faltan[] = "{$it['nombre']}: hay {$it['existencias']}, se piden {$it['cantidad']}";
+  }
+}
+if ($faltan) { $db->rollBack(); return ['error' => $faltan]; }
 
-  update pedidos set estado = 'confirmado', actualizado_en = now() where id = p_id;
-end $$;
+// Descuenta, deja historial y cambia el estado.
+foreach ($items as $it) { /* UPDATE productos … ; INSERT movimientos … */ }
+$db->prepare('UPDATE pedidos SET estado = "confirmado" WHERE id = ? AND estado = "nuevo"')
+   ->execute([$pedidoId]);
+$db->commit();
 ```
 
-El `check (existencias >= 0)` de la tabla hace que la transacción falle sola si
-el descuento dejaría el inventario en negativo. La base es el último guardián,
-no el código de la aplicación.
+El `CHECK (existencias >= 0)` de la tabla es la última red: si algo se escapa de
+la lógica, la transacción falla sola. La base es el último guardián, no el
+código de la aplicación.
 
-`cancelar_pedido(p_id)` hace lo inverso con motivo `cancelacion`, solo si el
-pedido estaba en `confirmado`.
+Cancelar hace lo inverso con motivo `cancelacion`, solo si estaba en
+`confirmado`.
 
-### 3.4 Numeración de pedidos
+### 3.6 Numeración de pedidos
 
-Secuencia propia, no el id de la tabla: `EH-` más seis dígitos.
+Se inserta el pedido, se toma el `id` que devolvió `AUTO_INCREMENT` y en la
+misma transacción se escribe el código:
 
 ```sql
-create sequence pedido_numero start 1000;
+UPDATE pedidos SET codigo = CONCAT('EH-', LPAD(id, 6, '0')) WHERE id = ?;
 ```
 
-### 3.5 Datos iniciales
+Sin secuencias ni tablas de contadores. El código solo existe para que el
+cliente y el administrador hablen del mismo pedido.
+
+### 3.7 Datos iniciales
 
 - 15 categorías, las mismas del prototipo
 - 14 departamentos
-- 1 usuario administrador, creado por línea de comandos, nunca por formulario
+- 1 usuario administrador, creado por un script de línea de comandos que se
+  borra después. Nunca por formulario público
 - Ajustes con el número de WhatsApp vacío: el panel obliga a llenarlo al entrar
   la primera vez
-
-### 3.6 Si no hay PostgreSQL
-
-Cambios para MySQL 8 / MariaDB 10.6, por si toca:
-
-| Postgres | MySQL |
-|---|---|
-| `jsonb` + índice GIN | `json` + columnas generadas indexadas |
-| `tsvector` + `unaccent` | `FULLTEXT` con parser por defecto, y cotejamiento `utf8mb4_unicode_ci` para los acentos |
-| `pg_trgm` | No hay equivalente. La tolerancia a errores de escritura se pierde |
-| `inet` | `varbinary(16)` con `INET6_ATON` |
-| Función plpgsql | Procedimiento almacenado, misma lógica |
-
-Se pierde sobre todo la búsqueda tolerante a errores de escritura. En una tienda
-salvadoreña eso importa: mucha gente escribe «refrijeradora».
 
 ---
 
@@ -523,8 +596,10 @@ que ya existen y se suben como archivos.
 Cron diario a la 1:00 a. m.:
 
 ```
-0 1 * * * pg_dump -Fc "$DB" > ~/econohogar/respaldos/eh-$(date +\%F).dump \
-  && find ~/econohogar/respaldos -name '*.dump' -mtime +14 -delete
+0 1 * * * mysqldump --defaults-file=~/econohogar/.my.cnf --single-transaction \
+  --default-character-set=utf8mb4 econohog_master \
+  | gzip > ~/econohogar/respaldos/eh-$(date +\%F).sql.gz \
+  && find ~/econohogar/respaldos -name '*.sql.gz' -mtime +14 -delete
 ```
 
 Las fotos se respaldan con el respaldo del hosting. Si el proveedor no tiene,
@@ -607,8 +682,9 @@ verificable, no una opinión.
 Queda anotado para no volver a discutirlo desde cero:
 
 - **Dónde vive la tienda completa.** Puede quedarse en cPanel: PHP recibe sin
-  problema los avisos de pago de Wompi, y PostgreSQL ya trae lo que necesita la
-  reserva de inventario. Se revisa según el volumen real de pedidos
+  problema los avisos de pago de Wompi, y MariaDB con InnoDB ya trae las
+  transacciones y el bloqueo de filas que necesita la reserva de inventario.
+  Se revisa según el volumen real de pedidos
 - **La reserva en dos fases** de `decision-stack.html` entra cuando exista pago
   en línea. Hoy no hace falta: el administrador confirma cada pedido a mano
 - **La cola de facturación DTE** se conecta al mismo estado de pedidos

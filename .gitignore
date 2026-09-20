@@ -22,3 +22,8 @@ seed/.*.bak
 # Documentos comerciales: el repo es publico (GitHub Pages)
 presupuesto*.html
 propuesta*.html
+
+# Credenciales del servidor: el repositorio es publico
+config.php
+.my.cnf
+*.env
