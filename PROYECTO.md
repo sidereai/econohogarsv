@@ -37,14 +37,34 @@ Consecuencias prácticas:
   acceso remoto en ningún momento.
 - El esquema se aplica **pegando los archivos de `sql/` en phpPgAdmin**.
 - Si en algún momento hace falta trabajar contra la base desde afuera, se hace
-  con un **túnel SSH** (`ssh -L 5432:127.0.0.1:5432 usuario@servidor`), nunca
-  abriendo el puerto.
+  con un **túnel SSH**, nunca abriendo el puerto.
+
+### Acceso por SSH
+
+| Qué | Valor |
+|---|---|
+| Servidor | `s20420.usc1.stableserver.net`, puerto **22**, OpenSSH 8.7 |
+| Usuario | `econohog` |
+| Llave | Ed25519 propia, en `~/.ssh/econohogar` del equipo de desarrollo |
+| Atajo | `ssh econohogar`, definido en `~/.ssh/config` |
+
+Se usa el nombre del servidor y no el dominio: si `econohogarsv.com` se apunta
+a otro lado, el acceso no se rompe.
+
+Túnel para trabajar contra la base desde el equipo de desarrollo:
+
+```bash
+ssh -N -L 5432:127.0.0.1:5432 econohogar
+```
+
+Mientras ese túnel esté abierto, `localhost:5432` del equipo local es la base
+del servidor. Se cierra y el acceso desaparece: nada queda expuesto.
 
 ### Falta verificar
 
 | Qué | Dónde | Por qué importa |
 |---|---|---|
-| **¿La web está en este mismo servidor?** | Comparar con el dominio | La primera base MySQL estaba en `s1089.usc1.mysecurecloudhost.com`, otro servidor. Si la web y PostgreSQL no comparten máquina, `127.0.0.1` no sirve |
+| ~~¿La web está en este mismo servidor?~~ | **Resuelto** | `econohogarsv.com` (65.181.124.232) y `s20420.usc1.stableserver.net` (65.181.124.228) presentan **huellas de servidor idénticas**: es la misma máquina con dos direcciones. `127.0.0.1` sirve |
 | **Versión de PHP** | cPanel → Select PHP Version | El documento asume 8.1 o superior |
 | **`pdo_pgsql` habilitada** | Select PHP Version → Extensions | Sin ella PHP no habla con PostgreSQL |
 | **`gd` habilitada** | Igual que arriba | Sin ella no hay redimensionado de fotos |
