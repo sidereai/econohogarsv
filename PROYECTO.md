@@ -52,6 +52,29 @@ Consecuencias prácticas:
 | **Cron disponible** | cPanel → Cron Jobs | Sin cron no hay respaldo automático |
 | **`pg_trgm` disponible** | `sql/00-verificar.sql` | Opcional. Da tolerancia a errores de escritura |
 
+### Dónde está hoy el dominio
+
+Verificado desde fuera el 23 de septiembre de 2026:
+
+| Qué | Valor |
+|---|---|
+| `econohogarsv.com` | resuelve a `65.181.124.232` |
+| Servidor web | **LiteSpeed**, con SSL válido |
+| Respuesta | **301 permanente** hacia `https://sidereai.github.io/econohogarsv/` |
+
+Es deliberado: hoy el dominio muestra el prototipo publicado en GitHub Pages.
+
+> **El 301 hay que cambiarlo a 302.** Un 301 dice «esto se mudó para siempre» y
+> los navegadores lo guardan de forma agresiva, a veces sin caducidad. El día
+> que la tienda real ocupe el dominio, quien lo haya visitado antes va a seguir
+> cayendo en el prototipo, sin forma de que nosotros lo arreglemos desde el
+> servidor. Con 302 el problema no existe.
+>
+> Alternativa más limpia mientras dure la demostración: apuntar el dominio
+> **directo** a GitHub Pages con un dominio personalizado, sin redirección. El
+> sitio ya usa rutas relativas, así que funciona igual en la raíz del dominio
+> que en la subruta actual.
+
 ### Las contraseñas
 
 Van en `config.php`, **fuera de `public_html`** y fuera del repositorio, que es
