@@ -60,16 +60,55 @@ ssh -N -L 5432:127.0.0.1:5432 econohogar
 Mientras ese túnel esté abierto, `localhost:5432` del equipo local es la base
 del servidor. Se cierra y el acceso desaparece: nada queda expuesto.
 
+### Verificado por SSH el 23 de septiembre de 2026
+
+| Qué | Valor |
+|---|---|
+| Sistema | Linux 5.14 (familia Enterprise 9) |
+| PHP | **8.2.31**, en `/usr/local/bin/php` |
+| Extensiones | `pdo`, `pdo_pgsql`, `pgsql`, `gd`, `mbstring`, `fileinfo`, `curl`, `openssl`, `json`: **todas presentes** |
+| GD con WebP | **sí** |
+| Límites | memoria 512 M, subida 512 M |
+| `psql` | disponible en `/usr/bin/psql` |
+| PostgreSQL | `127.0.0.1:5432` **abierto**. **No soporta SSL**, así que se conecta por socket local |
+| Espacio | 1.6 TB libres |
+| Cron | sin tareas todavía |
+| `public_html` | prácticamente vacío: `.htaccess`, `.user.ini`, `php.ini`, `.well-known`, `cgi-bin` |
+
+Nada falta del lado de PHP. El servidor está listo.
+
+**La zona horaria del servidor es UTC.** El Salvador va seis horas atrás, así
+que un pedido de las 8 de la noche se guardaría con fecha del día siguiente.
+La aplicación fija su propia zona (`date_default_timezone_set`) en vez de
+depender de la configuración del servidor, y las marcas de tiempo se guardan
+en `timestamptz`.
+
+**La redirección solo aplica a la raíz.** El `.htaccess` actual tiene
+`RewriteRule ^/?$`, de modo que `econohogarsv.com/loquesea` no redirige y se
+sirve normalmente desde el servidor. Solo la portada va al prototipo.
+
+### Pendiente que bloquea la base
+
+`pg_hba.conf` concede acceso **por pareja usuario-base**, y cPanel solo creó la
+de `econohog` sobre `econohog_master`:
+
+| Intento | Resultado |
+|---|---|
+| `econohog_adminmaster` por socket o por TCP | `no pg_hba.conf entry` |
+| `econohog` sobre `postgres` | `no pg_hba.conf entry` |
+| `econohog` sobre `econohog_master` | `password authentication failed` ← la regla sí existe |
+
+El usuario que use la aplicación tiene que asociarse a la base **desde cPanel →
+PostgreSQL Databases → Add User To Database**. Ese es el paso que escribe la
+regla en `pg_hba.conf`. Un usuario creado directamente con SQL desde phpPgAdmin
+no queda registrado y no puede conectarse.
+
 ### Falta verificar
 
 | Qué | Dónde | Por qué importa |
 |---|---|---|
 | ~~¿La web está en este mismo servidor?~~ | **Resuelto** | `econohogarsv.com` (65.181.124.232) y `s20420.usc1.stableserver.net` (65.181.124.228) presentan **huellas de servidor idénticas**: es la misma máquina con dos direcciones. `127.0.0.1` sirve |
-| **Versión de PHP** | cPanel → Select PHP Version | El documento asume 8.1 o superior |
-| **`pdo_pgsql` habilitada** | Select PHP Version → Extensions | Sin ella PHP no habla con PostgreSQL |
-| **`gd` habilitada** | Igual que arriba | Sin ella no hay redimensionado de fotos |
 | **SSL activo en el dominio** | cPanel → SSL/TLS Status | El panel no puede pedir contraseña sin HTTPS |
-| **Cron disponible** | cPanel → Cron Jobs | Sin cron no hay respaldo automático |
 | **`pg_trgm` disponible** | `sql/00-verificar.sql` | Opcional. Da tolerancia a errores de escritura |
 
 ### Dónde está hoy el dominio
