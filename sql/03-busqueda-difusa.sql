@@ -1,7 +1,10 @@
 -- ============================================================
--- OPCIONAL · Tolerancia a errores de escritura
+-- NO APLICA EN ESTE SERVIDOR · Tolerancia a errores de escritura
 --
--- Solo si 00-verificar.sql mostró pg_trgm como disponible.
+-- Comprobado el 23-09-2026: el servidor solo tiene la extension plpgsql.
+-- pg_trgm no esta disponible y no se puede instalar sin que el proveedor
+-- agregue el paquete contrib. Este archivo queda para el dia que eso cambie,
+-- o para otro hosting.
 -- Sin esto la tienda funciona igual, pero "refrijeradora" devuelve cero
 -- resultados en vez de encontrar refrigeradoras.
 --

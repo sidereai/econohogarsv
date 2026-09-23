@@ -87,21 +87,53 @@ en `timestamptz`.
 `RewriteRule ^/?$`, de modo que `econohogarsv.com/loquesea` no redirige y se
 sirve normalmente desde el servidor. Solo la portada va al prototipo.
 
-### Pendiente que bloquea la base
+### Base de datos: funcionando
 
-`pg_hba.conf` concede acceso **por pareja usuario-base**, y cPanel solo creó la
-de `econohog` sobre `econohog_master`:
+Verificado el 23 de septiembre de 2026 conectando de verdad:
 
-| Intento | Resultado |
+| Qué | Valor |
 |---|---|
-| `econohog_adminmaster` por socket o por TCP | `no pg_hba.conf entry` |
-| `econohog` sobre `postgres` | `no pg_hba.conf entry` |
-| `econohog` sobre `econohog_master` | `password authentication failed` ← la regla sí existe |
+| Versión | PostgreSQL 13.23 |
+| Codificación | UTF8, cotejamiento `en_US.UTF-8` |
+| Zona horaria | UTC |
+| Búsqueda en español | **disponible** |
+| Puede crear tablas | sí |
+| Tablas existentes | 0 |
+| Usuario de la aplicación | `econohog_adminmaster`, asociado a la base |
+| Credenciales | `~/econohogar/config.php`, permisos 600, fuera de `public_html` |
 
-El usuario que use la aplicación tiene que asociarse a la base **desde cPanel →
-PostgreSQL Databases → Add User To Database**. Ese es el paso que escribe la
-regla en `pg_hba.conf`. Un usuario creado directamente con SQL desde phpPgAdmin
-no queda registrado y no puede conectarse.
+PHP conecta leyendo ese archivo: probado.
+
+> **Solo hay una extensión disponible en todo el servidor: `plpgsql`.**
+> No existen `pg_trgm` ni `unaccent`, porque falta el paquete contrib.
+> Haber diseñado el esquema sin depender de extensiones fue lo que salvó el
+> arranque: con `unaccent` no habría corrido.
+>
+> Se pierde la tolerancia a errores de escritura, y no hay forma de
+> recuperarla sin que el proveedor instale contrib. «refrijeradora» devuelve
+> cero resultados.
+
+Los dos mecanismos que reemplazan a las extensiones se probaron en el servidor:
+
+```
+translate('Refrigeradora LG Ñandú Áéíóú')  ->  refrigeradora lg nandu aeiou
+to_tsvector('spanish', 'refrigeradora ...') ->  'refriger':1 ...
+```
+
+La raíz `refriger` es lo que hace que «refrigeradora» y «refrigeradoras»
+encuentren lo mismo.
+
+### Cómo se llegó hasta aquí
+
+cPanel concede el acceso **por pareja usuario-base**. El usuario existía, pero
+no estaba asociado a la base, y sin esa asociación no hay regla en
+`pg_hba.conf` y la conexión falla igual por socket que por TCP.
+
+Se resolvió con `uapi Postgresql grant_all_privileges user=… database=…`.
+Un usuario creado con SQL desde phpPgAdmin nunca queda asociado, y por eso
+no puede conectarse.
+
+La contraseña se rotó al terminar, porque la anterior circuló por chat.
 
 ### Falta verificar
 
@@ -109,7 +141,7 @@ no queda registrado y no puede conectarse.
 |---|---|---|
 | ~~¿La web está en este mismo servidor?~~ | **Resuelto** | `econohogarsv.com` (65.181.124.232) y `s20420.usc1.stableserver.net` (65.181.124.228) presentan **huellas de servidor idénticas**: es la misma máquina con dos direcciones. `127.0.0.1` sirve |
 | **SSL activo en el dominio** | cPanel → SSL/TLS Status | El panel no puede pedir contraseña sin HTTPS |
-| **`pg_trgm` disponible** | `sql/00-verificar.sql` | Opcional. Da tolerancia a errores de escritura |
+| ~~`pg_trgm` disponible~~ | **Resuelto: NO** | El servidor solo tiene `plpgsql`. Sin contrib, no hay tolerancia a errores de escritura |
 
 ### Dónde está hoy el dominio
 
